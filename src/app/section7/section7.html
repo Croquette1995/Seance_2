@@ -1,0 +1,62 @@
+<div class="section-container">
+  <h2>7. Zone d'Exercices Pratiques (Labo Étudiant)</h2>
+  <p>Mettez en pratique les concepts vus dans les sections précédentes.</p>
+
+  <div class="card">
+    <h3>Exercice 2.1 : Traitement d'Identifiant</h3>
+    <p>La fonction <code>traiterIdentifiant(id: string | number)</code> doit renvoyer l'ID en majuscules si c'est une chaîne, ou l'ID + 1 si c'est un nombre.</p>
+
+    <div class="grid-2">
+      <div class="input-group mt-1">
+        <label>Entrez un identifiant :</label>
+        <input type="text" [ngModel]="ex1Input()" (ngModelChange)="ex1Input.set($event)" placeholder="Ex: test ou 42">
+      </div>
+
+      <div class="result-box action mt-0">
+        <h4>Résultat de <code>traiterIdentifiant</code> :</h4>
+        <div class="type-display small">{{ ex1Result() }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Exercice 2.2 : Panier d'Achats</h3>
+    <p>Utilisez les tableaux, les interfaces, et <code>reduce()</code> pour gérer un panier d'achats.</p>
+
+    <div class="grid-2">
+      <div>
+        <h4>Catalogue de Produits</h4>
+        <div class="product-list">
+          @for (produit of catalogue; track produit.id) {
+            <div class="product-item">
+              <span class="product-name">{{ produit.nom }}</span>
+              <span class="product-price">{{ produit.prix | currency:'EUR' }}</span>
+              <button (click)="ajouterAuPanier(produit)">Ajouter</button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <h4>Votre Panier</h4>
+        <div class="cart-box">
+          @if (panier().length === 0) {
+            <p class="empty-cart">Votre panier est vide.</p>
+          } @else {
+            <ul class="cart-list">
+              @for (item of panier(); track $index) {
+                <li>
+                  {{ item.nom }} - {{ item.prix | currency:'EUR' }}
+                  <button class="small-btn danger" (click)="retirerDuPanier($index)">X</button>
+                </li>
+              }
+            </ul>
+            <div class="cart-total">
+              Total : <strong>{{ totalPanier() | currency:'EUR' }}</strong>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="section-container">
+  <h2>5. Collections & Méthodes Fonctionnelles</h2>
+  <p>Manipulation des tableaux (Arrays), Tuples, et des nouvelles structures de données ES6 (Set, Map).</p>
+
+  <div class="card">
+    <h3>Atelier <code>map</code>, <code>filter</code>, <code>reduce</code></h3>
+    <p>Ces méthodes permettent de transformer des tableaux de manière immuable.</p>
+
+    <div class="array-controls mb-1">
+      <input #newNumInput type="number" placeholder="Nouveau nombre..." (keyup.enter)="addNumberToArray(newNumInput.value); newNumInput.value=''">
+      <button (click)="addNumberToArray(newNumInput.value); newNumInput.value=''">Ajouter</button>
+      <button class="secondary" (click)="resetArray()">Réinitialiser</button>
+    </div>
+
+    <div class="grid-2">
+      <div class="result-box base">
+        <h4>Tableau Initial</h4>
+        <div class="type-display">{{ baseNumbers() | json }}</div>
+      </div>
+
+      <div class="result-box action">
+        <h4><code>map(n => n * 2)</code></h4>
+        <div class="type-display">{{ mappedNumbers() | json }}</div>
+      </div>
+
+      <div class="result-box action">
+        <h4><code>filter(n => n > 2)</code></h4>
+        <div class="type-display">{{ filteredNumbers() | json }}</div>
+      </div>
+
+      <div class="result-box action highlight">
+        <h4><code>reduce((acc, curr) => acc + curr, 0)</code></h4>
+        <div class="type-display">{{ reducedSum() }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tuples vs Readonly Arrays</h3>
+
+    <div class="grid-2">
+      <div class="code-block">
+        <h4>Tuples <code>[type1, type2]</code></h4>
+        <p>Un tableau de taille fixe avec des types connus à des indices spécifiques.</p>
+        <pre><code>{{ tupleCode }}</code></pre>
+      </div>
+
+      <div class="code-block">
+        <h4>Tableaux Readonly <code>readonly T[]</code></h4>
+        <p>Empêche la mutation du tableau (pas de <code>push</code>, pas d'affectation par index).</p>
+        <pre><code>{{ readonlyCode }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Laboratoire <code>Set</code> et <code>Map</code></h3>
+
+    <div class="grid-2">
+      <div>
+        <h4><code>Array</code> vs <code>Set</code> (Doublons)</h4>
+        <div class="input-group row-flex">
+          <input type="text" [ngModel]="newItemName()" (ngModelChange)="newItemName.set($event)" placeholder="Entrez un nom (ex: Pomme)" (keyup.enter)="addItemToBoth()">
+          <button (click)="addItemToBoth()">Ajouter</button>
+        </div>
+
+        <div class="results grid-2 mt-1">
+          <div class="result-box danger">
+            <h4>Array (Doublons OK)</h4>
+            <div class="type-display small">{{ arrayItems() | json }}</div>
+          </div>
+          <div class="result-box safe">
+            <h4>Set (Doublons Ignorés)</h4>
+            <div class="type-display small">{{ getSetAsArray() | json }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4><code>Map&lt;K, V&gt;</code> (Dictionnaire typé)</h4>
+        <p>Contrairement aux objets classiques, une Map accepte n'importe quel type comme clé et garde l'ordre d'insertion.</p>
+        <pre><code>{{ mapCode }}</code></pre>
+      </div>
+    </div>
+  </div>
+</div>

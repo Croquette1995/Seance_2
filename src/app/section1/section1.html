@@ -1,0 +1,51 @@
+<div class="section-container">
+  <h2>1. Transpilation & Inférence</h2>
+  <p>Découvrez comment TypeScript est transformé en JavaScript (Type Erasure) et comment il devine les types.</p>
+
+  <div class="card">
+    <h3>Transpilation (Type Erasure)</h3>
+    <p>Le code TypeScript est vérifié à la compilation, puis les annotations de types sont supprimées pour générer du JavaScript valide.</p>
+
+    <div class="grid-2">
+      <div class="code-block">
+        <h4>TypeScript <span class="badge">Source</span></h4>
+        <pre><code>{{ tsCode }}</code></pre>
+      </div>
+
+      <div class="code-block">
+        <h4>JavaScript <span class="badge">Compilé</span></h4>
+        <pre><code>{{ jsCode }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Testeur d'Inférence de Types</h3>
+    <p>Tapez une valeur ci-dessous (nombre, texte, true/false, objet JSON) pour voir comment TypeScript infère le type par rapport au vrai type JavaScript à l'exécution.</p>
+
+    <div class="inference-tester">
+      <div class="input-group">
+        <label for="inferenceInput">Valeur à tester :</label>
+        <input
+          id="inferenceInput"
+          type="text"
+          [ngModel]="inputValue()"
+          (ngModelChange)="inputValue.set($event)"
+          placeholder="Ex: 42, 'Hello', true..."
+        />
+      </div>
+
+      <div class="results grid-2">
+        <div class="result-box ts-box">
+          <h4>Type Inféré TypeScript (Design Time)</h4>
+          <div class="type-display">{{ inferredTsType() }}</div>
+        </div>
+
+        <div class="result-box js-box">
+          <h4><code>typeof</code> JavaScript (Runtime)</h4>
+          <div class="type-display">{{ runtimeTypeof() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

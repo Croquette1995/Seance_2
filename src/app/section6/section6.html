@@ -1,0 +1,80 @@
+<div class="section-container">
+  <h2>6. Modélisation d'Objets : Types, Interfaces & Record</h2>
+  <p>Définissez des structures de données complexes avec des contraintes de mutabilité et des champs optionnels.</p>
+
+  <div class="card">
+    <h3>Constructeur d'Articles (Interfaces)</h3>
+    <p>Une interface définit la forme d'un objet. <code>readonly</code> empêche la modification après création, et <code>?</code> rend une propriété optionnelle.</p>
+
+    <div class="grid-2">
+      <div>
+        <pre><code>{{ articleCode }}</code></pre>
+
+        <div class="form-container mt-1">
+          <h4>Éditer l'Article</h4>
+
+          <div class="input-group">
+            <label>ID (readonly) :</label>
+            <input type="text" [value]="article().id" disabled>
+            <small>Ne peut pas être modifié</small>
+          </div>
+
+          <div class="input-group">
+            <label>Titre :</label>
+            <input type="text" [ngModel]="tempTitre()" (ngModelChange)="tempTitre.set($event)">
+          </div>
+
+          <div class="input-group">
+            <label>Prix :</label>
+            <input type="number" [ngModel]="tempPrix()" (ngModelChange)="tempPrix.set($event)">
+          </div>
+
+          <div class="input-group">
+            <label>Description (optionnelle) :</label>
+            <input type="text" [ngModel]="tempDesc()" (ngModelChange)="tempDesc.set($event)" placeholder="Laissez vide pour supprimer">
+          </div>
+
+          <button (click)="updateArticle()">Mettre à jour l'objet</button>
+        </div>
+      </div>
+
+      <div class="result-box mt-0">
+        <h4>Objet Résultant</h4>
+        <pre class="json-display"><code>{{ article() | json }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Dictionnaire <code>Record&lt;K, T&gt;</code></h3>
+    <p>Le type utilitaire <code>Record</code> force un objet à avoir des clés spécifiques (ici, tous les rôles possibles) et un type de valeur spécifique (ici, boolean).</p>
+
+    <div class="grid-2">
+      <div>
+        <pre><code>{{ recordCode }}</code></pre>
+      </div>
+
+      <div class="permissions-matrix result-box">
+        <h4>Matrice de Permissions</h4>
+
+        @for (item of permissions() | keyvalue; track item.key) {
+          <div class="permission-row">
+            <label class="switch-label">
+              <span class="role-name">{{ item.key }}</span>
+              <button class="toggle-btn"
+                      [class.active]="item.value"
+                      (click)="togglePermission($any(item.key))">
+                {{ item.value ? '✅ Autorisé' : '❌ Refusé' }}
+              </button>
+            </label>
+          </div>
+        }
+
+        <div class="mt-1">
+          <h4>Objet <code>permissions</code> :</h4>
+          <pre class="json-display small"><code>{{ permissions() | json }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
