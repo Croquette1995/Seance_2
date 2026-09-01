@@ -1,0 +1,132 @@
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mt-1 { margin-top: 1rem; }
+.mt-0 { margin-top: 0; }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.result-box {
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color-light);
+
+  :host-context(.dark-theme) & {
+    border-color: var(--border-color-dark);
+  }
+
+  &.action {
+    background-color: rgba(63, 81, 181, 0.05);
+  }
+}
+
+.type-display {
+  font-family: monospace;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  background-color: var(--surface-color-light);
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+
+  :host-context(.dark-theme) & {
+    background-color: var(--surface-color-dark);
+  }
+
+  &.small {
+    font-size: 1rem;
+  }
+}
+
+/* Product & Cart Styles */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: var(--surface-color-light);
+  border: 1px solid var(--border-color-light);
+  border-radius: 4px;
+
+  :host-context(.dark-theme) & {
+    background-color: var(--surface-color-dark);
+    border-color: var(--border-color-dark);
+  }
+}
+
+.product-price {
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-right: 1rem;
+}
+
+.cart-box {
+  padding: 1rem;
+  background-color: var(--code-bg-light);
+  border-radius: 4px;
+  min-height: 150px;
+
+  :host-context(.dark-theme) & {
+    background-color: var(--code-bg-dark);
+  }
+}
+
+.empty-cart {
+  text-align: center;
+  color: var(--text-secondary-light);
+  font-style: italic;
+
+  :host-context(.dark-theme) & {
+    color: var(--text-secondary-dark);
+  }
+}
+
+.cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color-light);
+
+    :host-context(.dark-theme) & {
+      border-bottom-color: var(--border-color-dark);
+    }
+  }
+}
+
+.small-btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  margin: 0;
+
+  &.danger {
+    background-color: var(--error-color);
+  }
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 1.2rem;
+  padding-top: 1rem;
+
+  strong {
+    color: var(--success-color);
+  }
+}

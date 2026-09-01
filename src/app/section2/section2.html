@@ -1,0 +1,69 @@
+<div class="section-container">
+  <h2>2. Types Primitifs, Unions & Enums</h2>
+  <p>Explorez les types de base et comment TypeScript permet de les combiner ou de restreindre leurs valeurs possibles.</p>
+
+  <div class="card">
+    <h3>Union Types & Narrowing (<code>string | number</code>)</h3>
+    <p>Une variable peut accepter plusieurs types. TypeScript force à vérifier le type réel (narrowing) avant d'utiliser des méthodes spécifiques.</p>
+
+    <div class="input-group">
+      <label>Saisissez un texte ou un nombre :</label>
+      <input type="text" [ngModel]="unionInput()" (ngModelChange)="unionInput.set($event)" placeholder="Tapez quelque chose...">
+    </div>
+
+    <div class="results-box">
+      <p>Type détecté à l'exécution : <strong>{{ unionType() }}</strong></p>
+      <div class="narrowing-demo" [class.is-number]="unionType() === 'number'" [class.is-string]="unionType() === 'string'">
+        <p><strong>Résultat du Narrowing :</strong> {{ narrowingMessage() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Enums vs Unions Littérales</h3>
+    <p>Les <code>Enums</code> existent à l'exécution en JavaScript, tandis que les unions littérales disparaissent (Type Erasure) offrant de meilleures performances.</p>
+
+    <div class="grid-2">
+      <div class="demo-block">
+        <h4>Enumération</h4>
+        <select [ngModel]="selectedEnum()" (ngModelChange)="selectedEnum.set($event)">
+          <option value="HAUT">Haut</option>
+          <option value="BAS">Bas</option>
+          <option value="GAUCHE">Gauche</option>
+          <option value="DROITE">Droite</option>
+        </select>
+        <p>Valeur sélectionnée : <strong>{{ selectedEnum() }}</strong></p>
+        <pre><code>{{ enumCode }}</code></pre>
+      </div>
+
+      <div class="demo-block">
+        <h4>Union Littérale</h4>
+        <select [ngModel]="selectedLiteral()" (ngModelChange)="selectedLiteral.set($event)">
+          <option value="HAUT">Haut</option>
+          <option value="BAS">Bas</option>
+          <option value="GAUCHE">Gauche</option>
+          <option value="DROITE">Droite</option>
+        </select>
+        <p>Valeur sélectionnée : <strong>{{ selectedLiteral() }}</strong></p>
+        <pre><code>{{ literalCode }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><code>any</code> vs <code>unknown</code></h3>
+    <p><code>any</code> désactive la vérification de type (dangereux). <code>unknown</code> est sûr car il force à vérifier le type avant utilisation.</p>
+
+    <div class="grid-2">
+      <div class="demo-block danger">
+        <h4>Le danger de <code>any</code></h4>
+        <pre><code>{{ anyCode }}</code></pre>
+      </div>
+
+      <div class="demo-block success">
+        <h4>La sécurité de <code>unknown</code></h4>
+        <pre><code>{{ unknownCode }}</code></pre>
+      </div>
+    </div>
+  </div>
+</div>

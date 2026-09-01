@@ -1,0 +1,59 @@
+<div class="section-container">
+  <h2>4. Fonctions Typées</h2>
+  <p>Découvrez comment typer les paramètres de fonctions, utiliser des valeurs par défaut, et les avantages des fonctions fléchées (Arrow Functions).</p>
+
+  <div class="card">
+    <h3>Paramètres Optionnels (<code>?</code>) et par Défaut (<code>=</code>)</h3>
+    <p>TypeScript permet de définir des valeurs par défaut pour les paramètres, ou de les rendre purement optionnels avec <code>?</code>.</p>
+
+    <div class="grid-2">
+      <div>
+        <div class="input-group">
+          <label>Prix (obligatoire) :</label>
+          <input type="number" [ngModel]="prix()" (ngModelChange)="prix.set($event)">
+        </div>
+
+        <div class="input-group">
+          <label>Frais de port (défaut = 5) :</label>
+          <input type="number" [ngModel]="frais()" (ngModelChange)="frais.set($event)" placeholder="Laissez vide pour le défaut">
+          <small>Si vide, <code>undefined</code> est passé, déclenchant le paramètre par défaut.</small>
+        </div>
+
+        <div class="input-group">
+          <label>Préfixe (optionnel <code>?</code>) :</label>
+          <input type="text" [ngModel]="prefixe()" (ngModelChange)="prefixe.set($event)" placeholder="Ex: Total = ">
+        </div>
+      </div>
+
+      <div class="results-block">
+        <pre><code>{{ codeCalculateur }}</code></pre>
+        <div class="result-box safe mt-1">
+          <h4>Résultat de l'exécution :</h4>
+          <div class="type-display">{{ resultatCalcul() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Fonctions Fléchées (Arrow Functions)</h3>
+    <p>Les fonctions fléchées (<code>=></code>) offrent une syntaxe concise et, surtout, <strong>conservent le contexte lexical de <code>this</code></strong>.</p>
+
+    <div class="grid-2">
+      <div class="code-block danger">
+        <h4>Fonction classique (Perte de <code>this</code>)</h4>
+        <pre><code>{{ classiqueCode }}</code></pre>
+      </div>
+
+      <div class="code-block safe">
+        <h4>Fonction fléchée (Conservation de <code>this</code>)</h4>
+        <pre><code>{{ arrowCode }}</code></pre>
+      </div>
+    </div>
+
+    <div class="code-block info mt-1">
+      <h4>Retours implicites</h4>
+      <pre><code>{{ implicitReturnCode }}</code></pre>
+    </div>
+  </div>
+</div>
