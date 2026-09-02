@@ -81,11 +81,7 @@ export class CodeEditor {
       // 3. Execute JS securely-ish
       // We wrap it in an IIFE and pass our custom console
       const execute = new Function('console', `
-        try {
-          ${jsCode}
-        } catch(e) {
-          throw e;
-        }
+        ${jsCode}
       `);
 
       execute(customConsole);

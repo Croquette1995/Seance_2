@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { CodeEditor } from '../shared/components/code-editor/code-editor';
 
 @Component({
   selector: 'app-section1',
@@ -14,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    CodeEditor
   ],
   templateUrl: './section1.html',
   styleUrl: './section1.scss'
@@ -78,4 +80,15 @@ console.log(greet(alice));`;
     const val = this.parsedValue();
     return typeof val;
   });
+
+  initialExerciseCode = `// Exercice: Inférence et Types
+// 1. Déclarez une variable \`message\` contenant le texte de votre choix.
+// 2. Déclarez une variable \`age\` contenant un nombre.
+// 3. Essayez d'assigner \`age\` à \`message\` pour voir ce qui se passe.
+// 4. Utilisez console.log() pour afficher vos variables.
+
+let message = "Bonjour TypeScript";
+// Ajoutez votre code ici...
+console.log(message);
+`;
 }
