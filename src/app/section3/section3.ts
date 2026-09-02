@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CodeEditor } from '../shared/components/code-editor/code-editor';
 
 @Component({
   selector: 'app-section3',
@@ -14,7 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCardModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CodeEditor
   ],
   templateUrl: './section3.html',
   styleUrl: './section3.scss'
@@ -99,4 +101,26 @@ export class Section3 {
       return `Erreur au runtime ! (Cannot read properties of undefined)`;
     }
   });
+
+  initialExerciseCode = `// Exercice 1: Égalité stricte vs faible
+// Écrivez une condition avec '==' qui est vraie, et la même avec '===' qui est fausse.
+const looseVrai = ("0" /* modifiez ici */);
+const strictFaux = ("0" /* modifiez ici */);
+console.log("Ex1 Loose:", looseVrai, "Strict:", strictFaux);
+
+// Exercice 2: Nullish Coalescing (??) vs OR (||)
+// Utilisez ?? pour que config1 garde la valeur '0'.
+// Utilisez || pour que config2 prenne la valeur "défaut".
+const valeurEntree = 0;
+const config1 = valeurEntree /* modifiez ici */ "défaut";
+const config2 = undefined /* modifiez ici */ "défaut";
+console.log("Ex2 Config1:", config1, "Config2:", config2);
+
+// Exercice 3: Optional Chaining (?.)
+// Corrigez le code suivant avec ?. pour éviter le crash.
+const utilisateur = { nom: "Jean" };
+// const codePostal = utilisateur.adresse.codePostal; // ❌ Crash
+const codePostal = undefined; /* modifiez cette ligne avec ?. */
+console.log("Ex3 Code Postal:", codePostal);
+`;
 }
