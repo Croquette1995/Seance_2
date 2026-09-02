@@ -1,6 +1,12 @@
 import { Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Produit {
   id: string;
@@ -10,7 +16,16 @@ interface Produit {
 
 @Component({
   selector: 'app-section7',
-  imports: [FormsModule, CurrencyPipe],
+  imports: [
+    FormsModule,
+    CurrencyPipe,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule
+  ],
   templateUrl: './section7.html',
   styleUrl: './section7.scss'
 })

@@ -1,5 +1,9 @@
 import { Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 enum DirectionEnum {
   Haut = 'HAUT',
@@ -12,7 +16,13 @@ type DirectionLiteral = 'HAUT' | 'BAS' | 'GAUCHE' | 'DROITE';
 
 @Component({
   selector: 'app-section2',
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
+  ],
   templateUrl: './section2.html',
   styleUrl: './section2.scss'
 })

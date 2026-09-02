@@ -1,62 +1,86 @@
-<div class="section-container">
-  <h2>7. Zone d'Exercices Pratiques (Labo Étudiant)</h2>
-  <p>Mettez en pratique les concepts vus dans les sections précédentes.</p>
-
-  <div class="card">
-    <h3>Exercice 2.1 : Traitement d'Identifiant</h3>
-    <p>La fonction <code>traiterIdentifiant(id: string | number)</code> doit renvoyer l'ID en majuscules si c'est une chaîne, ou l'ID + 1 si c'est un nombre.</p>
-
-    <div class="grid-2">
-      <div class="input-group mt-1">
-        <label>Entrez un identifiant :</label>
-        <input type="text" [ngModel]="ex1Input()" (ngModelChange)="ex1Input.set($event)" placeholder="Ex: test ou 42">
-      </div>
-
-      <div class="result-box action mt-0">
-        <h4>Résultat de <code>traiterIdentifiant</code> :</h4>
-        <div class="type-display small">{{ ex1Result() }}</div>
-      </div>
-    </div>
+<div class="container-fluid p-0">
+  <div class="mb-4">
+    <h1 class="h2 fw-bold text-primary">7. Zone d'Exercices Pratiques (Labo Étudiant)</h1>
+    <p class="text-body-secondary">Mettez en pratique les concepts vus dans les sections précédentes.</p>
   </div>
 
-  <div class="card">
-    <h3>Exercice 2.2 : Panier d'Achats</h3>
-    <p>Utilisez les tableaux, les interfaces, et <code>reduce()</code> pour gérer un panier d'achats.</p>
+  <mat-card class="mb-4">
+    <mat-card-header class="mb-3">
+      <mat-card-title>Exercice 2.1 : Traitement d'Identifiant</mat-card-title>
+      <mat-card-subtitle>La fonction <code>traiterIdentifiant(id: string | number)</code> doit renvoyer l'ID en majuscules si c'est une chaîne, ou l'ID + 1 si c'est un nombre.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Entrez un identifiant</mat-label>
+            <input matInput type="text" [ngModel]="ex1Input()" (ngModelChange)="ex1Input.set($event)" placeholder="Ex: test ou 42">
+          </mat-form-field>
+        </div>
 
-    <div class="grid-2">
-      <div>
-        <h4>Catalogue de Produits</h4>
-        <div class="product-list">
-          @for (produit of catalogue; track produit.id) {
-            <div class="product-item">
-              <span class="product-name">{{ produit.nom }}</span>
-              <span class="product-price">{{ produit.prix | currency:'EUR' }}</span>
-              <button (click)="ajouterAuPanier(produit)">Ajouter</button>
+        <div class="col-md-6">
+          <div class="p-3 border rounded bg-body-tertiary">
+            <h3 class="h6 fw-bold mb-2">Résultat de <code>traiterIdentifiant</code> :</h3>
+            <div class="font-monospace fs-6 p-2 rounded bg-body shadow-sm fw-bold">
+              {{ ex1Result() }}
             </div>
-          }
+          </div>
         </div>
       </div>
+    </mat-card-content>
+  </mat-card>
 
-      <div>
-        <h4>Votre Panier</h4>
-        <div class="cart-box">
-          @if (panier().length === 0) {
-            <p class="empty-cart">Votre panier est vide.</p>
-          } @else {
-            <ul class="cart-list">
-              @for (item of panier(); track $index) {
-                <li>
-                  {{ item.nom }} - {{ item.prix | currency:'EUR' }}
-                  <button class="small-btn danger" (click)="retirerDuPanier($index)">X</button>
-                </li>
+  <mat-card>
+    <mat-card-header class="mb-3">
+      <mat-card-title>Exercice 2.2 : Panier d'Achats</mat-card-title>
+      <mat-card-subtitle>Utilisez les tableaux, les interfaces, et <code>reduce()</code> pour gérer un panier d'achats.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 border rounded h-100">
+            <h3 class="h6 fw-bold mb-3">Catalogue de Produits</h3>
+            <div class="d-flex flex-column gap-2">
+              @for (produit of catalogue; track produit.id) {
+                <div class="d-flex align-items-center justify-content-between p-2 border rounded bg-body-tertiary">
+                  <div>
+                    <div class="fw-semibold">{{ produit.nom }}</div>
+                    <div class="text-body-secondary small">{{ produit.prix | currency:'EUR' }}</div>
+                  </div>
+                  <button mat-flat-button color="primary" (click)="ajouterAuPanier(produit)">
+                    <mat-icon>add_shopping_cart</mat-icon> Ajouter
+                  </button>
+                </div>
               }
-            </ul>
-            <div class="cart-total">
-              Total : <strong>{{ totalPanier() | currency:'EUR' }}</strong>
             </div>
-          }
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="p-3 border rounded h-100 bg-body-tertiary">
+            <h3 class="h6 fw-bold mb-3">Votre Panier</h3>
+            @if (panier().length === 0) {
+              <p class="text-body-secondary fst-italic">Votre panier est vide.</p>
+            } @else {
+              <mat-list class="mb-3 p-0 border rounded bg-body">
+                @for (item of panier(); track $index) {
+                  <mat-list-item>
+                    <span matListItemTitle>{{ item.nom }}</span>
+                    <span matListItemLine class="text-body-secondary">{{ item.prix | currency:'EUR' }}</span>
+                    <button mat-icon-button color="warn" matListItemMeta (click)="retirerDuPanier($index)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </mat-list-item>
+                }
+              </mat-list>
+              <div class="p-3 border border-primary bg-primary-subtle rounded d-flex align-items-center justify-content-between">
+                <span class="fw-bold">Total :</span>
+                <span class="fs-5 fw-bold font-monospace">{{ totalPanier() | currency:'EUR' }}</span>
+              </div>
+            }
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 </div>
