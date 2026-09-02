@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CodeEditor } from '../shared/components/code-editor/code-editor';
 
 @Component({
   selector: 'app-section5',
@@ -16,7 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    CodeEditor
   ],
   templateUrl: './section5.html',
   styleUrl: './section5.scss'
@@ -96,4 +98,32 @@ users.set('alice', { age: 25 });
 
 console.log(users.get('alice')); // { age: 25 }
 console.log(users.has('bob')); // false`;
+
+  initialExerciseCode = `// Exercice 1: Manipuler des tableaux (map, filter)
+const prix = [10, 25, 30, 5, 40];
+// 1. Utilisez filter pour garder les prix > 15
+// 2. Utilisez map pour ajouter 5 à chaque prix filtré
+const prixFiltres = prix; /* modifiez ici */
+const prixFinaux = prixFiltres; /* modifiez ici */
+console.log("Ex1 Prix Finaux:", prixFinaux);
+
+// Exercice 2: Tuples et Tableaux Readonly
+// Essayez de modifier ce tuple et ce tableau readonly.
+// TypeScript devrait vous en empêcher si vous le décommentez !
+let identifiant: [number, string] = [1, "Admin"];
+const jours: readonly string[] = ["Lundi", "Mardi", "Mercredi"];
+
+// identifiant[0] = "Deux"; // ❌ Erreur de type
+// jours.push("Jeudi"); // ❌ Erreur 'push' n'existe pas
+
+console.log("Ex2:", identifiant, jours);
+
+// Exercice 3: Utiliser Map et Set
+// 1. Créez un Set avec [1, 1, 2, 3, 3]. Regardez sa taille.
+// 2. Créez un Map liant 'fr' à 'France' et 'be' à 'Belgique'.
+const monSet = new Set(); /* modifiez ici */
+const monMap = new Map(); /* modifiez ici */
+
+console.log("Ex3 Set size:", monSet.size, "Map get 'fr':", monMap.get('fr'));
+`;
 }

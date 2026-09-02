@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CodeEditor } from '../shared/components/code-editor/code-editor';
 
 interface Article {
   readonly id: string;
@@ -26,7 +27,8 @@ type Role = 'admin' | 'user' | 'invite';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    CodeEditor
   ],
   templateUrl: './section6.html',
   styleUrl: './section6.scss'
@@ -81,4 +83,41 @@ const permissions: Record<Role, boolean> = {
       [role]: !perms[role]
     }));
   }
+
+  initialExerciseCode = `// Exercice 1: Interfaces et propriétés optionnelles
+// Créez une interface 'Voiture' avec :
+// - marque (string)
+// - annee (number)
+// - electrique (boolean optionnel)
+// Ensuite, créez un objet respectant cette interface.
+
+interface Voiture {
+  // Vos propriétés ici...
+}
+
+const maVoiture: Voiture = {
+  // Votre objet ici...
+};
+console.log("Ex1 Voiture:", maVoiture);
+
+// Exercice 2: Readonly
+// Ajoutez le modificateur 'readonly' à la propriété 'id' de l'interface User.
+// Vérifiez que TypeScript bloque la modification de l'id.
+interface User {
+  id: number; // modifiez cette ligne
+  nom: string;
+}
+const u: User = { id: 1, nom: "Alice" };
+// u.id = 2; // Décommentez pour voir l'erreur (si readonly est ajouté)
+console.log("Ex2 User:", u);
+
+// Exercice 3: Record
+// Utilisez Record pour créer un objet 'traductions' qui associe
+// les clés 'bonjour' et 'aurevoir' à leurs traductions en anglais.
+type Mots = 'bonjour' | 'aurevoir';
+const traductions: Record<Mots, string> = {
+  // Ajoutez les traductions ici...
+};
+console.log("Ex3 Traductions:", traductions);
+`;
 }
