@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Section5 } from './section5';
+import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 describe('Section5', () => {
   let component: Section5;
@@ -8,6 +9,7 @@ describe('Section5', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Section5],
+      providers: [provideMonacoEditor()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Section5);
