@@ -1,20 +1,50 @@
-<div class="dashboard-container">
-  <nav class="sidebar">
-    <h2>TS Fondements</h2>
-    <a routerLink="/section1" routerLinkActive="active" class="nav-link">1. Transpilation</a>
-    <a routerLink="/section2" routerLinkActive="active" class="nav-link">2. Primitifs & Unions</a>
-    <a routerLink="/section3" routerLinkActive="active" class="nav-link">3. Opérateurs</a>
-    <a routerLink="/section4" routerLinkActive="active" class="nav-link">4. Fonctions</a>
-    <a routerLink="/section5" routerLinkActive="active" class="nav-link">5. Collections</a>
-    <a routerLink="/section6" routerLinkActive="active" class="nav-link">6. Objets</a>
-    <a routerLink="/section7" routerLinkActive="active" class="nav-link">7. Exercices Labo</a>
+<mat-sidenav-container class="vh-100">
+  <mat-sidenav mode="side" opened class="p-3 d-flex flex-column border-end" style="width: 280px;">
+    <div class="d-flex align-items-center gap-2 mb-3 px-2">
+      <mat-icon color="primary">code</mat-icon>
+      <h2 class="h5 m-0 fw-bold">TS Fondements</h2>
+    </div>
 
-    <button class="theme-toggle" (click)="toggleTheme()">
-      {{ isDarkTheme() ? '☀️ Thème Clair' : '🌙 Thème Sombre' }}
-    </button>
-  </nav>
+    <mat-nav-list class="flex-grow-1">
+      <a mat-list-item routerLink="/section1" routerLinkActive="active">
+        <mat-icon matListItemIcon>transform</mat-icon>
+        <span matListItemTitle>1. Transpilation</span>
+      </a>
+      <a mat-list-item routerLink="/section2" routerLinkActive="active">
+        <mat-icon matListItemIcon>category</mat-icon>
+        <span matListItemTitle>2. Primitifs & Unions</span>
+      </a>
+      <a mat-list-item routerLink="/section3" routerLinkActive="active">
+        <mat-icon matListItemIcon>functions</mat-icon>
+        <span matListItemTitle>3. Opérateurs</span>
+      </a>
+      <a mat-list-item routerLink="/section4" routerLinkActive="active">
+        <mat-icon matListItemIcon>data_object</mat-icon>
+        <span matListItemTitle>4. Fonctions</span>
+      </a>
+      <a mat-list-item routerLink="/section5" routerLinkActive="active">
+        <mat-icon matListItemIcon>view_list</mat-icon>
+        <span matListItemTitle>5. Collections</span>
+      </a>
+      <a mat-list-item routerLink="/section6" routerLinkActive="active">
+        <mat-icon matListItemIcon>schema</mat-icon>
+        <span matListItemTitle>6. Objets</span>
+      </a>
+      <a mat-list-item routerLink="/section7" routerLinkActive="active">
+        <mat-icon matListItemIcon>assignment</mat-icon>
+        <span matListItemTitle>7. Exercices Labo</span>
+      </a>
+    </mat-nav-list>
 
-  <main class="main-content">
+    <div class="pt-3 border-top mt-auto">
+      <button mat-flat-button class="w-100" (click)="toggleTheme()">
+        <mat-icon>{{ isDarkTheme() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        {{ isDarkTheme() ? 'Thème Clair' : 'Thème Sombre' }}
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="p-4 overflow-auto">
     <router-outlet></router-outlet>
-  </main>
-</div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
