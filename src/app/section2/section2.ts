@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CodeEditor } from '../shared/components/code-editor/code-editor';
 
 enum DirectionEnum {
   Haut = 'HAUT',
@@ -21,7 +22,8 @@ type DirectionLiteral = 'HAUT' | 'BAS' | 'GAUCHE' | 'DROITE';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    CodeEditor
   ],
   templateUrl: './section2.html',
   styleUrl: './section2.scss'
@@ -80,5 +82,19 @@ valeur.faireQuelqueChose(); // ❌ Crash au runtime (pas d'erreur TS)`;
 if (typeof valeur === 'number') {
   console.log(valeur.toFixed(2)); // ✅ OK, type narrowed
 }`;
+
+  initialExerciseCode = `// Exercice: Unions et Narrowing
+// 1. Créez une fonction \`afficherInfo(valeur: string | number)\`
+// 2. Si c'est un texte, affichez sa longueur.
+// 3. Si c'est un nombre, affichez s'il est pair ou impair.
+// 4. Testez votre fonction avec les deux types.
+
+function afficherInfo(valeur: string | number) {
+  // Votre logique de narrowing ici...
+}
+
+afficherInfo("Hello");
+afficherInfo(42);
+`;
 
 }
