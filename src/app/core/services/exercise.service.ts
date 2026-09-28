@@ -400,8 +400,8 @@ export class ExerciseService {
         'Déclarez une interface `EntiteImmuable` contenant la propriété `readonly uuid: string;`. Créez la classe `Fichier` qui l\'implémente avec `constructor(public readonly uuid: string, public nom: string) {}`. Affichez l\'UUID, et vérifiez qu\'une tentative de modification directe `fichier.uuid = "autre"` est interdite par TypeScript.',
       hint: 'Le modificateur `readonly` dans une interface force la classe concrète à ne permettre l\'affectation que lors de l\'initialisation.',
       initialCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Créez la classe Fichier implements EntiteImmuable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// console.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
-      solutionCode: `interface EntiteImmuable {\n  readonly uuid: string;\n}\n\nclass Fichier implements EntiteImmuable {\n  constructor(public readonly uuid: string, public nom: string) {}\n}\n\nconst doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// doc.uuid = "hacked"; // TS2540: Cannot assign to 'uuid' because it is a read-only property.\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
-      currentCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Créez la classe Fichier implements EntiteImmuable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// console.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
+      solutionCode: `interface EntiteImmuable {\n  readonly uuid: string;\n}\n\nclass Fichier implements EntiteImmuable {\n  constructor(public readonly uuid: string, public nom: string) {}\n}\n\nconst doc = new Fichier("doc-uuid-123456", "notes.txt");\n// doc.uuid = "hacked"; // TS2540: Cannot assign to 'uuid' because it is a read-only property.\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
+      currentCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Créez la classe Fichier implements EntiteImmuable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const doc = new Fichier("doc-uuid-123456", "notes.txt");\n// console.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le modificateur `readonly` dans une interface impose que la valeur ne puisse plus être réassignée après instanciation.',
@@ -1193,7 +1193,7 @@ export class ExerciseService {
       case 'ex-2-4': {
         const hasReadonlyInterface = /interface\s+EntiteImmuable\b/.test(code) && /readonly\s+uuid\s*:\s*string/.test(code);
         const hasFichierMatch = /class\s+Fichier\s+implements\s+EntiteImmuable\b/.test(code);
-        const hasUuidLogged = exec.logs.some(l => l.text.includes('550e8400') && l.text.includes('notes.txt'));
+        const hasUuidLogged = exec.logs.some(l => l.text.includes('doc-uuid-123456') && l.text.includes('notes.txt'));
 
         updatedCriteria[0].passed = hasReadonlyInterface;
         updatedCriteria[1].passed = hasFichierMatch;
