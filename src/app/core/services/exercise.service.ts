@@ -538,9 +538,9 @@ export class ExerciseService {
       statement:
         'Créez l\'interface générique `ReponseServeur<T>` avec `statut: number`, une charge utile optionnelle `data?: T`, et un message optionnel `erreur?: string`. Écrivez une fonction `traiterReponse(res: ReponseServeur<{ token: string }>): void` qui affiche le token si statut === 200, ou l\'erreur sinon. Testez avec une réponse valide.',
       hint: 'Utilisez `interface ReponseServeur<T> { statut: number; data?: T; erreur?: string; }`.',
-      initialCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "jwt-secret-abc-123" }\n// };\n// traiterReponse(rep);\n`,
-      solutionCode: `interface ReponseServeur<T> {\n  statut: number;\n  data?: T;\n  erreur?: string;\n}\n\nfunction traiterReponse(res: ReponseServeur<{ token: string }>): void {\n  if (res.statut === 200 && res.data) {\n    console.log("Token reçu :", res.data.token);\n  } else {\n    console.error("Erreur serveur :", res.erreur);\n  }\n}\n\nconst rep = {\n  statut: 200,\n  data: { token: "jwt-secret-abc-123" }\n};\n\ntraiterReponse(rep);\n`,
-      currentCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "jwt-secret-abc-123" }\n// };\n// traiterReponse(rep);\n`,
+      initialCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "auth_token_abc_123" }\n// };\n// traiterReponse(rep);\n`,
+      solutionCode: `interface ReponseServeur<T> {\n  statut: number;\n  data?: T;\n  erreur?: string;\n}\n\nfunction traiterReponse(res: ReponseServeur<{ token: string }>): void {\n  if (res.statut === 200 && res.data) {\n    console.log("Token reçu :", res.data.token);\n  } else {\n    console.error("Erreur serveur :", res.erreur);\n  }\n}\n\nconst rep = {\n  statut: 200,\n  data: { token: "auth_token_abc_123" }\n};\n\ntraiterReponse(rep);\n`,
+      currentCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "auth_token_abc_123" }\n// };\n// traiterReponse(rep);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Les DTOs (Data Transfer Objects) sont les cas d\'usage rois des interfaces en TypeScript.',
@@ -565,7 +565,7 @@ export class ExerciseService {
         {
           id: 'c33-token-logged',
           label: 'Token affiché en console',
-          description: 'La console doit afficher jwt-secret-abc-123.',
+          description: 'La console doit afficher auth_token_abc_123.',
           passed: false,
           hint: 'Vérifiez la console.'
         }
@@ -1230,7 +1230,7 @@ export class ExerciseService {
       case 'ex-3-3': {
         const hasGenericDto = /interface\s+ReponseServeur\s*<\s*T\s*>/.test(code) && /statut\s*:\s*number/.test(code);
         const hasTraiter = /traiterReponse\s*\([^)]*ReponseServeur/.test(code);
-        const hasTokenLog = exec.logs.some(l => l.text.includes('jwt-secret-abc-123'));
+        const hasTokenLog = exec.logs.some(l => l.text.includes('auth_token_abc_123'));
 
         updatedCriteria[0].passed = hasGenericDto;
         updatedCriteria[1].passed = hasTraiter;
