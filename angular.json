@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ts-demonstrateur": {
+    "angular-seance8-demo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,14 +30,11 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/monaco-editor",
-                "output": "/assets/monaco/"
+                "input": "node_modules/monaco-editor/min/vs",
+                "output": "assets/monaco/vs"
               }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ]
           },
@@ -46,13 +43,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "15kB",
+                  "maximumError": "30kB"
                 }
               ],
               "outputHashing": "all"
@@ -69,10 +66,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ts-demonstrateur:build:production"
+              "buildTarget": "angular-seance8-demo:build:production"
             },
             "development": {
-              "buildTarget": "ts-demonstrateur:build:development"
+              "buildTarget": "angular-seance8-demo:build:development"
             }
           },
           "defaultConfiguration": "development"

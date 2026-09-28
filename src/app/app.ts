@@ -1,49 +1,45 @@
-import { Component, signal, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, inject } from '@angular/core';
+import { NavigationService } from './core/services/navigation.service';
+import { MonacoLoaderService } from './core/services/monaco-loader.service';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+
+// Les 7 modules interactifs de la Séance 8 + le Laboratoire Global
+import { WhyAbstractionComponent } from './features/why-abstraction/why-abstraction.component';
+import { AbstractClassAnatomyComponent } from './features/abstract-class-anatomy/abstract-class-anatomy.component';
+import { InterfacePureContractComponent } from './features/interface-pure-contract/interface-pure-contract.component';
+import { DuckTypingRuntimeCostComponent } from './features/duck-typing-runtime-cost/duck-typing-runtime-cost.component';
+import { DecisionTreeHybridComponent } from './features/decision-tree-hybrid/decision-tree-hybrid.component';
+import { PitfallsTypeGuardsComponent } from './features/pitfalls-type-guards/pitfalls-type-guards.component';
+import { RpgArenaSimulatorComponent } from './features/rpg-arena-simulator/rpg-arena-simulator.component';
+import { WorkshopsLabComponent } from './features/workshops-lab/workshops-lab.component';
 
 @Component({
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
   selector: 'app-root',
-  styleUrl: './app.scss',
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    SidebarComponent,
+    WhyAbstractionComponent,
+    AbstractClassAnatomyComponent,
+    InterfacePureContractComponent,
+    DuckTypingRuntimeCostComponent,
+    DecisionTreeHybridComponent,
+    PitfallsTypeGuardsComponent,
+    RpgArenaSimulatorComponent,
+    WorkshopsLabComponent
+  ],
   templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
-export class App implements OnInit {
-  protected readonly title = signal('ts-demonstrateur');
-  isDarkTheme = signal(false);
+export class App {
+  readonly nav = inject(NavigationService);
+  private readonly monacoLoader = inject(MonacoLoaderService);
 
-  ngOnInit() {
-    // Check initial theme preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.isDarkTheme.set(prefersDark);
-    this.applyTheme();
-  }
-
-  toggleTheme() {
-    this.isDarkTheme.update(dark => !dark);
-    this.applyTheme();
-  }
-
-  private applyTheme() {
-    if (this.isDarkTheme()) {
-      document.body.classList.add('dark-theme');
-      document.documentElement.setAttribute('data-bs-theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-theme');
-      document.documentElement.setAttribute('data-bs-theme', 'light');
-    }
+  constructor() {
+    // Préchargement de Monaco Editor pour une disponibilité instantanée
+    this.monacoLoader.init().catch(err => {
+      console.warn('[App] Préchargement Monaco :', err);
+    });
   }
 }

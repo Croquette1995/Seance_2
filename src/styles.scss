@@ -1,42 +1,326 @@
+/* Design System : TypeScript Lab Studio (Dark / Light) */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Palette de base */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --ts-blue: #3178c6;
+  --ts-blue-hover: #235a96;
+  --ts-blue-light: #60a5fa;
+  --ts-blue-bg: rgba(49, 120, 198, 0.15);
+
+  --angular-red: #dd0031;
+  --angular-red-hover: #c3002f;
+  --angular-purple: #9333ea;
+  --angular-blue: #0284c7;
+  --angular-green: #10b981;
+  --angular-amber: #f59e0b;
+}
+
+/* Thème Sombre (Par défaut) */
+:root, [data-theme="dark"], body.theme-dark {
+  --bg-app: #0a0d14;
+  --bg-sidebar: #0f141f;
+  --bg-header: #121826;
+  --bg-card: #172033;
+  --bg-card-hover: #1e2942;
+  --bg-subtle: #1e2638;
+  --bg-code: #0b0f19;
+  --bg-input: #121826;
+
+  --border-color: #26334d;
+  --border-subtle: #1a2336;
+  --border-focus: #3b82f6;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-code: #e2e8f0;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+
+  --badge-bg: rgba(49, 120, 198, 0.18);
+  --badge-text: #60a5fa;
+
+  --terminal-bg: #090d16;
+  --terminal-header: #111724;
+}
+
+/* Thème Clair */
+[data-theme="light"], body.theme-light {
+  --bg-app: #f4f6fb;
+  --bg-sidebar: #ffffff;
+  --bg-header: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-subtle: #f1f5f9;
+  --bg-code: #1e293b;
+  --bg-input: #ffffff;
+
+  --border-color: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --border-focus: #3178c6;
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --text-code: #f8fafc;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  --badge-bg: rgba(49, 120, 198, 0.12);
+  --badge-text: #235a96;
+
+  --terminal-bg: #0f172a;
+  --terminal-header: #1e293b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html, body {
   height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  width: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
-pre {
-  background-color: var(--bs-tertiary-bg, #f8f9fa);
-  color: var(--bs-body-color, #212529);
-  padding: 1rem;
+/* Utilitaires typographiques */
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Scrollbar moderne */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* Badges & Pills */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  &.badge-ts {
+    background: var(--ts-blue-bg);
+    color: var(--ts-blue-light);
+    border-color: rgba(49, 120, 198, 0.3);
+  }
+
+  &.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  &.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+  &.badge-purple {
+    background: rgba(147, 51, 234, 0.15);
+    color: #c084fc;
+    border-color: rgba(147, 51, 234, 0.3);
+  }
+  &.badge-red {
+    background: rgba(221, 0, 49, 0.15);
+    color: #f87171;
+    border-color: rgba(221, 0, 49, 0.3);
+  }
+  &.badge-teal {
+    background: rgba(20, 184, 166, 0.15);
+    color: #2dd4bf;
+    border-color: rgba(20, 184, 166, 0.3);
+  }
+}
+
+/* Boutons stylisés */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.18s ease-in-out;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--ts-blue), var(--ts-blue-hover));
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.875rem;
   border-radius: 6px;
-  overflow-x: auto;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(49, 120, 198, 0.35);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #3b82f6, var(--ts-blue));
+    box-shadow: 0 4px 14px rgba(49, 120, 198, 0.45);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 }
 
-code {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 6px;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-card-hover);
+    border-color: var(--border-focus);
+  }
 }
 
-/* Material & Bootstrap Dark Theme Integration */
-[data-bs-theme="dark"] {
-  .mat-mdc-card {
-    background-color: var(--bs-card-bg, #212529);
-    color: var(--bs-body-color, #dee2e6);
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  border-radius: 6px;
+
+  &:hover {
+    color: var(--text-main);
+    background: var(--bg-subtle);
+  }
+}
+
+/* Cartes & Panels */
+.card-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(49, 120, 198, 0.35);
+  }
+}
+
+/* Conteneur de module standardisé */
+.module-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 32px;
+  gap: 24px;
+}
+
+.module-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .module-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ts-blue-light);
   }
 
-  .mat-mdc-card-title,
-  .mat-mdc-card-subtitle {
-    color: var(--bs-body-color, #dee2e6) !important;
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
   }
 
-  .mat-drawer {
-    background-color: var(--bs-body-bg, #121212);
-    color: var(--bs-body-color, #dee2e6);
+  .module-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    max-width: 900px;
+    line-height: 1.5;
   }
+}
 
-  .mat-mdc-list-item-title,
-  .mat-mdc-list-item-line {
-    color: var(--bs-body-color, #dee2e6) !important;
+/* Onglets de sections (Théorie / Labo Monaco) */
+.section-mode-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  width: fit-content;
+
+  .mode-tab-btn {
+    padding: 7px 18px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      color: var(--text-main);
+    }
+
+    &.active {
+      background: var(--ts-blue);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(49, 120, 198, 0.3);
+    }
   }
 }
