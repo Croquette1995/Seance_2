@@ -15,6 +15,31 @@ describe('ExerciseService & Solution Validation Suite', () => {
     transpiler = TestBed.inject(TypescriptTranspilerService);
   });
 
+  it('should filter exercises correctly by lab number', () => {
+    service.setFilterLab(null);
+    expect(service.filteredExercises().length).toBe(21);
+
+    service.setFilterLab(1);
+    expect(service.filteredExercises().length).toBe(5);
+    expect(service.filteredExercises().every(e => e.labNumber === 1)).toBe(true);
+
+    service.setFilterLab(2);
+    expect(service.filteredExercises().length).toBe(4);
+    expect(service.filteredExercises().every(e => e.labNumber === 2)).toBe(true);
+
+    service.setFilterLab(3);
+    expect(service.filteredExercises().length).toBe(4);
+    expect(service.filteredExercises().every(e => e.labNumber === 3)).toBe(true);
+
+    service.setFilterLab(4);
+    expect(service.filteredExercises().length).toBe(4);
+    expect(service.filteredExercises().every(e => e.labNumber === 4)).toBe(true);
+
+    service.setFilterLab(5);
+    expect(service.filteredExercises().length).toBe(4);
+    expect(service.filteredExercises().every(e => e.labNumber === 5)).toBe(true);
+  });
+
   it('should have exactly 21 exercises across 5 labs', () => {
     const list = service.exercises();
     expect(list.length).toBe(21);
@@ -30,6 +55,18 @@ describe('ExerciseService & Solution Validation Suite', () => {
     expect(lab3.length).toBe(4);
     expect(lab4.length).toBe(4);
     expect(lab5.length).toBe(4);
+  });
+
+  it('should not validate initial currentCode immediately for any exercise', () => {
+    const list = service.exercises();
+
+    for (const ex of list) {
+      const result = service.validateExercise(ex.id, ex.currentCode);
+      if (result.success) {
+        console.warn(`Exercise ${ex.id} (${ex.number}) validated immediately on currentCode!`);
+      }
+      expect(result.success, `Initial code for ${ex.id} should NOT be validated immediately`).toBe(false);
+    }
   });
 
   it('should validate 100% of solutions for all 21 exercises', () => {
