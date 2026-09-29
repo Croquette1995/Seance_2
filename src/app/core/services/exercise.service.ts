@@ -28,9 +28,9 @@ export class ExerciseService {
       statement:
         'Déclarez une classe abstraite `Vehicule` avec un constructeur factorisant la propriété `public marque: string`. Tentez de l\'instancier avec `new Vehicule("Generique")` et constatez l\'erreur de compilation (TS2511). Ensuite, commentez cette tentative et observez que le code compile proprement.',
       hint: 'Utilisez la syntaxe `abstract class Vehicule { constructor(public marque: string) {} }`.',
-      initialCode: `// 1. Déclarez la classe abstraite Vehicule avec son constructeur :\n\n\n// 2. Tentez d'instancier new Vehicule("Generique") :\n// const v = new Vehicule("Generique"); // Décommentez pour voir l'erreur TS2511\n\nconsole.log("Classe abstraite déclarée avec succès !");\n`,
+      initialCode: `// 1. Déclarez la classe abstraite Vehicule avec son constructeur factorisant la marque :\n\n\n// 2. La ligne suivante doit déclencher une erreur si décommentée :\n// const v = new Vehicule("Generique");\n\nconsole.log("Classe abstraite déclarée avec succès !");\n`,
       solutionCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n}\n\n// const v = new Vehicule("Generique"); // TS2511: Cannot create an instance of an abstract class.\n\nconsole.log("Classe abstraite déclarée avec succès !");\n`,
-      currentCode: `// 1. Déclarez la classe abstraite Vehicule avec son constructeur factorisant la marque :\nabstract class Vehicule {\n  // Complétez le constructeur ici\n}\n\n// 2. La ligne suivante doit déclencher une erreur si décommentée :\n// const v = new Vehicule("Generique");\n\nconsole.log("Classe abstraite déclarée avec succès !");\n`,
+      currentCode: `// 1. Déclarez la classe abstraite Vehicule avec son constructeur factorisant la marque :\n\n\n// 2. La ligne suivante doit déclencher une erreur si décommentée :\n// const v = new Vehicule("Generique");\n\nconsole.log("Classe abstraite déclarée avec succès !");\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le mot-clé `abstract` devant `class` indique à TypeScript que cette classe ne peut pas être instanciée directement.',
@@ -73,9 +73,9 @@ export class ExerciseService {
       statement:
         'Dans la classe abstraite `Vehicule`, ajoutez la méthode abstraite `abstract demarrer(): string;` (sans corps `{}`). Créez ensuite une classe concrète `Moto` héritant de `Vehicule` qui implémente cette méthode en retournant `"Vroum vroum"`. Instanciez une moto et affichez le résultat de `demarrer()`.',
       hint: 'La signature abstraite se termine par un point-virgule `;`. Dans la classe `Moto`, implémentez `demarrer(): string { return "Vroum vroum"; }`.',
-      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  // Ajoutez ici la signature abstraite demarrer\n}\n\n// Créez la classe Moto qui hérite de Vehicule\n\n\n// Instanciez une moto Yamaha et affichez son démarrage\n`,
+      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  // 1. Ajoutez la signature abstraite demarrer(): string;\n}\n\n// 2. Créez la sous-classe concrète Moto qui hérite de Vehicule\n\n\n// 3. Instanciez une moto Yamaha et affichez son démarrage :\n`,
       solutionCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\nclass Moto extends Vehicule {\n  demarrer(): string {\n    return "Vroum vroum";\n  }\n}\n\nconst maMoto = new Moto("Yamaha");\nconsole.log(maMoto.demarrer());\n`,
-      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  // 1. Ajoutez la signature abstraite demarrer(): string;\n\n}\n\n// 2. Créez la sous-classe concrète Moto :\nclass Moto extends Vehicule {\n  // Implémentez la méthode obligatoire demarrer\n}\n\n// 3. Testez votre code :\nconst maMoto = new Moto("Yamaha");\nconsole.log(maMoto.demarrer());\n`,
+      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  // 1. Ajoutez la signature abstraite demarrer(): string;\n}\n\n// 2. Créez la sous-classe concrète Moto qui hérite de Vehicule\n\n\n// 3. Instanciez une moto Yamaha et affichez son démarrage :\n`,
       isCompleted: false,
       solutionExplanation: [
         'Une méthode abstraite `abstract demarrer(): string;` n\'a aucun corps de code dans la classe mère.',
@@ -118,9 +118,9 @@ export class ExerciseService {
       statement:
         'Créez une classe `Voiture` qui hérite de `Vehicule`. Son constructeur doit recevoir `marque: string` et `nombrePortes: number`. Vous devez obligatoirement appeler `super(marque)` pour initialiser la propriété héritée. Implémentez également `demarrer()` qui retourne `"Vrombissement de la " + this.marque`.',
       hint: 'N\'oubliez pas que `super(...)` doit être la première instruction du constructeur d\'une classe dérivée avant d\'utiliser `this`.',
-      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// Créez la classe Voiture ici avec nombrePortes et super(marque) :\n\n\nconst v = new Voiture("Peugeot", 5);\nconsole.log(v.demarrer(), "- Portes:", v.nombrePortes);\n`,
+      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Créez la sous-classe Voiture extends Vehicule avec nombrePortes et super(marque)\n\n\n// 2. Testez votre code (décommentez une fois la classe créée) :\n// const v = new Voiture("Peugeot", 5);\n// console.log(v.demarrer(), "- Portes:", v.nombrePortes);\n`,
       solutionCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\nclass Voiture extends Vehicule {\n  constructor(marque: string, public nombrePortes: number) {\n    super(marque);\n  }\n\n  demarrer(): string {\n    return "Vrombissement de la " + this.marque;\n  }\n}\n\nconst v = new Voiture("Peugeot", 5);\nconsole.log(v.demarrer(), "- Portes:", v.nombrePortes);\n`,
-      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\nclass Voiture extends Vehicule {\n  // 1. Ajoutez le constructeur avec super(marque) et public nombrePortes: number\n\n  // 2. Implémentez la méthode abstraite demarrer()\n\n}\n\nconst v = new Voiture("Peugeot", 5);\nconsole.log(v.demarrer(), "- Portes:", v.nombrePortes);\n`,
+      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Créez la sous-classe Voiture extends Vehicule avec nombrePortes et super(marque)\n\n\n// 2. Testez votre code (décommentez une fois la classe créée) :\n// const v = new Voiture("Peugeot", 5);\n// console.log(v.demarrer(), "- Portes:", v.nombrePortes);\n`,
       isCompleted: false,
       solutionExplanation: [
         'La classe abstraite factorise l\'état (la propriété `marque`).',
@@ -163,9 +163,9 @@ export class ExerciseService {
       statement:
         'Dans `Vehicule`, ajoutez la méthode `protected abstract calculerTaxe(): number;`. Ajoutez également une méthode concrète publique `afficherPrixTTC(prixBase: number): number` qui renvoie `prixBase + this.calculerTaxe()`. Dans la classe `Voiture`, implémentez `calculerTaxe()` pour qu\'elle renvoie `150`. Testez l\'appel de `afficherPrixTTC(20000)`.',
       hint: 'La visibilité `protected` permet aux sous-classes de redéfinir la méthode tout en empêchant le code extérieur de l\'appeler directement.',
-      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n\n  // 1. Déclarez protected abstract calculerTaxe(): number;\n\n  // 2. Déclarez afficherPrixTTC(prixBase: number): number\n}\n\nclass Voiture extends Vehicule {\n  demarrer(): string { return "Vroum"; }\n  // 3. Implémentez protected calculerTaxe(): number\n}\n\nconst auto = new Voiture("Renault");\nconsole.log("Prix TTC :", auto.afficherPrixTTC(20000));\n`,
+      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n\n  // 1. Ajoutez protected abstract calculerTaxe(): number;\n\n  // 2. Ajoutez afficherPrixTTC(prixBase: number): number qui retourne prixBase + this.calculerTaxe()\n}\n\nclass Voiture extends Vehicule {\n  demarrer(): string { return "Vroum"; }\n\n  // 3. Implémentez la taxe spécifique à la voiture (ex: return 150;)\n}\n\n// 4. Testez votre code (décommentez une fois les méthodes ajoutées) :\n// const auto = new Voiture("Renault");\n// console.log("Prix TTC :", auto.afficherPrixTTC(20000));\n`,
       solutionCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n\n  protected abstract calculerTaxe(): number;\n\n  afficherPrixTTC(prixBase: number): number {\n    return prixBase + this.calculerTaxe();\n  }\n}\n\nclass Voiture extends Vehicule {\n  demarrer(): string { return "Vroum"; }\n\n  protected calculerTaxe(): number {\n    return 150;\n  }\n}\n\nconst auto = new Voiture("Renault");\nconsole.log("Prix TTC :", auto.afficherPrixTTC(20000));\n`,
-      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n\n  // 1. Ajoutez protected abstract calculerTaxe(): number;\n\n  // 2. Ajoutez afficherPrixTTC(prixBase: number): number qui retourne prixBase + this.calculerTaxe()\n\n}\n\nclass Voiture extends Vehicule {\n  demarrer(): string { return "Vroum"; }\n\n  // 3. Implémentez la taxe spécifique à la voiture (ex: return 150;)\n\n}\n\nconst auto = new Voiture("Renault");\nconsole.log("Prix TTC :", auto.afficherPrixTTC(20000));\n`,
+      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n\n  // 1. Ajoutez protected abstract calculerTaxe(): number;\n\n  // 2. Ajoutez afficherPrixTTC(prixBase: number): number qui retourne prixBase + this.calculerTaxe()\n}\n\nclass Voiture extends Vehicule {\n  demarrer(): string { return "Vroum"; }\n\n  // 3. Implémentez la taxe spécifique à la voiture (ex: return 150;)\n}\n\n// 4. Testez votre code (décommentez une fois les méthodes ajoutées) :\n// const auto = new Voiture("Renault");\n// console.log("Prix TTC :", auto.afficherPrixTTC(20000));\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le modificateur `protected abstract` garantit que la méthode ne fait pas partie de l\'API publique externe.',
@@ -208,9 +208,9 @@ export class ExerciseService {
       statement:
         'Intercalez une classe abstraite intermédiaire `VehiculeElectrique extends Vehicule`. Elle doit ajouter la propriété `public capaciteBatterie: number` dans son constructeur (avec `super(marque)`) et déclarer une nouvelle méthode abstraite `abstract recharger(): string;`. Créez enfin la classe concrète `Tesla extends VehiculeElectrique` qui solde TOUTES les obligations (`demarrer` et `recharger`).',
       hint: 'Une classe abstraite qui hérite d\'une autre classe abstraite n\'est PAS obligée d\'implémenter les méthodes abstraites de son parent ! C\'est la première classe concrète (la feuille de l\'arbre) qui doit tout implémenter.',
-      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Créez la classe abstraite intermédiaire VehiculeElectrique\n\n\n// 2. Créez la classe concrète Tesla qui solde demarrer() et recharger()\n\n\nconst modelS = new Tesla("Tesla", 100);\nconsole.log(modelS.demarrer(), "|", modelS.recharger(), "| Batterie:", modelS.capaciteBatterie, "kWh");\n`,
+      initialCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Créez la classe abstraite intermédiaire VehiculeElectrique extends Vehicule\n\n\n// 2. Créez la classe concrète Tesla extends VehiculeElectrique qui solde demarrer() et recharger()\n\n\n// 3. Testez votre code (décommentez une fois les classes créées) :\n// const modelS = new Tesla("Tesla", 100);\n// console.log(modelS.demarrer(), "|", modelS.recharger(), "| Batterie:", modelS.capaciteBatterie, "kWh");\n`,
       solutionCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\nabstract class VehiculeElectrique extends Vehicule {\n  constructor(marque: string, public capaciteBatterie: number) {\n    super(marque);\n  }\n  abstract recharger(): string;\n}\n\nclass Tesla extends VehiculeElectrique {\n  demarrer(): string {\n    return "Démarrage silencieux en électrique";\n  }\n  recharger(): string {\n    return "Recharge Supercharger en cours";\n  }\n}\n\nconst modelS = new Tesla("Tesla", 100);\nconsole.log(modelS.demarrer(), "|", modelS.recharger(), "| Batterie:", modelS.capaciteBatterie, "kWh");\n`,
-      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Classe abstraite intermédiaire avec capaciteBatterie et abstract recharger(): string;\nabstract class VehiculeElectrique extends Vehicule {\n  // Constructeur avec super(marque) et capaciteBatterie\n  // Méthode abstraite recharger\n}\n\n// 2. Classe concrète Tesla soldant les 2 méthodes abstraites :\nclass Tesla extends VehiculeElectrique {\n  // Implémentez demarrer et recharger\n}\n\nconst modelS = new Tesla("Tesla", 100);\nconsole.log(modelS.demarrer(), "|", modelS.recharger(), "| Batterie:", modelS.capaciteBatterie, "kWh");\n`,
+      currentCode: `abstract class Vehicule {\n  constructor(public marque: string) {}\n  abstract demarrer(): string;\n}\n\n// 1. Créez la classe abstraite intermédiaire VehiculeElectrique extends Vehicule\n\n\n// 2. Créez la classe concrète Tesla extends VehiculeElectrique qui solde demarrer() et recharger()\n\n\n// 3. Testez votre code (décommentez une fois les classes créées) :\n// const modelS = new Tesla("Tesla", 100);\n// console.log(modelS.demarrer(), "|", modelS.recharger(), "| Batterie:", modelS.capaciteBatterie, "kWh");\n`,
       isCompleted: false,
       solutionExplanation: [
         '`VehiculeElectrique` est une abstraction intermédiaire : elle prolonge `Vehicule` sans implémenter `demarrer()`.',
@@ -264,9 +264,9 @@ export class ExerciseService {
       statement:
         'Déclarez une interface `Connectable` exigeant la méthode `connecter(ip: string): boolean;`. Créez ensuite une classe `ServeurWeb` qui implémente cette interface (`implements Connectable`). La méthode `connecter` doit afficher l\'adresse IP reçue et renvoyer `true`.',
       hint: 'Utilisez `interface Connectable { connecter(ip: string): boolean; }` et `class ServeurWeb implements Connectable { ... }`.',
-      initialCode: `// 1. Déclarez l'interface Connectable :\n\n\n// 2. Implémentez la classe ServeurWeb :\n\n\nconst serveur = new ServeurWeb();\nconst statut = serveur.connecter("192.168.1.100");\nconsole.log("Connecté :", statut);\n`,
+      initialCode: `// 1. Déclarez l'interface Connectable :\n\n\n// 2. Implémentez la classe ServeurWeb :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const serveur = new ServeurWeb();\n// const statut = serveur.connecter("192.168.1.100");\n// console.log("Connecté :", statut);\n`,
       solutionCode: `interface Connectable {\n  connecter(ip: string): boolean;\n}\n\nclass ServeurWeb implements Connectable {\n  connecter(ip: string): boolean {\n    console.log("Connexion établie avec :", ip);\n    return true;\n  }\n}\n\nconst serveur = new ServeurWeb();\nconst statut = serveur.connecter("192.168.1.100");\nconsole.log("Connecté :", statut);\n`,
-      currentCode: `// 1. Déclarez l'interface Connectable :\ninterface Connectable {\n  // Signature de connecter(ip: string): boolean;\n}\n\n// 2. Créez ServeurWeb signant le contrat :\nclass ServeurWeb implements Connectable {\n  // Implémentez connecter\n}\n\nconst serveur = new ServeurWeb();\nconst statut = serveur.connecter("192.168.1.100");\nconsole.log("Connecté :", statut);\n`,
+      currentCode: `// 1. Déclarez l'interface Connectable :\n\n\n// 2. Implémentez la classe ServeurWeb :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const serveur = new ServeurWeb();\n// const statut = serveur.connecter("192.168.1.100");\n// console.log("Connecté :", statut);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Une interface TypeScript ne contient AUCUN corps de méthode, AUCUN constructeur, AUCUN état initialisé.',
@@ -309,9 +309,9 @@ export class ExerciseService {
       statement:
         'Déclarez deux interfaces : `Imprimable` avec `imprimer(document: string): void;` et `Scannable` avec `scanner(): string;`. Créez la classe `ImprimanteMultifonction` qui implémente SIMULTANÉMENT les deux contrats (`implements Imprimable, Scannable`). Testez les deux méthodes.',
       hint: 'La syntaxe pour multi-implémenter est séparée par une virgule : `class Foo implements A, B`.',
-      initialCode: `// 1. Déclarez les interfaces Imprimable et Scannable\n\n\n// 2. Classe ImprimanteMultifonction implements Imprimable, Scannable\n\n\nconst machine = new ImprimanteMultifonction();\nmachine.imprimer("Rapport.pdf");\nconsole.log("Scan obtenu :", machine.scanner());\n`,
+      initialCode: `// 1. Déclarez les interfaces Imprimable et Scannable :\n\n\n// 2. Classe ImprimanteMultifonction implements Imprimable, Scannable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const machine = new ImprimanteMultifonction();\n// machine.imprimer("Rapport.pdf");\n// console.log("Scan obtenu :", machine.scanner());\n`,
       solutionCode: `interface Imprimable {\n  imprimer(document: string): void;\n}\n\ninterface Scannable {\n  scanner(): string;\n}\n\nclass ImprimanteMultifonction implements Imprimable, Scannable {\n  imprimer(document: string): void {\n    console.log("Impression de :", document);\n  }\n  scanner(): string {\n    return "Numérisation HD terminée";\n  }\n}\n\nconst machine = new ImprimanteMultifonction();\nmachine.imprimer("Rapport.pdf");\nconsole.log("Scan obtenu :", machine.scanner());\n`,
-      currentCode: `interface Imprimable {\n  imprimer(document: string): void;\n}\n\ninterface Scannable {\n  scanner(): string;\n}\n\n// Implémentez les deux interfaces :\nclass ImprimanteMultifonction implements Imprimable, Scannable {\n  // Codez imprimer et scanner\n}\n\nconst machine = new ImprimanteMultifonction();\nmachine.imprimer("Rapport.pdf");\nconsole.log("Scan obtenu :", machine.scanner());\n`,
+      currentCode: `// 1. Déclarez les interfaces Imprimable et Scannable :\n\n\n// 2. Classe ImprimanteMultifonction implements Imprimable, Scannable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const machine = new ImprimanteMultifonction();\n// machine.imprimer("Rapport.pdf");\n// console.log("Scan obtenu :", machine.scanner());\n`,
       isCompleted: false,
       solutionExplanation: [
         'En TypeScript, une classe ne peut étendre qu\'une seule classe mère (héritage simple pour éviter le problème du diamant).',
@@ -354,9 +354,9 @@ export class ExerciseService {
       statement:
         'Soit `interface CompteSimple { email: string; }` et `interface Journalisable { journaliser(action: string): void; }`. Créez l\'interface `CompteAdmin` qui étend SIMULTANÉMENT les deux (`extends CompteSimple, Journalisable`) et ajoute `droits: string[];`. Implémentez une classe `SuperAdmin` respectant `CompteAdmin`.',
       hint: 'Une interface peut faire `extends A, B` ! Contrairement aux classes, l\'héritage multiple entre interfaces est 100% légal et encouragé.',
-      initialCode: `interface CompteSimple {\n  email: string;\n}\n\ninterface Journalisable {\n  journaliser(action: string): void;\n}\n\n// 1. Créez CompteAdmin qui étend CompteSimple et Journalisable, et ajoute droits: string[];\n\n\n// 2. Classe SuperAdmin qui implémente CompteAdmin\n\n\nconst root = new SuperAdmin("root@system.local", ["ALL_PRIVILEGES"]);\nroot.journaliser("Démarrage maintenance");\nconsole.log(root.email, "- Droits:", root.droits.join(", "));\n`,
+      initialCode: `interface CompteSimple {\n  email: string;\n}\n\ninterface Journalisable {\n  journaliser(action: string): void;\n}\n\n// 1. Déclarez l'interface composée CompteAdmin extends CompteSimple, Journalisable :\n\n\n// 2. Créez la classe SuperAdmin implémentant CompteAdmin :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const root = new SuperAdmin("root@system.local", ["ALL_PRIVILEGES"]);\n// root.journaliser("Démarrage maintenance");\n// console.log(root.email, "- Droits:", root.droits.join(", "));\n`,
       solutionCode: `interface CompteSimple {\n  email: string;\n}\n\ninterface Journalisable {\n  journaliser(action: string): void;\n}\n\ninterface CompteAdmin extends CompteSimple, Journalisable {\n  droits: string[];\n}\n\nclass SuperAdmin implements CompteAdmin {\n  constructor(public email: string, public droits: string[]) {}\n\n  journaliser(action: string): void {\n    console.log("[" + this.email + "] Log : " + action);\n  }\n}\n\nconst root = new SuperAdmin("root@system.local", ["ALL_PRIVILEGES"]);\nroot.journaliser("Démarrage maintenance");\nconsole.log(root.email, "- Droits:", root.droits.join(", "));\n`,
-      currentCode: `interface CompteSimple {\n  email: string;\n}\n\ninterface Journalisable {\n  journaliser(action: string): void;\n}\n\n// 1. Déclarez l'interface composée CompteAdmin :\ninterface CompteAdmin extends CompteSimple, Journalisable {\n  droits: string[];\n}\n\n// 2. Créez la classe SuperAdmin implémentant CompteAdmin :\nclass SuperAdmin implements CompteAdmin {\n  // Constructeur et méthode journaliser\n}\n\nconst root = new SuperAdmin("root@system.local", ["ALL_PRIVILEGES"]);\nroot.journaliser("Démarrage maintenance");\nconsole.log(root.email, "- Droits:", root.droits.join(", "));\n`,
+      currentCode: `interface CompteSimple {\n  email: string;\n}\n\ninterface Journalisable {\n  journaliser(action: string): void;\n}\n\n// 1. Déclarez l'interface composée CompteAdmin extends CompteSimple, Journalisable :\n\n\n// 2. Créez la classe SuperAdmin implémentant CompteAdmin :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const root = new SuperAdmin("root@system.local", ["ALL_PRIVILEGES"]);\n// root.journaliser("Démarrage maintenance");\n// console.log(root.email, "- Droits:", root.droits.join(", "));\n`,
       isCompleted: false,
       solutionExplanation: [
         'L\'héritage d\'interfaces permet de combiner des micro-responsabilités modulaires.',
@@ -399,9 +399,9 @@ export class ExerciseService {
       statement:
         'Déclarez une interface `EntiteImmuable` contenant la propriété `readonly uuid: string;`. Créez la classe `Fichier` qui l\'implémente avec `constructor(public readonly uuid: string, public nom: string) {}`. Affichez l\'UUID, et vérifiez qu\'une tentative de modification directe `fichier.uuid = "autre"` est interdite par TypeScript.',
       hint: 'Le modificateur `readonly` dans une interface force la classe concrète à ne permettre l\'affectation que lors de l\'initialisation.',
-      initialCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Classe Fichier implements EntiteImmuable\n\n\nconst doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// doc.uuid = "hacked"; // Décommentez pour observer l'erreur TS2540 !\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
-      solutionCode: `interface EntiteImmuable {\n  readonly uuid: string;\n}\n\nclass Fichier implements EntiteImmuable {\n  constructor(public readonly uuid: string, public nom: string) {}\n}\n\nconst doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// doc.uuid = "hacked"; // TS2540: Cannot assign to 'uuid' because it is a read-only property.\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
-      currentCode: `// 1. Déclarez EntiteImmuable avec readonly uuid: string;\ninterface EntiteImmuable {\n  readonly uuid: string;\n}\n\n// 2. Classe Fichier avec public readonly uuid et public nom :\nclass Fichier implements EntiteImmuable {\n  constructor(public readonly uuid: string, public nom: string) {}\n}\n\nconst doc = new Fichier("550e8400-e29b-41d4-a716-446655440000", "notes.txt");\n// doc.uuid = "hacked"; // Décommentez pour constater l'erreur de compilation\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
+      initialCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Créez la classe Fichier implements EntiteImmuable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const doc = new Fichier("doc-uuid-123456", "notes.txt");\n// console.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
+      solutionCode: `interface EntiteImmuable {\n  readonly uuid: string;\n}\n\nclass Fichier implements EntiteImmuable {\n  constructor(public readonly uuid: string, public nom: string) {}\n}\n\nconst doc = new Fichier("doc-uuid-123456", "notes.txt");\n// doc.uuid = "hacked"; // TS2540: Cannot assign to 'uuid' because it is a read-only property.\nconsole.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
+      currentCode: `// 1. Déclarez interface EntiteImmuable avec readonly uuid: string;\n\n\n// 2. Créez la classe Fichier implements EntiteImmuable :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const doc = new Fichier("doc-uuid-123456", "notes.txt");\n// console.log("Fichier immuable :", doc.nom, "| UUID :", doc.uuid);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le modificateur `readonly` dans une interface impose que la valeur ne puisse plus être réassignée après instanciation.',
@@ -448,9 +448,9 @@ export class ExerciseService {
       statement:
         'Déclarez `interface Point2D { x: number; y: number; }`. Écrivez la fonction `calculerDistanceOrigine(pt: Point2D): number` renvoyant `Math.sqrt(pt.x * pt.x + pt.y * pt.y)`. Créez un simple objet littéral anonyme `const coord = { x: 3, y: 4 };` (sans classe ni constructeur) et passez-le à la fonction.',
       hint: 'TypeScript utilise le typage structurel : si l\'objet a la forme requise (x et y de type number), il est accepté sans qu\'aucune classe ne soit instanciée !',
-      initialCode: `// 1. Déclarez l'interface Point2D\n\n\n// 2. Déclarez la fonction calculerDistanceOrigine(pt: Point2D): number\n\n\n// 3. Passez un simple objet littéral anonyme { x: 3, y: 4 }\nconst coord = { x: 3, y: 4 };\nconst distance = calculerDistanceOrigine(coord);\nconsole.log("Distance de l'origine :", distance);\n`,
+      initialCode: `// 1. Déclarez l'interface Point2D { x: number; y: number; } :\n\n\n// 2. Déclarez la fonction calculerDistanceOrigine(pt: Point2D): number :\n\n\n// 3. Testez votre code (décommentez une fois l'interface et la fonction créées) :\n// const coord = { x: 3, y: 4 };\n// const distance = calculerDistanceOrigine(coord);\n// console.log("Distance de l'origine :", distance);\n`,
       solutionCode: `interface Point2D {\n  x: number;\n  y: number;\n}\n\nfunction calculerDistanceOrigine(pt: Point2D): number {\n  return Math.sqrt(pt.x * pt.x + pt.y * pt.y);\n}\n\nconst coord = { x: 3, y: 4 };\nconst distance = calculerDistanceOrigine(coord);\nconsole.log("Distance de l'origine :", distance);\n`,
-      currentCode: `// 1. Déclarez l'interface Point2D { x: number; y: number; }\ninterface Point2D {\n  x: number;\n  y: number;\n}\n\n// 2. Coder la fonction avec calcul de distance :\nfunction calculerDistanceOrigine(pt: Point2D): number {\n  return Math.sqrt(pt.x * pt.x + pt.y * pt.y);\n}\n\n// 3. Passez l'objet anonyme coord :\nconst coord = { x: 3, y: 4 };\nconst distance = calculerDistanceOrigine(coord);\nconsole.log("Distance de l'origine :", distance);\n`,
+      currentCode: `// 1. Déclarez l'interface Point2D { x: number; y: number; } :\n\n\n// 2. Déclarez la fonction calculerDistanceOrigine(pt: Point2D): number :\n\n\n// 3. Testez votre code (décommentez une fois l'interface et la fonction créées) :\n// const coord = { x: 3, y: 4 };\n// const distance = calculerDistanceOrigine(coord);\n// console.log("Distance de l'origine :", distance);\n`,
       isCompleted: false,
       solutionExplanation: [
         'En Java ou C#, un objet doit explicitement déclarer `implements Point2D` (typage nominal).',
@@ -493,9 +493,9 @@ export class ExerciseService {
       statement:
         'Soit `interface Identifiable { id: string; nom: string; }` et la fonction `saluer(entite: Identifiable): string` renvoyant `"Bonjour " + entite.nom + " (#" + entite.id + ")"`. Créez une variable `const utilisateurComplet = { id: "U1", nom: "Sarah", role: "ADMIN", token: "xyz789", age: 30 };`. Passez cette variable à `saluer()` et vérifiez que TypeScript l\'accepte avec succès.',
       hint: 'Tant que les propriétés requises sont présentes avec le bon type, la présence de propriétés supplémentaires n\'invalide pas le contrat.',
-      initialCode: `interface Identifiable {\n  id: string;\n  nom: string;\n}\n\n// 1. Codez la fonction saluer(entite: Identifiable): string\n\n\n// 2. Objet avec surplus de propriétés :\nconst utilisateurComplet = {\n  id: "U1",\n  nom: "Sarah",\n  role: "ADMIN",\n  token: "xyz789",\n  age: 30\n};\n\nconsole.log(saluer(utilisateurComplet));\n`,
+      initialCode: `interface Identifiable {\n  id: string;\n  nom: string;\n}\n\n// 1. Codez la fonction saluer(entite: Identifiable): string :\n\n\n// 2. Testez avec un objet enrichi (décommentez une fois la fonction créée) :\n// const utilisateurComplet = {\n//   id: "U1",\n//   nom: "Sarah",\n//   role: "ADMIN",\n//   token: "xyz789",\n//   age: 30\n// };\n// console.log(saluer(utilisateurComplet));\n`,
       solutionCode: `interface Identifiable {\n  id: string;\n  nom: string;\n}\n\nfunction saluer(entite: Identifiable): string {\n  return "Bonjour " + entite.nom + " (#" + entite.id + ")";\n}\n\nconst utilisateurComplet = {\n  id: "U1",\n  nom: "Sarah",\n  role: "ADMIN",\n  token: "xyz789",\n  age: 30\n};\n\nconsole.log(saluer(utilisateurComplet));\n`,
-      currentCode: `interface Identifiable {\n  id: string;\n  nom: string;\n}\n\n// 1. Complétez la fonction :\nfunction saluer(entite: Identifiable): string {\n  return "Bonjour " + entite.nom + " (#" + entite.id + ")";\n}\n\n// 2. Passez l'objet enrichi :\nconst utilisateurComplet = {\n  id: "U1",\n  nom: "Sarah",\n  role: "ADMIN",\n  token: "xyz789",\n  age: 30\n};\n\nconsole.log(saluer(utilisateurComplet));\n`,
+      currentCode: `interface Identifiable {\n  id: string;\n  nom: string;\n}\n\n// 1. Codez la fonction saluer(entite: Identifiable): string :\n\n\n// 2. Testez avec un objet enrichi (décommentez une fois la fonction créée) :\n// const utilisateurComplet = {\n//   id: "U1",\n//   nom: "Sarah",\n//   role: "ADMIN",\n//   token: "xyz789",\n//   age: 30\n// };\n// console.log(saluer(utilisateurComplet));\n`,
       isCompleted: false,
       solutionExplanation: [
         'En typage structurel, TypeScript vérifie que l\'objet passé contient **au minimum** ce qui est exigé par l\'interface.',
@@ -538,9 +538,9 @@ export class ExerciseService {
       statement:
         'Créez l\'interface générique `ReponseServeur<T>` avec `statut: number`, une charge utile optionnelle `data?: T`, et un message optionnel `erreur?: string`. Écrivez une fonction `traiterReponse(res: ReponseServeur<{ token: string }>): void` qui affiche le token si statut === 200, ou l\'erreur sinon. Testez avec une réponse valide.',
       hint: 'Utilisez `interface ReponseServeur<T> { statut: number; data?: T; erreur?: string; }`.',
-      initialCode: `// 1. Déclarez l'interface générique ReponseServeur<T>\n\n\n// 2. Déclarez traiterReponse(res: ReponseServeur<{ token: string }>): void\n\n\nconst rep = {\n  statut: 200,\n  data: { token: "jwt-secret-abc-123" }\n};\n\ntraiterReponse(rep);\n`,
-      solutionCode: `interface ReponseServeur<T> {\n  statut: number;\n  data?: T;\n  erreur?: string;\n}\n\nfunction traiterReponse(res: ReponseServeur<{ token: string }>): void {\n  if (res.statut === 200 && res.data) {\n    console.log("Token reçu :", res.data.token);\n  } else {\n    console.error("Erreur serveur :", res.erreur);\n  }\n}\n\nconst rep = {\n  statut: 200,\n  data: { token: "jwt-secret-abc-123" }\n};\n\ntraiterReponse(rep);\n`,
-      currentCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\ninterface ReponseServeur<T> {\n  statut: number;\n  data?: T;\n  erreur?: string;\n}\n\n// 2. Codez la fonction traitant le DTO :\nfunction traiterReponse(res: ReponseServeur<{ token: string }>): void {\n  // Affichez res.data.token si statut vaut 200\n}\n\nconst rep = {\n  statut: 200,\n  data: { token: "jwt-secret-abc-123" }\n};\n\ntraiterReponse(rep);\n`,
+      initialCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "auth_token_abc_123" }\n// };\n// traiterReponse(rep);\n`,
+      solutionCode: `interface ReponseServeur<T> {\n  statut: number;\n  data?: T;\n  erreur?: string;\n}\n\nfunction traiterReponse(res: ReponseServeur<{ token: string }>): void {\n  if (res.statut === 200 && res.data) {\n    console.log("Token reçu :", res.data.token);\n  } else {\n    console.error("Erreur serveur :", res.erreur);\n  }\n}\n\nconst rep = {\n  statut: 200,\n  data: { token: "auth_token_abc_123" }\n};\n\ntraiterReponse(rep);\n`,
+      currentCode: `// 1. Déclarez l'interface générique ReponseServeur<T> :\n\n\n// 2. Déclarez la fonction traiterReponse(res: ReponseServeur<{ token: string }>): void :\n\n\n// 3. Testez votre code (décommentez une fois la fonction créée) :\n// const rep = {\n//   statut: 200,\n//   data: { token: "auth_token_abc_123" }\n// };\n// traiterReponse(rep);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Les DTOs (Data Transfer Objects) sont les cas d\'usage rois des interfaces en TypeScript.',
@@ -565,7 +565,7 @@ export class ExerciseService {
         {
           id: 'c33-token-logged',
           label: 'Token affiché en console',
-          description: 'La console doit afficher jwt-secret-abc-123.',
+          description: 'La console doit afficher auth_token_abc_123.',
           passed: false,
           hint: 'Vérifiez la console.'
         }
@@ -583,9 +583,9 @@ export class ExerciseService {
       statement:
         'Soit `interface ConfigOption { debug: boolean; port: number; }`. Si vous tentez `const conf: ConfigOption = { debug: true, port: 8080, logPath: "/var/log" };`, TypeScript rejette le code (TS2353 Excess property check). Corrigez ce problème en déclarant d\'abord un objet intermédiaire `const optionsBrutes = { debug: true, port: 8080, logPath: "/var/log" };`, puis en assignant `const conf: ConfigOption = optionsBrutes;`. Affichez `conf.port`.',
       hint: 'TypeScript applique une vérification stricte immédiate uniquement sur les objets littéraux directs. Dès qu\'un objet transite par une variable intermédiaire, le duck typing standard reprend le dessus.',
-      initialCode: `interface ConfigOption {\n  debug: boolean;\n  port: number;\n}\n\n// Corrigez le code suivant pour éviter l'erreur TS2353 d'excès de propriété direct :\n// const conf: ConfigOption = { debug: true, port: 8080, logPath: "/var/log" };\n\n\n\nconsole.log("Port configuré :", conf.port);\n`,
+      initialCode: `interface ConfigOption {\n  debug: boolean;\n  port: number;\n}\n\n// Corrigez en créant d'abord un objet intermédiaire optionsBrutes sans typage direct,\n// puis assignez-le à conf: ConfigOption :\n\n\n// console.log("Port configuré :", conf.port);\n`,
       solutionCode: `interface ConfigOption {\n  debug: boolean;\n  port: number;\n}\n\n// Déclaration via variable intermédiaire pour contourner l'excess property check direct :\nconst optionsBrutes = {\n  debug: true,\n  port: 8080,\n  logPath: "/var/log"\n};\n\nconst conf: ConfigOption = optionsBrutes;\n\nconsole.log("Port configuré :", conf.port);\n`,
-      currentCode: `interface ConfigOption {\n  debug: boolean;\n  port: number;\n}\n\n// Corrigez en créant d'abord optionsBrutes sans typage forcé,\n// puis assignez-le à conf: ConfigOption\nconst optionsBrutes = {\n  debug: true,\n  port: 8080,\n  logPath: "/var/log"\n};\n\nconst conf: ConfigOption = optionsBrutes;\n\nconsole.log("Port configuré :", conf.port);\n`,
+      currentCode: `interface ConfigOption {\n  debug: boolean;\n  port: number;\n}\n\n// Corrigez en créant d'abord un objet intermédiaire optionsBrutes sans typage direct,\n// puis assignez-le à conf: ConfigOption :\n\n\n// console.log("Port configuré :", conf.port);\n`,
       isCompleted: false,
       solutionExplanation: [
         'Lors d\'une assignation directe d\'un objet littéral `{ ... }`, TypeScript suppose que si vous tapez une propriété inconnue, c\'est probablement une faute de frappe (`TS2353`).',
@@ -632,9 +632,9 @@ export class ExerciseService {
       statement:
         'Soit `interface Jouable { jouer(): void; }`. Observez la tentative `if (x instanceof Jouable)` qui déclenche l\'erreur de compilation `TS2693: \'Jouable\' only refers to a type, but is being used as a value here`. Remplacez cette vérification erronée par un test runtime sur la présence de la méthode : `typeof x.jouer === "function"`.',
       hint: 'Comme les interfaces s\'évaporent en JavaScript (Type Erasure), le symbole `Jouable` n\'existe pas en mémoire au runtime. L\'opérateur `instanceof` ne fonctionne qu\'avec des classes (constructeurs JS réels) !',
-      initialCode: `interface Jouable {\n  jouer(): void;\n}\n\nconst instrument: any = {\n  nom: "Guitare",\n  jouer() { console.log("Musique live !"); }\n};\n\n// La ligne suivante provoque l'erreur critique TS2693 :\n// if (instrument instanceof Jouable) { instrument.jouer(); }\n\n// Corrigez en testant la présence de la méthode avec typeof :\nif (typeof instrument.jouer === "function") {\n  instrument.jouer();\n}\n`,
+      initialCode: `interface Jouable {\n  jouer(): void;\n}\n\nconst instrument: any = {\n  nom: "Guitare",\n  jouer() { console.log("Musique live !"); }\n};\n\n// Corrigez en vérifiant la présence de la méthode avec typeof au lieu de instanceof :\n\n`,
       solutionCode: `interface Jouable {\n  jouer(): void;\n}\n\nconst instrument: any = {\n  nom: "Guitare",\n  jouer() { console.log("Musique live !"); }\n};\n\n// Correction propre sans instanceof :\nif (typeof instrument.jouer === "function") {\n  instrument.jouer();\n}\n`,
-      currentCode: `interface Jouable {\n  jouer(): void;\n}\n\nconst instrument: any = {\n  nom: "Guitare",\n  jouer() { console.log("Musique live !"); }\n};\n\n// 1. NE PAS FAIRE : if (instrument instanceof Jouable) -> TS2693\n// 2. Corrigez avec une vérification typeof sur la méthode jouer :\nif (typeof instrument.jouer === "function") {\n  instrument.jouer();\n}\n`,
+      currentCode: `interface Jouable {\n  jouer(): void;\n}\n\nconst instrument: any = {\n  nom: "Guitare",\n  jouer() { console.log("Musique live !"); }\n};\n\n// Corrigez en vérifiant la présence de la méthode avec typeof au lieu de instanceof :\n\n`,
       isCompleted: false,
       solutionExplanation: [
         'En JavaScript généré, l\'interface a totalement disparu : il n\'y a ni fonction, ni prototype, ni objet `Jouable`.',
@@ -677,9 +677,9 @@ export class ExerciseService {
       statement:
         'Soit `interface Soigneur { soigner(cible: string): string; }`. Écrivez la fonction de garde de type : `function isSoigneur(cible: any): cible is Soigneur`. La fonction doit renvoyer `true` si `cible` existe, n\'est pas nulle, et que `typeof cible.soigner === "function"`. Testez avec un objet compatible.',
       hint: 'La syntaxe du prédicat de type est `param is Type` dans le retour de la fonction.',
-      initialCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\n// Écrivez la fonction Type Guard isSoigneur(cible: any): cible is Soigneur\n\n\nconst hero1 = { nom: "Merlin", soigner: (c: string) => "Soin apporté à " + c };\nconst hero2 = { nom: "Conan", force: 50 };\n\nconsole.log("hero1 est Soigneur ?", isSoigneur(hero1));\nconsole.log("hero2 est Soigneur ?", isSoigneur(hero2));\n`,
+      initialCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\n// 1. Écrivez la fonction Type Guard function isSoigneur(cible: any): cible is Soigneur :\n\n\n// 2. Testez votre code (décommentez une fois le guard créé) :\n// const hero1 = { nom: "Merlin", soigner: (c: string) => "Soin apporté à " + c };\n// const hero2 = { nom: "Conan", force: 50 };\n// console.log("hero1 est Soigneur ?", isSoigneur(hero1));\n// console.log("hero2 est Soigneur ?", isSoigneur(hero2));\n`,
       solutionCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\nconst hero1 = { nom: "Merlin", soigner: (c: string) => "Soin apporté à " + c };\nconst hero2 = { nom: "Conan", force: 50 };\n\nconsole.log("hero1 est Soigneur ?", isSoigneur(hero1));\nconsole.log("hero2 est Soigneur ?", isSoigneur(hero2));\n`,
-      currentCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\n// Définissez le User-Defined Type Guard :\nfunction isSoigneur(cible: any): cible is Soigneur {\n  // Vérifiez que cible n'est pas falsy et que cible.soigner est une fonction\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\nconst hero1 = { nom: "Merlin", soigner: (c: string) => "Soin apporté à " + c };\nconst hero2 = { nom: "Conan", force: 50 };\n\nconsole.log("hero1 est Soigneur ?", isSoigneur(hero1));\nconsole.log("hero2 est Soigneur ?", isSoigneur(hero2));\n`,
+      currentCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\n// 1. Écrivez la fonction Type Guard function isSoigneur(cible: any): cible is Soigneur :\n\n\n// 2. Testez votre code (décommentez une fois le guard créé) :\n// const hero1 = { nom: "Merlin", soigner: (c: string) => "Soin apporté à " + c };\n// const hero2 = { nom: "Conan", force: 50 };\n// console.log("hero1 est Soigneur ?", isSoigneur(hero1));\n// console.log("hero2 est Soigneur ?", isSoigneur(hero2));\n`,
       isCompleted: false,
       solutionExplanation: [
         'La signature spéciale `cible is Soigneur` indique au compilateur TypeScript : "si cette fonction renvoie true, alors considère que cible est de type Soigneur".',
@@ -722,9 +722,9 @@ export class ExerciseService {
       statement:
         'En utilisant le Type Guard `isSoigneur` créé précédemment, écrivez une fonction `declencherSoinSiPossible(personnage: any, blessé: string): void`. À l\'intérieur d\'un bloc `if (isSoigneur(personnage))`, appelez directement `personnage.soigner(blessé)` sans aucun cast `as`. Testez avec un soigneur et un non-soigneur.',
       hint: 'Grâce au Type Guard, TypeScript comprend que dans le bloc if, `personnage` possède obligatoirement la méthode `soigner`. Aucun `as Soigneur` n\'est nécessaire.',
-      initialCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\n// Codez declencherSoinSiPossible(personnage: any, blessé: string): void\n\n\nconst mage = { nom: "Gandalf", soigner: (cible: string) => "Lumière divine sur " + cible };\nconst orc = { nom: "Azog", hache: "Tranchante" };\n\ndeclencherSoinSiPossible(mage, "Frodon");\ndeclencherSoinSiPossible(orc, "Frodon");\n`,
+      initialCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\n// 1. Codez declencherSoinSiPossible(personnage: any, blessé: string): void en utilisant isSoigneur :\n\n\n// 2. Testez votre code (décommentez une fois la fonction créée) :\n// const mage = { nom: "Gandalf", soigner: (cible: string) => "Lumière divine sur " + cible };\n// const orc = { nom: "Azog", hache: "Tranchante" };\n// declencherSoinSiPossible(mage, "Frodon");\n// declencherSoinSiPossible(orc, "Frodon");\n`,
       solutionCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\nfunction declencherSoinSiPossible(personnage: any, blessé: string): void {\n  if (isSoigneur(personnage)) {\n    console.log(personnage.soigner(blessé));\n  } else {\n    console.log("Action impossible :", personnage.nom, "ne sait pas soigner !");\n  }\n}\n\nconst mage = { nom: "Gandalf", soigner: (cible: string) => "Lumière divine sur " + cible };\nconst orc = { nom: "Azog", hache: "Tranchante" };\n\ndeclencherSoinSiPossible(mage, "Frodon");\ndeclencherSoinSiPossible(orc, "Frodon");\n`,
-      currentCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\nfunction declencherSoinSiPossible(personnage: any, blessé: string): void {\n  // 1. Utilisez le Type Guard dans le if :\n  if (isSoigneur(personnage)) {\n    // TypeScript sait que personnage est Soigneur ici !\n    console.log(personnage.soigner(blessé));\n  } else {\n    console.log("Action impossible :", personnage.nom, "ne sait pas soigner !");\n  }\n}\n\nconst mage = { nom: "Gandalf", soigner: (cible: string) => "Lumière divine sur " + cible };\nconst orc = { nom: "Azog", hache: "Tranchante" };\n\ndeclencherSoinSiPossible(mage, "Frodon");\ndeclencherSoinSiPossible(orc, "Frodon");\n`,
+      currentCode: `interface Soigneur {\n  soigner(cible: string): string;\n}\n\nfunction isSoigneur(cible: any): cible is Soigneur {\n  return Boolean(cible && typeof cible.soigner === "function");\n}\n\n// 1. Codez declencherSoinSiPossible(personnage: any, blessé: string): void en utilisant isSoigneur :\n\n\n// 2. Testez votre code (décommentez une fois la fonction créée) :\n// const mage = { nom: "Gandalf", soigner: (cible: string) => "Lumière divine sur " + cible };\n// const orc = { nom: "Azog", hache: "Tranchante" };\n// declencherSoinSiPossible(mage, "Frodon");\n// declencherSoinSiPossible(orc, "Frodon");\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le casting forcé `(personnage as Soigneur).soigner(...)` est une bombe à retardement s\'il est appliqué à l\'aveugle.',
@@ -767,9 +767,9 @@ export class ExerciseService {
       statement:
         'Soit une interface monolithique polluée `interface MonstreuxMachine { imprimer(): void; faxer(): void; agrafer(): void; }`. Une simple imprimante thermique est forcée de lever des erreurs sur faxer() ! Découpez cette interface en 3 micro-interfaces ciblées (`Imprimant`, `Faxant`, `Agrafant`). Implémentez ensuite la classe `ImprimanteThermique` qui ne signe QUE `implements Imprimant`.',
       hint: 'Principe ISP : Aucun client ne devrait être forcé de dépendre de méthodes qu\'il n\'utilise pas.',
-      initialCode: `// Découpez cette mauvaise interface monolithique :\n// interface MonstreuxMachine { imprimer(): void; faxer(): void; agrafer(): void; }\n\n// 1. Créez les 3 micro-interfaces : Imprimant, Faxant, Agrafant\n\n\n// 2. Classe ImprimanteThermique signant UNIQUEMENT Imprimant\n\n\nconst ticket = new ImprimanteThermique();\nticket.imprimer();\n`,
+      initialCode: `// 1. Créez les 3 micro-interfaces ciblées : Imprimant, Faxant, Agrafant :\n\n\n// 2. Créez la classe ImprimanteThermique signant UNIQUEMENT Imprimant :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const ticket = new ImprimanteThermique();\n// ticket.imprimer();\n`,
       solutionCode: `interface Imprimant {\n  imprimer(): void;\n}\n\ninterface Faxant {\n  faxer(): void;\n}\n\ninterface Agrafant {\n  agrafer(): void;\n}\n\nclass ImprimanteThermique implements Imprimant {\n  imprimer(): void {\n    console.log("Impression du ticket de caisse thermique...");\n  }\n}\n\nconst ticket = new ImprimanteThermique();\nticket.imprimer();\n`,
-      currentCode: `// 1. Créez les 3 micro-interfaces spécialisées :\ninterface Imprimant {\n  imprimer(): void;\n}\ninterface Faxant {\n  faxer(): void;\n}\ninterface Agrafant {\n  agrafer(): void;\n}\n\n// 2. Classe ne signant que le strict nécessaire :\nclass ImprimanteThermique implements Imprimant {\n  imprimer(): void {\n    console.log("Impression du ticket de caisse thermique...");\n  }\n}\n\nconst ticket = new ImprimanteThermique();\nticket.imprimer();\n`,
+      currentCode: `// 1. Créez les 3 micro-interfaces ciblées : Imprimant, Faxant, Agrafant :\n\n\n// 2. Créez la classe ImprimanteThermique signant UNIQUEMENT Imprimant :\n\n\n// 3. Testez votre code (décommentez une fois la classe créée) :\n// const ticket = new ImprimanteThermique();\n// ticket.imprimer();\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le principe ISP (Interface Segregation Principle - le "I" de SOLID) préconise des interfaces légères et hautement cohésives.',
@@ -816,9 +816,9 @@ export class ExerciseService {
       statement:
         'Déclarez l\'interface publique `Exportable` avec `exporter(): string;`. Créez ensuite la classe abstraite `DocumentBase implements Exportable`. Elle factorise le constructeur avec `public titre: string` et une méthode concrète `obtenirDateCreation(): string` renvoyant `"2026-09-22"`. Laissez `exporter()` abstraite dans la classe de base.',
       hint: 'La classe abstraite signe l\'interface (`implements Exportable`) et fournit la factorisation d\'état tout en gardant `abstract exporter(): string;`.',
-      initialCode: `// 1. Interface publique Exportable\n\n\n// 2. Classe abstraite de base DocumentBase implements Exportable\n\n\nconsole.log("Squelette hybride configuré !");\n`,
+      initialCode: `// 1. Déclarez l'interface publique Exportable { exporter(): string; } :\n\n\n// 2. Déclarez la classe abstraite DocumentBase implements Exportable :\n\n\n// console.log("Squelette hybride configuré !");\n`,
       solutionCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n\n  obtenirDateCreation(): string {\n    return "2026-09-22";\n  }\n\n  abstract exporter(): string;\n}\n\nconsole.log("Squelette hybride configuré !");\n`,
-      currentCode: `// 1. Interface de contrat public :\ninterface Exportable {\n  exporter(): string;\n}\n\n// 2. Classe abstraite factorisant l'état et le boilerplate :\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n\n  obtenirDateCreation(): string {\n    return "2026-09-22";\n  }\n\n  abstract exporter(): string;\n}\n\nconsole.log("Squelette hybride configuré !");\n`,
+      currentCode: `// 1. Déclarez l'interface publique Exportable { exporter(): string; } :\n\n\n// 2. Déclarez la classe abstraite DocumentBase implements Exportable :\n\n\n// console.log("Squelette hybride configuré !");\n`,
       isCompleted: false,
       solutionExplanation: [
         'C\'est le pattern le plus populaire des architectures professionnelles (ex: Angular Router, Spring, DotNet).',
@@ -861,9 +861,9 @@ export class ExerciseService {
       statement:
         'En prolongeant `DocumentBase`, créez `DocumentPDF` (dont `exporter()` retourne `"[PDF] " + this.titre`) et `DocumentMarkdown` (dont `exporter()` retourne `"# " + this.titre`). Instanciez les deux et affichez leur export respectif.',
       hint: 'Chaque classe hérite de `DocumentBase` avec `extends DocumentBase` et bénéficie automatiquement de la factorisation du titre via `super(titre)`.',
-      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\n// 1. Créez DocumentPDF extends DocumentBase\n\n\n// 2. Créez DocumentMarkdown extends DocumentBase\n\n\nconst doc1 = new DocumentPDF("Facture_Septembre");\nconst doc2 = new DocumentMarkdown("Documentation");\n\nconsole.log(doc1.exporter());\nconsole.log(doc2.exporter());\n`,
+      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\n// 1. Créez DocumentPDF extends DocumentBase\n\n\n// 2. Créez DocumentMarkdown extends DocumentBase\n\n\n// 3. Testez votre code (décommentez une fois les classes créées) :\n// const doc1 = new DocumentPDF("Facture_Septembre");\n// const doc2 = new DocumentMarkdown("Documentation");\n// console.log(doc1.exporter());\n// console.log(doc2.exporter());\n`,
       solutionCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string {\n    return "[PDF] " + this.titre;\n  }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string {\n    return "# " + this.titre;\n  }\n}\n\nconst doc1 = new DocumentPDF("Facture_Septembre");\nconst doc2 = new DocumentMarkdown("Documentation");\n\nconsole.log(doc1.exporter());\nconsole.log(doc2.exporter());\n`,
-      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\n// 1. DocumentPDF :\nclass DocumentPDF extends DocumentBase {\n  exporter(): string {\n    return "[PDF] " + this.titre;\n  }\n}\n\n// 2. DocumentMarkdown :\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string {\n    return "# " + this.titre;\n  }\n}\n\nconst doc1 = new DocumentPDF("Facture_Septembre");\nconst doc2 = new DocumentMarkdown("Documentation");\n\nconsole.log(doc1.exporter());\nconsole.log(doc2.exporter());\n`,
+      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\n// 1. Créez DocumentPDF extends DocumentBase\n\n\n// 2. Créez DocumentMarkdown extends DocumentBase\n\n\n// 3. Testez votre code (décommentez une fois les classes créées) :\n// const doc1 = new DocumentPDF("Facture_Septembre");\n// const doc2 = new DocumentMarkdown("Documentation");\n// console.log(doc1.exporter());\n// console.log(doc2.exporter());\n`,
       isCompleted: false,
       solutionExplanation: [
         'Les sous-classes n\'ont pas besoin de réécrire le constructeur si elles ne font que relayer le paramètre `titre` ! Le constructeur parent est automatiquement hérité.',
@@ -905,9 +905,9 @@ export class ExerciseService {
       statement:
         'Écrivez la fonction `exporterTous(documents: Exportable[]): string[]`. Elle prend un tableau de contrats `Exportable[]` et retourne le tableau des résultats d\'export en utilisant `.map(d => d.exporter())`. Il est STRICTEMENT INTERDIT d\'utiliser un `if`, un `switch` ou `instanceof`. Testez avec un tableau contenant un PDF et un Markdown.',
       hint: 'C\'est l\'essence du polymorphisme : la fonction ne sait ni ne veut savoir quelle classe concrète est traitée ; elle appelle juste le contrat .exporter().',
-      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string { return "[PDF] " + this.titre; }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string { return "# " + this.titre; }\n}\n\n// Écrivez exporterTous(documents: Exportable[]): string[]\n\n\nconst liste: Exportable[] = [\n  new DocumentPDF("Bilan"),\n  new DocumentMarkdown("Guide")\n];\n\nconsole.log(exporterTous(liste));\n`,
+      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string { return "[PDF] " + this.titre; }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string { return "# " + this.titre; }\n}\n\n// 1. Écrivez la fonction polymorphe exporterTous(documents: Exportable[]): string[] :\n\n\n// 2. Testez votre code (décommentez une fois la fonction créée) :\n// const liste: Exportable[] = [\n//   new DocumentPDF("Bilan"),\n//   new DocumentMarkdown("Guide")\n// ];\n// console.log(exporterTous(liste));\n`,
       solutionCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string { return "[PDF] " + this.titre; }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string { return "# " + this.titre; }\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\nconst liste: Exportable[] = [\n  new DocumentPDF("Bilan"),\n  new DocumentMarkdown("Guide")\n];\n\nconsole.log(exporterTous(liste));\n`,
-      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string { return "[PDF] " + this.titre; }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string { return "# " + this.titre; }\n}\n\n// Codez la fonction polymorphe agnostique :\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(doc => doc.exporter());\n}\n\nconst liste: Exportable[] = [\n  new DocumentPDF("Bilan"),\n  new DocumentMarkdown("Guide")\n];\n\nconsole.log(exporterTous(liste));\n`,
+      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nabstract class DocumentBase implements Exportable {\n  constructor(public titre: string) {}\n  abstract exporter(): string;\n}\n\nclass DocumentPDF extends DocumentBase {\n  exporter(): string { return "[PDF] " + this.titre; }\n}\n\nclass DocumentMarkdown extends DocumentBase {\n  exporter(): string { return "# " + this.titre; }\n}\n\n// 1. Écrivez la fonction polymorphe exporterTous(documents: Exportable[]): string[] :\n\n\n// 2. Testez votre code (décommentez une fois la fonction créée) :\n// const liste: Exportable[] = [\n//   new DocumentPDF("Bilan"),\n//   new DocumentMarkdown("Guide")\n// ];\n// console.log(exporterTous(liste));\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le type de paramètre `documents: Exportable[]` n\'est couplé ni à `DocumentBase`, ni à `DocumentPDF`.',
@@ -950,9 +950,9 @@ export class ExerciseService {
       statement:
         'Prouvez le principe Ouvert/Fermé (OCP) : SANS TOUCHER à la fonction `exporterTous`, créez une nouvelle classe `FactureXML implements Exportable` (sans même hériter de DocumentBase si vous le souhaitez !) avec `constructor(public ref: string, public montant: number) {}` et `exporter(): string` retournant `"<facture ref=\'" + this.ref + "\'>" + this.montant + "€</facture>"`. Ajoutez-la à la liste et vérifiez le résultat.',
       hint: 'Grâce au typage structurel et au contrat d\'interface, n\'importe quel nouvel objet respectant `Exportable` est accepté immédiatement sans régression.',
-      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\n// Créez ici FactureXML implements Exportable sans modifier exporterTous :\n\n\nconst items: Exportable[] = [\n  new FactureXML("FAC-2026-001", 1250)\n];\n\nconsole.log("Résultat OCP :", exporterTous(items));\n`,
+      initialCode: `interface Exportable {\n  exporter(): string;\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\n// 1. Créez FactureXML implements Exportable sans modifier exporterTous :\n\n\n// 2. Testez votre code (décommentez une fois la classe créée) :\n// const items: Exportable[] = [\n//   new FactureXML("FAC-2026-001", 1250)\n// ];\n// console.log("Résultat OCP :", exporterTous(items));\n`,
       solutionCode: `interface Exportable {\n  exporter(): string;\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\nclass FactureXML implements Exportable {\n  constructor(public ref: string, public montant: number) {}\n\n  exporter(): string {\n    return "<facture ref='" + this.ref + "'>" + this.montant + "€</facture>";\n  }\n}\n\nconst items: Exportable[] = [\n  new FactureXML("FAC-2026-001", 1250)\n];\n\nconsole.log("Résultat OCP :", exporterTous(items));\n`,
-      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\n// Ajoutez FactureXML sans modifier la fonction existante :\nclass FactureXML implements Exportable {\n  constructor(public ref: string, public montant: number) {}\n\n  exporter(): string {\n    return "<facture ref='" + this.ref + "'>" + this.montant + "€</facture>";\n  }\n}\n\nconst items: Exportable[] = [\n  new FactureXML("FAC-2026-001", 1250)\n];\n\nconsole.log("Résultat OCP :", exporterTous(items));\n`,
+      currentCode: `interface Exportable {\n  exporter(): string;\n}\n\nfunction exporterTous(documents: Exportable[]): string[] {\n  return documents.map(d => d.exporter());\n}\n\n// 1. Créez FactureXML implements Exportable sans modifier exporterTous :\n\n\n// 2. Testez votre code (décommentez une fois la classe créée) :\n// const items: Exportable[] = [\n//   new FactureXML("FAC-2026-001", 1250)\n// ];\n// console.log("Résultat OCP :", exporterTous(items));\n`,
       isCompleted: false,
       solutionExplanation: [
         'Le principe Ouvert/Fermé (Open/Closed Principle) : "Un module doit être ouvert à l\'extension mais fermé à la modification".',
@@ -1154,7 +1154,7 @@ export class ExerciseService {
 
       // LABO 2 : Interfaces & Multi-implémentation
       case 'ex-2-1': {
-        const hasInterface = /interface\s+Connectable\s*\{[\s\S]*connecter\s*\([^)]*ip[^)]*\)\s*:\s*boolean\s*;?[\s\S]*\}/.test(code);
+        const hasInterface = /interface\s+Connectable\b/.test(code) && /connecter\s*\([^)]*ip[^)]*\)\s*:\s*boolean/.test(code);
         const hasImplements = /class\s+ServeurWeb\s+implements\s+Connectable\b/.test(code);
         const hasOutput = exec.logs.some(l => l.text.includes('192.168.1.100') || l.text.includes('true'));
 
@@ -1191,9 +1191,9 @@ export class ExerciseService {
       }
 
       case 'ex-2-4': {
-        const hasReadonlyInterface = /interface\s+EntiteImmuable\s*\{[\s\S]*readonly\s+uuid\s*:\s*string;?[\s\S]*\}/.test(code);
+        const hasReadonlyInterface = /interface\s+EntiteImmuable\b/.test(code) && /readonly\s+uuid\s*:\s*string/.test(code);
         const hasFichierMatch = /class\s+Fichier\s+implements\s+EntiteImmuable\b/.test(code);
-        const hasUuidLogged = exec.logs.some(l => l.text.includes('550e8400') && l.text.includes('notes.txt'));
+        const hasUuidLogged = exec.logs.some(l => l.text.includes('doc-uuid-123456') && l.text.includes('notes.txt'));
 
         updatedCriteria[0].passed = hasReadonlyInterface;
         updatedCriteria[1].passed = hasFichierMatch;
@@ -1204,8 +1204,8 @@ export class ExerciseService {
 
       // LABO 3 : Duck Typing & DTOs
       case 'ex-3-1': {
-        const hasPoint2D = /interface\s+Point2D\s*\{[\s\S]*x\s*:\s*number;?[\s\S]*y\s*:\s*number;?[\s\S]*\}/.test(code);
-        const hasFunction = /calculerDistanceOrigine\s*\([^)]*pt\s*:\s*Point2D[^)]*\)/.test(code);
+        const hasPoint2D = /interface\s+Point2D\b/.test(code) && /x\s*:\s*number/.test(code) && /y\s*:\s*number/.test(code);
+        const hasFunction = /calculerDistanceOrigine\s*\([^)]*:\s*Point2D[^)]*\)/.test(code);
         const hasResult5 = exec.logs.some(l => l.text.includes('5'));
 
         updatedCriteria[0].passed = hasPoint2D;
@@ -1216,7 +1216,7 @@ export class ExerciseService {
       }
 
       case 'ex-3-2': {
-        const hasSaluer = /function\s+saluer\s*\([^)]*:\s*Identifiable[^)]*\)/.test(code);
+        const hasSaluer = /saluer\s*\([^)]*:\s*Identifiable[^)]*\)/.test(code);
         const hasExtraProps = /utilisateurComplet/.test(code) && /role/.test(code) && /token/.test(code);
         const hasGreeting = exec.logs.some(l => l.text.includes('Sarah') && l.text.includes('U1'));
 
@@ -1230,7 +1230,7 @@ export class ExerciseService {
       case 'ex-3-3': {
         const hasGenericDto = /interface\s+ReponseServeur\s*<\s*T\s*>/.test(code) && /statut\s*:\s*number/.test(code);
         const hasTraiter = /traiterReponse\s*\([^)]*ReponseServeur/.test(code);
-        const hasTokenLog = exec.logs.some(l => l.text.includes('jwt-secret-abc-123'));
+        const hasTokenLog = exec.logs.some(l => l.text.includes('auth_token_abc_123'));
 
         updatedCriteria[0].passed = hasGenericDto;
         updatedCriteria[1].passed = hasTraiter;
@@ -1240,8 +1240,8 @@ export class ExerciseService {
       }
 
       case 'ex-3-4': {
-        const hasIntermedVar = /const\s+optionsBrutes\s*=/.test(code) && /logPath/.test(code);
-        const hasConfAssign = /conf\s*:\s*ConfigOption\s*=\s*optionsBrutes/.test(code);
+        const hasIntermedVar = /logPath/.test(code) && /8080/.test(code);
+        const hasConfAssign = /:\s*ConfigOption\s*=/.test(code);
         const hasPort8080 = exec.logs.some(l => l.text.includes('8080'));
 
         updatedCriteria[0].passed = hasIntermedVar;
@@ -1303,7 +1303,7 @@ export class ExerciseService {
 
       // LABO 5 : Architecture Hybride & Découplage
       case 'ex-5-1': {
-        const hasExportable = /interface\s+Exportable\s*\{[\s\S]*exporter\s*\([^)]*\)\s*:\s*string;?[\s\S]*\}/.test(code);
+        const hasExportable = /interface\s+Exportable\b/.test(code) && /exporter\s*\([^)]*\)\s*:\s*string/.test(code);
         const hasDocBase = /abstract\s+class\s+DocumentBase\s+implements\s+Exportable\b/.test(code);
         const hasStateFactoring = /constructor\s*\([^)]*titre[^)]*\)/.test(code) && /obtenirDateCreation/.test(code);
 
@@ -1328,7 +1328,7 @@ export class ExerciseService {
       }
 
       case 'ex-5-3': {
-        const hasFnSignature = /exporterTous\s*\([^)]*documents\s*:\s*Exportable\s*\[\s*\][^)]*\)/.test(code);
+        const hasFnSignature = /exporterTous\s*\([^)]*Exportable\s*\[\s*\][^)]*\)/.test(code);
         const noIfSwitch = !/\b(if|switch)\b/.test(code.replace(/\/\/.*$/gm, ''));
         const hasCollected = exec.logs.some(l => l.text.includes('[PDF] Bilan') && l.text.includes('# Guide'));
 

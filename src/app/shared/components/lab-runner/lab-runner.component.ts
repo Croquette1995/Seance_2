@@ -118,6 +118,11 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
               <button class="btn-primary" (click)="validate()">
                 🚀 Valider mon code
               </button>
+              @if (lastValidationStatus() === true && nextExercise()) {
+                <button class="btn-next-ex" (click)="goToNextExercise()" title="Passer à l'exercice suivant">
+                  Suivant ({{ nextExercise()?.number }}) ➔
+                </button>
+              }
             </div>
           </div>
 
@@ -149,6 +154,16 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
             </div>
 
             <div class="terminal-body">
+              @if (lastValidationStatus() === true) {
+                <div class="success-banner">
+                  <div class="success-msg">🎉 Bravo ! Exercice {{ activeEx().number }} validé avec succès !</div>
+                  @if (nextExercise()) {
+                    <button class="btn-success-next" (click)="goToNextExercise()">
+                      Passer à l'exercice suivant ({{ nextExercise()?.number }} - {{ nextExercise()?.title }}) ➔
+                    </button>
+                  }
+                </div>
+              }
               @if (consoleLogs().length === 0) {
                 <div class="empty-terminal">
                   <span class="prompt-arrow">&gt;</span> Cliquez sur « 🚀 Valider mon code » pour compiler et exécuter ce snippet TypeScript.
@@ -459,6 +474,52 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
         padding: 5px 11px;
         font-size: 0.8rem;
       }
+
+      .btn-next-ex {
+        background: #10b981;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-weight: 700;
+
+        &:hover {
+          background: #059669;
+        }
+      }
+    }
+
+    .success-banner {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      .success-msg {
+        color: #34d399;
+        font-weight: 700;
+        font-size: 0.85rem;
+      }
+
+      .btn-success-next {
+        background: #10b981;
+        color: #ffffff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        cursor: pointer;
+
+        &:hover {
+          background: #059669;
+        }
+      }
     }
 
     .editor-viewport {
@@ -625,10 +686,34 @@ export class LabRunnerComponent {
     return this.displayedExercises().filter(e => e.isCompleted).length;
   });
 
+  readonly nextExercise = computed(() => {
+    const list = this.displayedExercises();
+    const currentId = this.selectedExerciseId();
+    const currentIndex = list.findIndex(e => e.id === currentId);
+    if (currentIndex !== -1 && currentIndex < list.length - 1) {
+      return list[currentIndex + 1];
+    }
+    // Si à la fin de la liste filtrée, chercher dans tous les exercices
+    const all = this.exerciseService.exercises();
+    const globalIndex = all.findIndex(e => e.id === currentId);
+    if (globalIndex !== -1 && globalIndex < all.length - 1) {
+      return all[globalIndex + 1];
+    }
+    return null;
+  });
+
+  private lastFilter: number | null | undefined = undefined;
+
   constructor() {
     effect(() => {
+      const filter = this.labFilter();
       const list = this.displayedExercises();
-      if (list.length > 0) {
+      if (this.lastFilter !== filter) {
+        this.lastFilter = filter;
+        if (list.length > 0) {
+          this.onSelectExercise(list[0].id);
+        }
+      } else if (list.length > 0) {
         const currentId = this.selectedExerciseId();
         if (!list.some(e => e.id === currentId)) {
           this.onSelectExercise(list[0].id);
@@ -642,6 +727,13 @@ export class LabRunnerComponent {
         this.editorCode.set(ex.currentCode);
       }
     });
+  }
+
+  goToNextExercise(): void {
+    const next = this.nextExercise();
+    if (next) {
+      this.onSelectExercise(next.id);
+    }
   }
 
   onSelectExercise(id: string): void {
