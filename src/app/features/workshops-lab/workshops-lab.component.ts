@@ -10,9 +10,9 @@ import { ExerciseService } from '../../core/services/exercise.service';
     <div class="module-container">
       <div class="module-header">
         <div class="module-tag">ESPACE ATELIERS · MONACO EDITOR</div>
-        <h2>Laboratoire Pratique Global — 21 Micro-Exercices d'Entraînement</h2>
+        <h2>Laboratoire Pratique Global — {{ exerciseService.totalCount() }} Micro-Exercices d'Entraînement</h2>
         <p class="module-desc">
-          Entraînez-vous intensivement sur les 21 micro-défis progressifs avec coloration syntaxique officielle TypeScript,
+          Entraînez-vous intensivement sur les {{ exerciseService.totalCount() }} micro-défis progressifs avec coloration syntaxique officielle TypeScript,
           autocomplétion, console virtuelle interactive et validation par suite d'assertions automatisées.
         </p>
       </div>
@@ -25,7 +25,7 @@ import { ExerciseService } from '../../core/services/exercise.service';
             [class.active]="selectedLab() === null" 
             (click)="selectedLab.set(null)"
           >
-            Tous les défis (21)
+            Tous ({{ exerciseService.totalCount() }})
           </button>
           <button 
             class="filter-btn" 

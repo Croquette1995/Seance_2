@@ -1102,7 +1102,7 @@ export class ExerciseService {
       }
 
       case 'ex-1-2': {
-        const hasAbstractMethod = /abstract\s+demarrer\s*\([^)]*\)\s*:\s*string\s*;/.test(code) || /abstract\s+demarrer\s*\([^)]*\)\s*;/.test(code);
+        const hasAbstractMethod = /abstract\s+demarrer\s*\([^)]*\)\s*(?::\s*string)?\s*;?/.test(code);
         const hasMotoClass = /class\s+Moto\s+extends\s+Vehicule\b/.test(code);
         const hasDemarrerImpl = /demarrer\s*\([^)]*\)\s*(?::\s*string)?\s*\{/.test(code);
         const hasLog = exec.logs.length > 0 && exec.logs.some(l => l.text.toLowerCase().includes('vroum') || l.text.toLowerCase().includes('démarrage') || l.text.length > 0);
@@ -1127,7 +1127,7 @@ export class ExerciseService {
       }
 
       case 'ex-1-4': {
-        const hasProtectedAbstract = /protected\s+abstract\s+calculerTaxe\s*\([^)]*\)\s*:\s*number\s*;/.test(code);
+        const hasProtectedAbstract = /protected\s+abstract\s+calculerTaxe\s*\([^)]*\)\s*(?::\s*number)?\s*;?/.test(code);
         const hasAfficherTTC = /afficherPrixTTC\s*\([^)]*\)/.test(code) && /calculerTaxe\s*\(\s*\)/.test(code);
         const hasCorrectResult = exec.logs.some(l => l.text.includes('20150'));
 
@@ -1140,7 +1140,7 @@ export class ExerciseService {
 
       case 'ex-1-5': {
         const hasIntermAbstract = /abstract\s+class\s+VehiculeElectrique\s+extends\s+Vehicule\b/.test(code);
-        const hasRechargerAbstract = /abstract\s+recharger\s*\([^)]*\)\s*:\s*string\s*;/.test(code);
+        const hasRechargerAbstract = /abstract\s+recharger\s*\([^)]*\)\s*(?::\s*string)?\s*;?/.test(code);
         const hasTeslaConcrete = /class\s+Tesla\s+extends\s+VehiculeElectrique\b/.test(code);
         const hasCompleteOutput = exec.logs.some(l => l.text.includes('100') && (l.text.toLowerCase().includes('électrique') || l.text.toLowerCase().includes('recharge') || l.text.toLowerCase().includes('supercharger')));
 
@@ -1154,7 +1154,7 @@ export class ExerciseService {
 
       // LABO 2 : Interfaces & Multi-implémentation
       case 'ex-2-1': {
-        const hasInterface = /interface\s+Connectable\b/.test(code) && /connecter\s*\([^)]*ip[^)]*\)\s*:\s*boolean/.test(code);
+        const hasInterface = /interface\s+Connectable\b/.test(code) && /connecter\s*\([^)]*ip[^)]*\)\s*(?::\s*boolean)?\s*;?/.test(code);
         const hasImplements = /class\s+ServeurWeb\s+implements\s+Connectable\b/.test(code);
         const hasOutput = exec.logs.some(l => l.text.includes('192.168.1.100') || l.text.includes('true'));
 
@@ -1180,7 +1180,7 @@ export class ExerciseService {
 
       case 'ex-2-3': {
         const hasExtendsMultiple = /interface\s+CompteAdmin\s+extends\s+(?:CompteSimple\s*,\s*Journalisable|Journalisable\s*,\s*CompteSimple)\b/.test(code);
-        const hasDroits = /droits\s*:\s*string\s*\[\s*\]/.test(code);
+        const hasDroits = /droits\s*:\s*(?:string\s*\[\s*\]|Array\s*<\s*string\s*>)/.test(code);
         const hasSuperAdmin = /class\s+SuperAdmin\s+implements\s+CompteAdmin\b/.test(code);
 
         updatedCriteria[0].passed = hasExtendsMultiple;
@@ -1303,7 +1303,7 @@ export class ExerciseService {
 
       // LABO 5 : Architecture Hybride & Découplage
       case 'ex-5-1': {
-        const hasExportable = /interface\s+Exportable\b/.test(code) && /exporter\s*\([^)]*\)\s*:\s*string/.test(code);
+        const hasExportable = /interface\s+Exportable\b/.test(code) && /exporter\s*\([^)]*\)\s*(?::\s*string)?/.test(code);
         const hasDocBase = /abstract\s+class\s+DocumentBase\s+implements\s+Exportable\b/.test(code);
         const hasStateFactoring = /constructor\s*\([^)]*titre[^)]*\)/.test(code) && /obtenirDateCreation/.test(code);
 
@@ -1328,7 +1328,7 @@ export class ExerciseService {
       }
 
       case 'ex-5-3': {
-        const hasFnSignature = /exporterTous\s*\([^)]*Exportable\s*\[\s*\][^)]*\)/.test(code);
+        const hasFnSignature = /exporterTous\s*\([^)]*(?:Exportable\s*\[\s*\]|Array\s*<\s*Exportable\s*>)[^)]*\)/.test(code);
         const noIfSwitch = !/\b(if|switch)\b/.test(code.replace(/\/\/.*$/gm, ''));
         const hasCollected = exec.logs.some(l => l.text.includes('[PDF] Bilan') && l.text.includes('# Guide'));
 

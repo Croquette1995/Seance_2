@@ -693,12 +693,6 @@ export class LabRunnerComponent {
     if (currentIndex !== -1 && currentIndex < list.length - 1) {
       return list[currentIndex + 1];
     }
-    // Si à la fin de la liste filtrée, chercher dans tous les exercices
-    const all = this.exerciseService.exercises();
-    const globalIndex = all.findIndex(e => e.id === currentId);
-    if (globalIndex !== -1 && globalIndex < all.length - 1) {
-      return all[globalIndex + 1];
-    }
     return null;
   });
 
