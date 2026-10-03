@@ -6,26 +6,29 @@
 
     <main class="content-viewport">
       @switch (nav.activeTab()) {
-        @case ('why-abstraction') {
-          <app-why-abstraction></app-why-abstraction>
+        @case ('sentinel-vs-exceptions') {
+          <app-sentinel-vs-exceptions></app-sentinel-vs-exceptions>
         }
-        @case ('abstract-class-anatomy') {
-          <app-abstract-class-anatomy></app-abstract-class-anatomy>
+        @case ('stack-unwinding') {
+          <app-stack-unwinding></app-stack-unwinding>
         }
-        @case ('interface-pure-contract') {
-          <app-interface-pure-contract></app-interface-pure-contract>
+        @case ('try-catch-finally') {
+          <app-try-catch-finally></app-try-catch-finally>
         }
-        @case ('duck-typing-runtime-cost') {
-          <app-duck-typing-runtime-cost></app-duck-typing-runtime-cost>
+        @case ('error-object-strict-typing') {
+          <app-error-object-strict-typing></app-error-object-strict-typing>
         }
-        @case ('decision-tree-hybrid') {
-          <app-decision-tree-hybrid></app-decision-tree-hybrid>
+        @case ('custom-domain-errors') {
+          <app-custom-domain-errors></app-custom-domain-errors>
         }
-        @case ('pitfalls-type-guards') {
-          <app-pitfalls-type-guards></app-pitfalls-type-guards>
+        @case ('filtering-polymorphism') {
+          <app-filtering-polymorphism></app-filtering-polymorphism>
         }
-        @case ('rpg-arena-simulator') {
-          <app-rpg-arena-simulator></app-rpg-arena-simulator>
+        @case ('architectural-strategies') {
+          <app-architectural-strategies></app-architectural-strategies>
+        }
+        @case ('atm-simulator') {
+          <app-atm-simulator></app-atm-simulator>
         }
         @case ('workshops-lab') {
           <app-workshops-lab></app-workshops-lab>

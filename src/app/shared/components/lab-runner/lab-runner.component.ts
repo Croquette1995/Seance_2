@@ -1,181 +1,231 @@
-import { Component, input, inject, signal, computed, effect } from '@angular/core';
-import { UpperCasePipe } from '@angular/common';
+import { 
+  Component, 
+  input, 
+  inject, 
+  signal, 
+  computed, 
+  effect 
+} from '@angular/core';
 import { ExerciseService } from '../../../core/services/exercise.service';
 import { MonacoEditorComponent } from '../monaco-editor/monaco-editor.component';
-import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
+import { ConsoleLogEntry, ValidationSummary } from '../../../core/models/app.models';
 
 @Component({
   selector: 'app-lab-runner',
   standalone: true,
-  imports: [MonacoEditorComponent, UpperCasePipe],
+  imports: [MonacoEditorComponent],
   template: `
     <div class="lab-runner-container">
-      <!-- Barre supérieure de sélection d'exercices -->
-      <div class="exercise-selector-bar card-panel">
-        <div class="selector-tabs">
-          @for (ex of displayedExercises(); track ex.id; let idx = $index) {
-            <button 
-              class="ex-pill-btn" 
-              [class.active]="selectedExerciseId() === ex.id"
-              [class.completed]="ex.isCompleted"
-              (click)="onSelectExercise(ex.id)"
-            >
-              <span class="status-icon">{{ ex.isCompleted ? '✓' : ex.number }}</span>
-              <span class="ex-short-title">{{ ex.title }}</span>
-            </button>
-          }
-        </div>
+      <!-- Barre de sélection d'exercices -->
+      @if (displayedExercises().length > 1) {
+        <div class="exercise-selector-bar card-panel">
+          <div class="selector-tabs">
+            @for (ex of displayedExercises(); track ex.id) {
+              <button 
+                class="ex-pill-btn" 
+                [class.active]="selectedExerciseId() === ex.id"
+                [class.completed]="ex.isCompleted"
+                (click)="onSelectExercise(ex.id)"
+              >
+                <span class="status-icon">{{ ex.isCompleted ? '✓' : ex.number }}</span>
+                <span class="ex-short-title">{{ ex.title }}</span>
+              </button>
+            }
+          </div>
 
-        <div class="lab-progress-badge">
-          <span class="badge badge-success">{{ labCompletedCount() }} / {{ displayedExercises().length }} Validés</span>
+          <div class="lab-progress-badge">
+            <span class="badge badge-success">{{ labCompletedCount() }} / {{ displayedExercises().length }} Validés</span>
+          </div>
         </div>
-      </div>
+      }
 
-      <!-- Espace de travail de l'exercice actif -->
+      <!-- Grille de travail principale -->
       <div class="lab-grid">
-        <!-- Panneau Énoncé & Critères -->
-        <div class="card-panel brief-panel">
-          <div class="brief-header">
-            <div class="badges-row">
-              <span class="badge badge-ts">Exercice {{ activeEx().number }}</span>
-              <span class="badge badge-purple">{{ activeEx().difficulty }}</span>
-              <span class="badge badge-warning">⏱️ {{ activeEx().estimatedTime }}</span>
-              @if (activeEx().isCompleted) {
-                <span class="badge badge-success">✓ Validé</span>
-              }
-            </div>
-            <h3 class="brief-title">{{ activeEx().title }}</h3>
-            <p class="brief-sub">{{ activeEx().subtitle }}</p>
-          </div>
-
-          <div class="statement-box">
-            <div class="statement-label">🎯 Consigne :</div>
-            <p class="statement-text">{{ activeEx().statement }}</p>
-          </div>
-
-          <!-- Critères d'évaluation automatique -->
-          <div class="criteria-box">
-            <div class="criteria-title">Vérifications automatiques :</div>
-            <div class="criteria-list">
-              @for (c of activeEx().criteria; track c.id) {
-                <div class="criterion-item" [class.passed]="c.passed">
-                  <div class="c-icon">{{ c.passed ? '✔' : '○' }}</div>
-                  <div class="c-info">
-                    <div class="c-label">{{ c.label }}</div>
-                    <div class="c-desc">{{ c.description }}</div>
-                    @if (!c.passed && showHints()) {
-                      <div class="c-hint">💡 Indice : {{ c.hint }}</div>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-
-          <!-- Indice dépliable -->
-          @if (showHints()) {
-            <div class="hint-card">
-              <div class="hint-title">💡 Indice pédagogique :</div>
-              <p>{{ activeEx().hint }}</p>
-            </div>
-          }
-
-          <!-- Explication guidée de la solution -->
-          @if (showSolution()) {
-            <div class="solution-card">
-              <div class="sol-title">📖 Explication pas-à-pas de la solution :</div>
-              <ul>
-                @for (item of activeEx().solutionExplanation; track item) {
-                  <li>{{ item }}</li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
-
-        <!-- Panneau Éditeur Monaco & Console Virtuelle -->
+        <!-- Colonne Gauche : Énoncé, Critères & Monaco -->
         <div class="editor-col">
+          <!-- Carte Énoncé -->
+          <div class="card-panel brief-panel">
+            <div class="brief-header">
+              <div class="badges-row">
+                <span class="badge badge-indigo">Labo {{ activeEx().labNumber }} · Ex {{ activeEx().number }}</span>
+                <span class="badge badge-purple">{{ activeEx().difficulty }}</span>
+                <span class="badge badge-amber">⏱️ {{ activeEx().estimatedTime }}</span>
+                @if (activeEx().isCompleted) {
+                  <span class="badge badge-success">✓ Validé</span>
+                }
+              </div>
+              <h3 class="brief-title">{{ activeEx().title }}</h3>
+              <p class="brief-sub">{{ activeEx().subtitle }}</p>
+            </div>
+
+            <div class="statement-box">
+              <div class="statement-label">🎯 Consigne :</div>
+              <p class="statement-text">{{ activeEx().statement }}</p>
+            </div>
+
+            <!-- Critères d'évaluation -->
+            <div class="criteria-box">
+              <div class="criteria-title">Critères de validation automatique :</div>
+              <div class="criteria-list">
+                @for (c of activeEx().criteria; track c.id) {
+                  <div class="criterion-item" [class.passed]="c.passed">
+                    <div class="c-icon">{{ c.passed ? '✔' : '○' }}</div>
+                    <div class="c-info">
+                      <div class="c-label">{{ c.label }}</div>
+                      <div class="c-desc">{{ c.description }}</div>
+                      @if (!c.passed && showHints()) {
+                        <div class="c-hint">💡 Indice : {{ c.hint }}</div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Indice Pédagogique -->
+            @if (showHints()) {
+              <div class="hint-card">
+                <div class="hint-title">💡 Indice pédagogique :</div>
+                <p>{{ activeEx().hint }}</p>
+              </div>
+            }
+
+            <!-- Solution pas-à-pas -->
+            @if (showSolution()) {
+              <div class="solution-card">
+                <div class="sol-title">📖 Explication pas-à-pas de la solution :</div>
+                <ul>
+                  @for (item of activeEx().solutionExplanation; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+
           <!-- Barre d'outils de l'éditeur -->
           <div class="editor-toolbar card-panel">
-            <div class="file-name-indicator">
-              <span class="ts-icon">TS</span>
-              <span>exercice-{{ activeEx().number }}.ts</span>
+            <div class="file-tabs">
+              <div class="file-tab active">
+                <span class="badge-tag ts">TS</span>
+                <span>exercice.ts</span>
+              </div>
             </div>
 
             <div class="toolbar-actions">
-              <button class="btn-secondary" (click)="toggleHints()">
+              <button class="btn-secondary btn-sm" (click)="toggleHints()">
                 {{ showHints() ? 'Masquer Indice' : '💡 Indice' }}
               </button>
-              <button class="btn-secondary" (click)="toggleSolution()">
+              <button class="btn-secondary btn-sm" (click)="toggleSolution()">
                 {{ showSolution() ? 'Masquer Solution' : '📖 Solution' }}
               </button>
-              <button class="btn-secondary" (click)="injectSolution()" title="Remplacer le code actuel par la solution officielle">
+              <button class="btn-secondary btn-sm" (click)="injectSolution()" title="Injecter la solution officielle">
                 Injecter Solution
               </button>
-              <button class="btn-secondary" (click)="resetExercise()" title="Réinitialiser le code d'origine">
+              <button class="btn-secondary btn-sm" (click)="resetExercise()" title="Réinitialiser le code de départ">
                 ↺ Réinitialiser
               </button>
-              <button class="btn-primary" (click)="validate()">
-                🚀 Valider mon code
+              <button class="btn-primary btn-sm" (click)="validateCurrentExercise()">
+                🚀 Valider &amp; Exécuter
               </button>
-              @if (lastValidationStatus() === true && nextExercise()) {
-                <button class="btn-next-ex" (click)="goToNextExercise()" title="Passer à l'exercice suivant">
-                  Suivant ({{ nextExercise()?.number }}) ➔
-                </button>
-              }
             </div>
           </div>
 
-          <!-- Fenêtre de l'éditeur -->
-          <div class="editor-viewport card-panel">
+          <!-- Éditeur Monaco -->
+          <div class="monaco-container">
             <app-monaco-editor
-              [code]="editorCode()"
-              (codeChange)="onCodeChanged($event)"
+              [code]="activeEx().currentCode"
+              language="typescript"
+              (codeChange)="onCodeChange($event)"
             ></app-monaco-editor>
           </div>
+        </div>
 
-          <!-- Terminal simulé des sorties console -->
-          <div class="terminal-panel card-panel">
+        <!-- Colonne Droite : Console Virtuelle & Rapport -->
+        <div class="preview-col">
+          <!-- Console Virtuelle -->
+          <div class="virtual-terminal card-panel">
             <div class="terminal-header">
-              <div class="term-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
               </div>
-              <div class="term-title">Console virtuelle d'exécution (Sandbox en mémoire)</div>
-              <div class="term-actions">
-                @if (lastValidationStatus() !== null) {
-                  <span class="val-badge" [class.success]="lastValidationStatus() === true" [class.failure]="lastValidationStatus() === false">
-                    {{ lastValidationStatus() === true ? '✔ Tous les critères sont validés !' : '✖ Des critères ne sont pas remplis' }}
-                  </span>
-                }
-                <button class="btn-ghost clear-btn" (click)="clearLogs()">Effacer</button>
+              <span class="terminal-title">Console Virtuelle (Output TypeScript)</span>
+              <div class="terminal-actions">
+                <span class="log-count-badge">{{ currentLogs().length }} logs</span>
+                <button class="btn-ghost btn-xs" (click)="clearConsole()" title="Effacer la console">
+                  Effacer
+                </button>
               </div>
             </div>
 
             <div class="terminal-body">
-              @if (lastValidationStatus() === true) {
-                <div class="success-banner">
-                  <div class="success-msg">🎉 Bravo ! Exercice {{ activeEx().number }} validé avec succès !</div>
-                  @if (nextExercise()) {
-                    <button class="btn-success-next" (click)="goToNextExercise()">
-                      Passer à l'exercice suivant ({{ nextExercise()?.number }} - {{ nextExercise()?.title }}) ➔
-                    </button>
+              @if (currentLogs().length === 0) {
+                <div class="terminal-empty">
+                  <span>$ En attente de l'évaluation du script...</span>
+                  <span class="dim">Les sorties de console.log() et les erreurs s'afficheront ici.</span>
+                </div>
+              } @else {
+                <div class="logs-container">
+                  @for (log of currentLogs(); track $index) {
+                    <div class="log-line" [class]="'log-' + log.type">
+                      <span class="log-time">{{ log.timestamp }}</span>
+                      <span class="log-prefix">
+                        @switch (log.type) {
+                          @case ('log') { ▶ }
+                          @case ('info') { ℹ }
+                          @case ('warn') { ⚠ }
+                          @case ('error') { ✖ }
+                          @case ('success') { ✔ }
+                        }
+                      </span>
+                      <span class="log-msg">{{ log.message }}</span>
+                    </div>
                   }
                 </div>
               }
-              @if (consoleLogs().length === 0) {
-                <div class="empty-terminal">
-                  <span class="prompt-arrow">&gt;</span> Cliquez sur « 🚀 Valider mon code » pour compiler et exécuter ce snippet TypeScript.
+            </div>
+          </div>
+
+          <!-- Rapport de Conformité -->
+          <div class="validation-panel card-panel">
+            <div class="validation-header">
+              <span class="val-title">Rapport de Conformité POO</span>
+              @if (lastValidationResult()) {
+                <span class="val-badge" [class.success]="lastValidationResult()?.success" [class.error]="!lastValidationResult()?.success">
+                  {{ lastValidationResult()?.success ? 'Succès (100%)' : 'Critères non validés' }}
+                </span>
+              }
+            </div>
+
+            <div class="validation-body">
+              @if (lastValidationResult()) {
+                <div class="banner" [class.success]="lastValidationResult()?.success" [class.error]="!lastValidationResult()?.success">
+                  @if (lastValidationResult()?.success) {
+                    <div class="banner-content">
+                      <span class="check-icon">🎉</span>
+                      <div>
+                        <strong>Félicitations ! L'exercice est validé avec succès !</strong>
+                        <p>Les invariants, les types stricts et les assertions d'exécution sont tous conformes aux spécifications.</p>
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="banner-content">
+                      <span class="check-icon">⚠️</span>
+                      <div>
+                        <strong>Exercice non validé :</strong>
+                        @for (msg of lastValidationResult()?.messages; track msg) {
+                          <div class="error-line">• {{ msg }}</div>
+                        }
+                      </div>
+                    </div>
+                  }
                 </div>
               } @else {
-                @for (log of consoleLogs(); track $index) {
-                  <div class="log-line" [class]="'log-' + log.type">
-                    <span class="log-time">{{ log.timestamp }}</span>
-                    <span class="log-type-tag">[{{ log.type | uppercase }}]</span>
-                    <span class="log-text">{{ log.text }}</span>
-                  </div>
-                }
+                <div class="empty-hint">
+                  Complétez le code dans l'éditeur Monaco à gauche puis cliquez sur « <strong>🚀 Valider &amp; Exécuter</strong> » pour évaluer les contraintes et exécuter les tests automatisés.
+                </div>
               }
             </div>
           </div>
@@ -187,8 +237,10 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
     .lab-runner-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       height: 100%;
+      overflow-y: auto;
+      padding-bottom: 24px;
     }
 
     .exercise-selector-bar {
@@ -197,12 +249,11 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
       justify-content: space-between;
       padding: 10px 16px;
       gap: 12px;
-      overflow-x: auto;
+      flex-wrap: wrap;
     }
 
     .selector-tabs {
       display: flex;
-      align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
@@ -212,23 +263,23 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
       align-items: center;
       gap: 8px;
       padding: 6px 12px;
-      border-radius: 6px;
       background: var(--bg-subtle);
-      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 500;
 
       &:hover {
         background: var(--bg-card-hover);
         color: var(--text-main);
-        border-color: var(--border-color);
       }
 
       &.active {
-        background: var(--ts-blue-bg);
-        border-color: var(--ts-blue);
-        color: var(--ts-blue-light);
+        background: var(--exception-indigo);
+        color: #ffffff;
+        border-color: #818cf8;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
       }
 
       &.completed {
@@ -238,49 +289,38 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
           font-weight: 800;
         }
       }
-    }
 
-    .status-icon {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      padding: 1px 5px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 4px;
-    }
-
-    .ex-short-title {
-      max-width: 170px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      .status-icon {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+      }
     }
 
     .lab-grid {
       display: grid;
-      grid-template-columns: 420px 1fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 16px;
-      flex: 1;
-      min-height: 0;
+      min-height: 600px;
+
+      @media (max-width: 1200px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .editor-col, .preview-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .brief-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      overflow-y: auto;
-      max-height: calc(100vh - 170px);
-    }
-
-    .brief-header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      padding: 16px 20px;
     }
 
     .badges-row {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
@@ -288,113 +328,109 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
       font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-main);
+      margin-bottom: 2px;
     }
 
     .brief-sub {
       font-size: 0.82rem;
       color: var(--text-muted);
+      margin-bottom: 12px;
     }
 
     .statement-box {
       background: var(--bg-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      border-left: 3px solid var(--exception-indigo);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 14px;
 
       .statement-label {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         font-weight: 700;
-        color: var(--ts-blue-light);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        color: #818cf8;
+        margin-bottom: 4px;
       }
 
       .statement-text {
         font-size: 0.88rem;
-        line-height: 1.45;
         color: var(--text-main);
+        line-height: 1.45;
       }
     }
 
     .criteria-box {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin-bottom: 10px;
 
       .criteria-title {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         font-weight: 700;
-        color: var(--text-dim);
+        color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
-    }
-
-    .criteria-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .criterion-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 6px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-subtle);
-      font-size: 0.82rem;
-
-      &.passed {
-        border-color: rgba(16, 185, 129, 0.4);
-        background: rgba(16, 185, 129, 0.06);
-
-        .c-icon {
-          color: #10b981;
-        }
-        .c-label {
-          color: #34d399;
-          font-weight: 600;
-        }
+        margin-bottom: 8px;
       }
 
-      .c-icon {
-        font-size: 0.95rem;
-        color: var(--text-dim);
-        margin-top: 1px;
-      }
-
-      .c-info {
+      .criteria-list {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 6px;
       }
 
-      .c-label {
-        font-weight: 600;
-        color: var(--text-main);
-      }
+      .criterion-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 10px;
+        background: var(--bg-subtle);
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+        font-size: 0.8rem;
 
-      .c-desc {
-        color: var(--text-muted);
-        font-size: 0.78rem;
-      }
+        &.passed {
+          border-color: rgba(16, 185, 129, 0.4);
+          background: rgba(16, 185, 129, 0.05);
 
-      .c-hint {
-        color: #fbbf24;
-        font-size: 0.74rem;
-        margin-top: 4px;
-        font-family: var(--font-mono);
+          .c-icon {
+            color: #34d399;
+          }
+        }
+
+        .c-icon {
+          color: var(--text-dim);
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          margin-top: 1px;
+        }
+
+        .c-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .c-label {
+          font-weight: 600;
+          color: var(--text-main);
+        }
+
+        .c-desc {
+          color: var(--text-muted);
+          font-size: 0.76rem;
+        }
+
+        .c-hint {
+          color: #fbbf24;
+          font-size: 0.75rem;
+          margin-top: 4px;
+          font-style: italic;
+        }
       }
     }
 
     .hint-card, .solution-card {
+      margin-top: 10px;
       padding: 12px 14px;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.82rem;
       line-height: 1.4;
     }
@@ -402,63 +438,69 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
     .hint-card {
       background: rgba(245, 158, 11, 0.1);
       border: 1px solid rgba(245, 158, 11, 0.3);
-      color: #fef3c7;
+      color: #fbbf24;
 
       .hint-title {
         font-weight: 700;
         margin-bottom: 4px;
-        color: #fbbf24;
       }
     }
 
     .solution-card {
-      background: rgba(99, 102, 241, 0.1);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      color: #e0e7ff;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: var(--text-main);
 
       .sol-title {
         font-weight: 700;
-        margin-bottom: 6px;
         color: #818cf8;
+        margin-bottom: 6px;
       }
 
       ul {
-        padding-left: 18px;
+        margin-left: 18px;
         display: flex;
         flex-direction: column;
         gap: 4px;
       }
     }
 
-    .editor-col {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 0;
-    }
-
     .editor-toolbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 14px;
-      gap: 12px;
+      padding: 6px 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .file-name-indicator {
+    .file-tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .file-tab {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--text-main);
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
 
-      .ts-icon {
-        background: #3178c6;
-        color: #ffffff;
+      &.active {
+        color: var(--text-main);
+        background: var(--bg-card-hover);
+        border: 1px solid var(--border-color);
+      }
+
+      .badge-tag.ts {
         font-size: 0.68rem;
-        padding: 1px 5px;
+        background: #3178c6;
+        color: #fff;
+        padding: 1px 4px;
         border-radius: 3px;
         font-weight: 800;
       }
@@ -466,78 +508,35 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
 
     .toolbar-actions {
       display: flex;
+      gap: 6px;
       align-items: center;
-      gap: 8px;
       flex-wrap: wrap;
-
-      button {
-        padding: 5px 11px;
-        font-size: 0.8rem;
-      }
-
-      .btn-next-ex {
-        background: #10b981;
-        color: #ffffff;
-        border: none;
-        border-radius: 6px;
-        font-weight: 700;
-
-        &:hover {
-          background: #059669;
-        }
-      }
     }
 
-    .success-banner {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      border-radius: 6px;
-      padding: 10px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-
-      .success-msg {
-        color: #34d399;
-        font-weight: 700;
-        font-size: 0.85rem;
-      }
-
-      .btn-success-next {
-        background: #10b981;
-        color: #ffffff;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-weight: 700;
-        font-size: 0.8rem;
-        cursor: pointer;
-
-        &:hover {
-          background: #059669;
-        }
-      }
+    .btn-sm {
+      font-size: 0.78rem;
+      padding: 5px 10px;
     }
 
-    .editor-viewport {
-      height: 380px;
-      min-height: 300px;
-      padding: 0;
+    .btn-xs {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+    }
+
+    .monaco-container {
+      height: 440px;
+      border-radius: 8px;
       overflow: hidden;
+      border: 1px solid var(--border-color);
     }
 
-    .terminal-panel {
+    .virtual-terminal {
       display: flex;
       flex-direction: column;
+      height: 380px;
       padding: 0;
       overflow: hidden;
-      background: var(--terminal-bg);
-      border-radius: 8px;
-      height: 220px;
-      min-height: 180px;
+      border-color: #24314c;
     }
 
     .terminal-header {
@@ -547,10 +546,9 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
       padding: 8px 14px;
       background: var(--terminal-header);
       border-bottom: 1px solid var(--border-color);
-      font-size: 0.78rem;
     }
 
-    .term-dots {
+    .terminal-dots {
       display: flex;
       gap: 6px;
 
@@ -558,68 +556,59 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
         width: 10px;
         height: 10px;
         border-radius: 50%;
+
+        &.red { background: #ef4444; }
+        &.yellow { background: #f59e0b; }
+        &.green { background: #10b981; }
       }
-      .dot-red { background: #ef4444; }
-      .dot-yellow { background: #f59e0b; }
-      .dot-green { background: #10b981; }
     }
 
-    .term-title {
+    .terminal-title {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
       font-family: var(--font-mono);
-      color: var(--text-dim);
-      font-size: 0.74rem;
     }
 
-    .term-actions {
+    .terminal-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
+      gap: 8px;
 
-    .val-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-
-      &.success {
-        background: rgba(16, 185, 129, 0.2);
-        color: #34d399;
+      .log-count-badge {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        font-family: var(--font-mono);
       }
-      &.failure {
-        background: rgba(239, 68, 68, 0.2);
-        color: #f87171;
-      }
-    }
-
-    .clear-btn {
-      font-size: 0.72rem;
-      padding: 2px 6px;
     }
 
     .terminal-body {
       flex: 1;
-      padding: 12px 16px;
-      overflow-y: auto;
+      padding: 12px;
+      background: var(--terminal-bg);
       font-family: var(--font-mono);
       font-size: 0.8rem;
+      overflow-y: auto;
       line-height: 1.5;
+    }
+
+    .terminal-empty {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--text-dim);
+      padding: 16px 8px;
+
+      .dim {
+        font-size: 0.72rem;
+        color: #475569;
+      }
+    }
+
+    .logs-container {
       display: flex;
       flex-direction: column;
       gap: 4px;
-    }
-
-    .empty-terminal {
-      color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      height: 100%;
-    }
-
-    .prompt-arrow {
-      color: var(--ts-blue-light);
-      font-weight: 700;
     }
 
     .log-line {
@@ -629,123 +618,182 @@ import { Exercise, ConsoleLogEntry } from '../../../core/models/app.models';
       word-break: break-all;
 
       .log-time {
-        color: var(--text-dim);
-        font-size: 0.72rem;
+        font-size: 0.7rem;
+        color: #475569;
+        min-width: 55px;
       }
 
-      .log-type-tag {
-        font-size: 0.7rem;
+      .log-prefix {
+        font-size: 0.72rem;
         font-weight: 700;
       }
 
       &.log-log {
         color: #e2e8f0;
-        .log-type-tag { color: #60a5fa; }
+        .log-prefix { color: #60a5fa; }
       }
-      &.log-error {
-        color: #fca5a5;
-        .log-type-tag { color: #ef4444; }
-      }
-      &.log-warn {
-        color: #fde68a;
-        .log-type-tag { color: #f59e0b; }
-      }
+
       &.log-info {
         color: #93c5fd;
-        .log-type-tag { color: #3b82f6; }
+        .log-prefix { color: #3b82f6; }
       }
+
+      &.log-warn {
+        color: #fde047;
+        .log-prefix { color: #eab308; }
+      }
+
+      &.log-error {
+        color: #fca5a5;
+        .log-prefix { color: #ef4444; }
+      }
+
+      &.log-success {
+        color: #86efac;
+        .log-prefix { color: #22c55e; }
+      }
+    }
+
+    .validation-panel {
+      padding: 16px;
+    }
+
+    .validation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .val-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-main);
+        text-transform: uppercase;
+      }
+
+      .val-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+
+        &.success {
+          background: rgba(16, 185, 129, 0.2);
+          color: #34d399;
+          border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        &.error {
+          background: rgba(239, 68, 68, 0.15);
+          color: #f87171;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+      }
+    }
+
+    .banner {
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+
+      &.success {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #ecfdf5;
+
+        p {
+          color: #a7f3d0;
+          font-size: 0.78rem;
+          margin-top: 3px;
+        }
+      }
+
+      &.error {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fef2f2;
+
+        .error-line {
+          color: #fca5a5;
+          margin-top: 4px;
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
+        }
+      }
+
+      .banner-content {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+
+        .check-icon {
+          font-size: 1.2rem;
+          margin-top: 1px;
+        }
+      }
+    }
+
+    .empty-hint {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
   `]
 })
 export class LabRunnerComponent {
-  labFilter = input<number | null>(null);
+  readonly filterLabNumber = input<number | undefined>(undefined);
 
-  private readonly exerciseService = inject(ExerciseService);
+  readonly exercisesService = inject(ExerciseService);
 
-  readonly selectedExerciseId = signal<string>('ex-1-1');
-  readonly editorCode = signal<string>('');
   readonly showHints = signal<boolean>(false);
   readonly showSolution = signal<boolean>(false);
-  readonly consoleLogs = signal<ConsoleLogEntry[]>([]);
-  readonly lastValidationStatus = signal<boolean | null>(null);
+  readonly currentLogs = signal<ConsoleLogEntry[]>([]);
+  readonly lastValidationResult = signal<ValidationSummary | null>(null);
 
   readonly displayedExercises = computed(() => {
-    const filter = this.labFilter();
-    const all = this.exerciseService.exercises();
-    if (filter === null) return all;
-    return all.filter(e => e.labNumber === filter);
+    const list = this.exercisesService.exercises();
+    const filter = this.filterLabNumber();
+    if (filter !== undefined) {
+      return list.filter(e => e.labNumber === filter);
+    }
+    return list;
+  });
+
+  readonly selectedExerciseId = computed(() => {
+    return this.exercisesService.selectedExerciseId();
   });
 
   readonly activeEx = computed(() => {
-    const id = this.selectedExerciseId();
-    const found = this.exerciseService.exercises().find(e => e.id === id);
-    return found || this.displayedExercises()[0] || this.exerciseService.exercises()[0];
+    const list = this.displayedExercises();
+    const selId = this.selectedExerciseId();
+    const found = list.find(e => e.id === selId);
+    return found || list[0] || this.exercisesService.activeExercise();
   });
 
   readonly labCompletedCount = computed(() => {
     return this.displayedExercises().filter(e => e.isCompleted).length;
   });
 
-  readonly nextExercise = computed(() => {
-    const list = this.displayedExercises();
-    const currentId = this.selectedExerciseId();
-    const currentIndex = list.findIndex(e => e.id === currentId);
-    if (currentIndex !== -1 && currentIndex < list.length - 1) {
-      return list[currentIndex + 1];
-    }
-    return null;
-  });
-
-  private lastFilter: number | null | undefined = undefined;
-
   constructor() {
     effect(() => {
-      const filter = this.labFilter();
       const list = this.displayedExercises();
-      if (this.lastFilter !== filter) {
-        this.lastFilter = filter;
-        if (list.length > 0) {
-          this.onSelectExercise(list[0].id);
-        }
-      } else if (list.length > 0) {
-        const currentId = this.selectedExerciseId();
-        if (!list.some(e => e.id === currentId)) {
-          this.onSelectExercise(list[0].id);
-        }
+      const selId = this.exercisesService.selectedExerciseId();
+      if (list.length > 0 && !list.some(e => e.id === selId)) {
+        this.exercisesService.selectExercise(list[0].id);
       }
     });
-
-    effect(() => {
-      const ex = this.activeEx();
-      if (ex) {
-        this.editorCode.set(ex.currentCode);
-      }
-    });
-  }
-
-  goToNextExercise(): void {
-    const next = this.nextExercise();
-    if (next) {
-      this.onSelectExercise(next.id);
-    }
   }
 
   onSelectExercise(id: string): void {
-    this.selectedExerciseId.set(id);
-    this.exerciseService.selectExercise(id);
-    const ex = this.exerciseService.exercises().find(e => e.id === id);
-    if (ex) {
-      this.editorCode.set(ex.currentCode);
-      this.consoleLogs.set([]);
-      this.lastValidationStatus.set(null);
-      this.showHints.set(false);
-      this.showSolution.set(false);
-    }
+    this.exercisesService.selectExercise(id);
+    this.lastValidationResult.set(null);
+    this.currentLogs.set([]);
+    this.showHints.set(false);
+    this.showSolution.set(false);
   }
 
-  onCodeChanged(newCode: string): void {
-    this.editorCode.set(newCode);
-    this.exerciseService.updateCurrentCode(this.selectedExerciseId(), newCode);
+  onCodeChange(code: string): void {
+    this.exercisesService.updateCode(this.activeEx().id, code);
   }
 
   toggleHints(): void {
@@ -757,34 +805,23 @@ export class LabRunnerComponent {
   }
 
   injectSolution(): void {
-    const ex = this.activeEx();
-    if (ex) {
-      this.editorCode.set(ex.solutionCode);
-      this.exerciseService.injectSolution(ex.id);
-    }
+    this.exercisesService.injectSolution(this.activeEx().id);
+    this.showSolution.set(true);
   }
 
   resetExercise(): void {
-    const ex = this.activeEx();
-    if (ex) {
-      this.exerciseService.resetExercise(ex.id);
-      this.editorCode.set(ex.initialCode);
-      this.consoleLogs.set([]);
-      this.lastValidationStatus.set(null);
-    }
+    this.exercisesService.resetExercise(this.activeEx().id);
+    this.lastValidationResult.set(null);
+    this.currentLogs.set([]);
   }
 
-  validate(): void {
-    const ex = this.activeEx();
-    const code = this.editorCode();
-    const result = this.exerciseService.validateExercise(ex.id, code);
-
-    this.consoleLogs.set(result.logs);
-    this.lastValidationStatus.set(result.success);
+  validateCurrentExercise(): void {
+    const summary = this.exercisesService.evaluateExercise(this.activeEx().id);
+    this.lastValidationResult.set(summary);
+    this.currentLogs.set(summary.consoleLogs);
   }
 
-  clearLogs(): void {
-    this.consoleLogs.set([]);
-    this.lastValidationStatus.set(null);
+  clearConsole(): void {
+    this.currentLogs.set([]);
   }
 }

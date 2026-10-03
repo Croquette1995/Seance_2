@@ -1,51 +1,49 @@
-/* Design System : TypeScript Lab Studio (Dark / Light) */
+/* Design System : TypeScript & POO Studio — Séance 10 : Gestion des Exceptions & Robustesse (Dark / Light) */
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  /* Palette de base */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --ts-blue: #3178c6;
-  --ts-blue-hover: #235a96;
-  --ts-blue-light: #60a5fa;
-  --ts-blue-bg: rgba(49, 120, 198, 0.15);
-
-  --angular-red: #dd0031;
-  --angular-red-hover: #c3002f;
-  --angular-purple: #9333ea;
-  --angular-blue: #0284c7;
-  --angular-green: #10b981;
-  --angular-amber: #f59e0b;
+  /* Couleurs Sémantiques Robustesse & Exceptions */
+  --exception-rose: #f43f5e;
+  --exception-rose-dark: #be123c;
+  --exception-amber: #f59e0b;
+  --exception-emerald: #10b981;
+  --exception-blue: #3b82f6;
+  --exception-indigo: #6366f1;
+  --exception-purple: #8b5cf6;
+  --exception-cyan: #06b6d4;
+  --exception-slate: #64748b;
 }
 
 /* Thème Sombre (Par défaut) */
 :root, [data-theme="dark"], body.theme-dark {
-  --bg-app: #0a0d14;
-  --bg-sidebar: #0f141f;
-  --bg-header: #121826;
-  --bg-card: #172033;
-  --bg-card-hover: #1e2942;
-  --bg-subtle: #1e2638;
+  --bg-app: #090d16;
+  --bg-sidebar: #0f1422;
+  --bg-header: #121827;
+  --bg-card: #151e30;
+  --bg-card-hover: #1b263c;
+  --bg-subtle: #1b2438;
   --bg-code: #0b0f19;
-  --bg-input: #121826;
+  --bg-input: #111726;
 
-  --border-color: #26334d;
-  --border-subtle: #1a2336;
-  --border-focus: #3b82f6;
+  --border-color: #24314c;
+  --border-subtle: #192336;
+  --border-focus: #6366f1;
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
   --text-code: #e2e8f0;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
 
-  --badge-bg: rgba(49, 120, 198, 0.18);
-  --badge-text: #60a5fa;
+  --badge-bg: rgba(99, 102, 241, 0.18);
+  --badge-text: #a5b4fc;
 
   --terminal-bg: #090d16;
   --terminal-header: #111724;
@@ -64,7 +62,7 @@
 
   --border-color: #e2e8f0;
   --border-subtle: #cbd5e1;
-  --border-focus: #3178c6;
+  --border-focus: #6366f1;
 
   --text-main: #0f172a;
   --text-muted: #475569;
@@ -75,8 +73,8 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.07);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
 
-  --badge-bg: rgba(49, 120, 198, 0.12);
-  --badge-text: #235a96;
+  --badge-bg: rgba(99, 102, 241, 0.12);
+  --badge-text: #4f46e5;
 
   --terminal-bg: #0f172a;
   --terminal-header: #1e293b;
@@ -99,36 +97,32 @@ html, body {
   overflow: hidden;
 }
 
-/* Utilitaires typographiques */
 code, pre {
   font-family: var(--font-mono);
 }
 
-/* Scrollbar moderne */
+/* Scrollbars modernes discrètes */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--bg-app);
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-dim);
 }
 
-/* Badges & Pills */
+/* Badges & Tags */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
+  gap: 5px;
+  padding: 3px 9px;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -136,40 +130,39 @@ code, pre {
   color: var(--badge-text);
   border: 1px solid rgba(255, 255, 255, 0.05);
 
-  &.badge-ts {
-    background: var(--ts-blue-bg);
-    color: var(--ts-blue-light);
-    border-color: rgba(49, 120, 198, 0.3);
+  &.badge-indigo {
+    background: rgba(99, 102, 241, 0.16);
+    color: #818cf8;
+    border-color: rgba(99, 102, 241, 0.3);
   }
-
-  &.badge-success {
+  &.badge-rose {
+    background: rgba(244, 63, 94, 0.16);
+    color: #fb7185;
+    border-color: rgba(244, 63, 94, 0.3);
+  }
+  &.badge-emerald, &.badge-success {
     background: rgba(16, 185, 129, 0.15);
     color: #34d399;
     border-color: rgba(16, 185, 129, 0.3);
   }
-  &.badge-warning {
+  &.badge-amber, &.badge-warning {
     background: rgba(245, 158, 11, 0.15);
     color: #fbbf24;
     border-color: rgba(245, 158, 11, 0.3);
   }
   &.badge-purple {
-    background: rgba(147, 51, 234, 0.15);
+    background: rgba(139, 92, 246, 0.15);
     color: #c084fc;
-    border-color: rgba(147, 51, 234, 0.3);
+    border-color: rgba(139, 92, 246, 0.3);
   }
-  &.badge-red {
-    background: rgba(221, 0, 49, 0.15);
-    color: #f87171;
-    border-color: rgba(221, 0, 49, 0.3);
-  }
-  &.badge-teal {
-    background: rgba(20, 184, 166, 0.15);
-    color: #2dd4bf;
-    border-color: rgba(20, 184, 166, 0.3);
+  &.badge-cyan {
+    background: rgba(6, 182, 212, 0.15);
+    color: #22d3ee;
+    border-color: rgba(6, 182, 212, 0.3);
   }
 }
 
-/* Boutons stylisés */
+/* Boutons Studio */
 button {
   font-family: inherit;
   cursor: pointer;
@@ -189,19 +182,18 @@ button {
   justify-content: center;
   gap: 8px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, var(--ts-blue), var(--ts-blue-hover));
+  background: linear-gradient(135deg, var(--exception-indigo), #4f46e5);
   color: #ffffff;
   font-weight: 600;
   font-size: 0.875rem;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(49, 120, 198, 0.35);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 
   &:hover:not(:disabled) {
-    background: linear-gradient(135deg, #3b82f6, var(--ts-blue));
-    box-shadow: 0 4px 14px rgba(49, 120, 198, 0.45);
+    background: linear-gradient(135deg, #818cf8, var(--exception-indigo));
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.5);
     transform: translateY(-1px);
   }
-
   &:active:not(:disabled) {
     transform: translateY(0);
   }
@@ -242,7 +234,7 @@ button {
   }
 }
 
-/* Cartes & Panels */
+/* Card Panel */
 .card-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -252,18 +244,18 @@ button {
   transition: border-color 0.2s;
 
   &:hover {
-    border-color: rgba(49, 120, 198, 0.35);
+    border-color: rgba(99, 102, 241, 0.4);
   }
 }
 
-/* Conteneur de module standardisé */
+/* Module Container standardisé */
 .module-container {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
   padding: 24px 32px;
-  gap: 24px;
+  gap: 20px;
 }
 
 .module-header {
@@ -271,12 +263,18 @@ button {
   flex-direction: column;
   gap: 6px;
 
+  .module-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .module-tag {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--ts-blue-light);
+    color: #818cf8;
   }
 
   h2 {
@@ -288,15 +286,15 @@ button {
   .module-desc {
     font-size: 0.92rem;
     color: var(--text-muted);
-    max-width: 900px;
+    max-width: 950px;
     line-height: 1.5;
   }
 }
 
-/* Onglets de sections (Théorie / Labo Monaco) */
+/* Onglets Mode Théorie vs Labo */
 .section-mode-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: var(--bg-card);
   padding: 4px;
   border-radius: 8px;
@@ -318,9 +316,28 @@ button {
     }
 
     &.active {
-      background: var(--ts-blue);
+      background: var(--exception-indigo);
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(49, 120, 198, 0.3);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
     }
+  }
+}
+
+/* Animations visuelles */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+  }
+}
+
+@keyframes error-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(244, 63, 94, 0.8);
   }
 }

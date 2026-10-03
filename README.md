@@ -1,178 +1,136 @@
-# TypeScript POO Studio — Séance 8 : Classes Abstraites & Interfaces
+# Séance 10 — Gestion des Exceptions & Robustesse en POO (Angular & TypeScript)
 
-> **Cours de Programmation Orientée Objet** — Bachelier en Informatique (EAFC Colfontaine).  
-> **Thème :** Contrats purs, typage structurel (*Duck Typing*), effacement de type (*Type Erasure*) et architecture découplée (OCP).
+Application web interactive servant de **support de cours vivant** et de **banc d'entraînement** pour le cours : **Séance 10 — Gestion des Exceptions & Robustesse en POO** (formation EAFC en informatique de gestion / programmation orientée objet).
 
----
-
-## 🎯 Objectif Pédagogique
-
-Cette application web interactive a été conçue pour aider les étudiants qui maîtrisent l'encapsulation et l'héritage simple, mais qui :
-1. Peinent à modéliser des abstractions strictes sans code mort.
-2. Confondent souvent `interface` et `abstract class`.
-3. Commettent des erreurs classiques comme `x instanceof MonInterface` (TS2693).
-4. Doivent comprendre la différence fondamentale entre le **comportement du compilateur TypeScript** et **l'exécution en mémoire JavaScript**.
+L'application guide les étudiants depuis les réflexes procéduraux fragiles (codes sentinelles `-1`, `null`, `false`, `catch (error: any)`, catch silencieux) vers les meilleures pratiques de génie logiciel en POO moderne :
+- **Inviolabilité des invariants d'objets** et rejet immédiat des états corrompus.
+- **Visualisation animée pas-à-pas du déroulement de la pile d'appels (*Stack Unwinding*)**.
+- **Nettoyage déterministe de ressources avec `try / catch / finally`**.
+- **Typage strict et défensif avec `unknown` et *Type Narrowing*** (zéro `any`).
+- **Création d'une taxonomie d'exceptions métier hiérarchisée (`extends Error`)**.
+- **Filtrage polymorphique précis avec `instanceof` et relance (*rethrow*)**.
+- **Stratégie d'enveloppement d'exceptions (*Error Wrapping* & `Error.cause`)** à travers une architecture multicouche (API / Service / UI).
+- **Simulateur de Distributeur Automatique de Billets (DAB / ATM)** réactif avec Angular Signals.
+- **Laboratoire complet de 26 micro-exercices** avec éditeur Monaco intégré, terminal virtuel et moteur d'évaluation automatisé multi-critères.
 
 ---
 
 ## 🚀 Démarrage Rapide
 
 ### Prérequis
-* **Node.js** : v20+ ou v22+
-* **npm** : v10+
+- **Node.js** >= 18.x ou 20.x
+- **npm** >= 9.x
 
-### Commandes
+### Installation et Lancement
+
 ```bash
-# Se positionner dans le dossier du projet
-cd "/home/cchiodo/EAFC/POO/Séance 8/angular-seance8"
+# Se placer dans le répertoire du projet
+cd "/home/cchiodo/EAFC/POO/Séance 10/angular-seance10"
 
-# Installer les dépendances (déjà disponibles dans le cache local)
-npm install
-
-# Lancer le serveur de développement en local
+# Lancer le serveur de développement Angular
 npm start
-# -> Accessible sur http://localhost:4200
+# ou
+ng serve --open
+```
 
-# Lancer la suite de tests automatisée (Vitest)
+L'application sera accessible sur `http://localhost:4200/`.
+
+### Validation et Tests Automatisés
+
+Le banc de test vérifie automatiquement les **26 micro-exercices** selon 3 axes :
+1. Présence et intégrité des 26 exercices sur les 6 ateliers pratiques.
+2. Détection de faux positifs (aucun exercice ne doit être validé avec son code initial).
+3. Validation à 100% de tous les critères avec la solution officielle.
+
+```bash
+# Lancer les tests unitaires
 npm test
+# ou avec Vitest
+./node_modules/vitest/vitest.mjs run src/app/core/services/exercise-solutions.spec.ts
+```
 
-# Compiler pour la production
+### Compilation de Production
+
+```bash
 npm run build
 ```
 
----
-
-## 🏗️ Architecture Technique
-
-* **Framework** : Angular v22 (100% Standalone Components).
-* **Gestion d'état** : Angular Signals (`signal`, `computed`, `effect`).
-* **Templates** : Nouveau control flow natif (`@if`, `@for`, `@switch`).
-* **Éditeur de code** : **Monaco Editor** (`@monaco-editor/loader` + `monaco-editor`) avec worker TypeScript officiel configuré en local (`assets/monaco/vs`) et repli CDN jsDelivr.
-* **Sandbox d'évaluation** : `TypescriptTranspilerService` exécutant le code TypeScript 100% côté client en mémoire (`new Function`) avec interception de la console (`log`, `warn`, `error`, `info`).
-* **Suite de tests & Validation** : Analyse statique de code et assertions fonctionnelles sur les 21 exercices avec sauvegarde automatique de la progression dans `localStorage`.
+Les bundles optimisés sont générés dans `dist/angular-seance10-exceptions-robustesse-poo`.
 
 ---
 
-## 📚 Les 7 Modules Théoriques Interactifs
+## 🏛 Architecture & Technologies
 
-1. **Pourquoi l'Abstraction ? (Fin des objets fantômes et du code bouchon)**
-   * *Simulateur d'objets fantômes* : Démonstrateur visuel de l'aberration `new Forme()` et interdiction immédiate par `abstract` (`TS2511`).
-   * *Comparateur Code Bouchon vs Signature Pure* : Le piège de `return 0;` (bogue silencieux tardif) vs `abstract calculer(): number;` (obligation stricte dès la frappe).
-   * *Visualiseur du problème du diamant* : Pourquoi l'héritage multiple de classes est bloqué en TypeScript et comment l'interface le résout sans collision.
-
-2. **L'Anatomie d'une Classe Abstraite (`abstract class`)**
-   * *Inspecteur de structure (3 Piliers)* : Constructeur et factorisation d'état (`super()`), méthodes concrètes partagées (DRY) et signatures abstraites.
-   * *Laboratoire des modificateurs d'accès* : Matrice `public abstract` vs `protected abstract`, et animation expliquant le paradoxe logique de `private abstract` (`TS18010`).
-   * *Explorateur d'abstractions en cascade* : Arbre dynamique `Animal` (racine) -> `Mammifere` (intermédiaire) -> `Vache` (feuille soldant toutes les obligations).
-
-3. **L'Interface (`interface`) : Le Contrat Pur**
-   * *Métaphore de la Prise Murale* : Objets hétérogènes (`GrillePain`, `PCGamer`, `Tesla`) se branchant sur la même prise contractuelle `Alimentable230V`.
-   * *Démonstrateur de Multi-implémentation* : `class Canard implements Volant, Nageant, Marchant` sans aucune collision de code.
-   * *Composeur d'Interfaces (`extends` multiple)* : Assemblage dynamique de micro-contrats (`EntiteNommee` + `Horodatee` + `Auditable`).
-
-4. **Le Typage Structurel (*Duck Typing*) & Zéro Coût Runtime**
-   * *Le Banc d'Essai Duck Typing* : Test d'objets littéraux anonymes, tolérance des surplus et mécanisme d'Excess Property Check direct.
-   * *Split-Screen TS vs JS Transpilé (Type Erasure)* : Démonstration que l'interface pèse **0 octet** en JavaScript, tandis que la classe abstraite génère un constructeur prototype réel.
-
-5. **L'Arbre de Décision : « Est-un » vs « Capable-de »**
-   * *Sélecteur d'Architecture Interactif* : Questionnaire dynamique en 4 critères orientant vers `abstract class`, `interface` ou le pattern hybride pro.
-   * *Démonstrateur du Pattern Hybride Pro* : Décomposition de l'architecture industrielle : Interface pour l'API publique + Classe abstraite pour le boilerplate.
-
-6. **Laboratoire des Pièges & Anti-Patterns**
-   * *Le Crash Test `instanceof` sur une Interface* : Explication de l'erreur `TS2693` et écriture d'un *User-defined Type Guard* (`cible is Soigneur`).
-   * *Visualiseur ISP (Interface Segregation Principle)* : Comparaison entre une interface obèse tyrannique et des micro-interfaces ciblées et combinables.
-
-7. **Le Simulateur Live : L'Arène des Héros RPG**
-   * Scène de combat interactive avec `Personnage` (abstrait), `Soigneur` (contrat d'aptitude), `Guerrier` et `Mage`.
-   * Déclenchement polymorphe sans aucun `if (type === ...)` ni `switch`.
-   * Démonstration OCP : recrutement à chaud d'un `Archer` sans modifier 1 seule ligne du contrôleur de combat.
+- **Framework** : Angular 22 (Standalone Components, Signals réactifs, Control Flow `@if`, `@for`).
+- **Éditeur de Code** : Monaco Editor (moteur de VS Code) chargé localement avec colorisation TypeScript, autocomplétion, minimap et suggestions.
+- **Transpileur Sandboxé** : Transpilateur TypeScript-vers-JavaScript in-memory sans serveur avec analyseur d'accolades équilibrées et capture du `console.log`.
+- **Système de Feedback** : Particules de confettis en Canvas natif (zéro dépendance externe) lors de la validation des ateliers.
+- **Thème** : Support dynamique Dark Mode / Light Mode avec persistance `localStorage`.
+- **Banc de Test** : Vitest avec vérification automatisée de conformité.
 
 ---
 
-## 💻 Les 5 Laboratoires Pratiques Monaco Editor (21 Exercices)
+## 📚 Les 8 Modules Pédagogiques Interactifs
 
-Chaque exercice propose : énoncé clair, code initial avec amorce guidée, éditeur Monaco avec typage en direct, terminal virtuel sandbox, indices progressifs, explication pas-à-pas et bouton d'injection de solution officielle.
+1. **Codes Sentinelles vs Exceptions & Invariants d'Objets** :
+   - Comparateur interactif côte-à-côte avec compte bancaire sous surveillance.
+   - Démonstration de corruption d'invariant avec `-1` et protection absolue par exception.
 
-* **Labo 1 — Classes Abstraites & Signatures Pures** (5 exercices) :
-  * `1.1` : Déclaration & Interdiction de `new` (`abstract class Vehicule`).
-  * `1.2` : Méthode abstraite obligatoire (`abstract demarrer(): string;`, classe `Moto`).
-  * `1.3` : Factorisation & `super(marque)` avec sous-classe `Voiture`.
-  * `1.4` : Protection de visibilité (`protected abstract calculerTaxe(): number`).
-  * `1.5` : Chaîne d'abstraction en cascade (`VehiculeElectrique` -> `Tesla`).
+2. **Dépilement de la Pile d'Appels (*Stack Unwinding*)** :
+   - Visualisateur dynamique de la pile d'appels (UI -> Service -> Repository -> Base de données).
+   - Animation du retournement de trame et propagation de l'erreur jusqu'au gestionnaire compétent.
 
-* **Labo 2 — Interfaces & Multi-implémentation** (4 exercices) :
-  * `2.1` : Contrat pur (`interface Connectable { connecter(ip: string): boolean; }`).
-  * `2.2` : Multi-implémentation (`ImprimanteMultifonction implements Imprimable, Scannable`).
-  * `2.3` : Extension multiple d'interfaces (`CompteAdmin extends CompteSimple, Journalisable`).
-  * `2.4` : Propriété `readonly` de contrat (`readonly uuid: string`).
+3. **Le Triptyque `try / catch / finally` & Libération Garantie** :
+   - Cycle de vie d'une ressource (connexion réseau / descripteur de fichier).
+   - Garantie absolue d'exécution du bloc `finally`, même en cas de `throw` ou de `return` prématuré.
 
-* **Labo 3 — Duck Typing & DTOs** (4 exercices) :
-  * `3.1` : Conformité par la forme (`Point2D` et objet anonyme sans classe).
-  * `3.2` : Tolérance des propriétés excédentaires (`Identifiable`).
-  * `3.3` : Typage d'un DTO API générique (`ReponseServeur<T>`).
-  * `3.4` : Strict Duck Typing & Excess property check (passage par variable).
+4. **L'Objet `Error` & Typage Strict (`unknown` vs `any`)** :
+   - Anatomie de `Error` (`name`, `message`, `stack`, `cause`).
+   - Pourquoi TypeScript 4.0+ type les exceptions capturées en `unknown`.
+   - Utilisation de fonctions de garde (*Type Guards*) pour sécuriser l'accès aux propriétés.
 
-* **Labo 4 — Déjouer les Pièges & Type Guards** (4 exercices) :
-  * `4.1` : Diagnostic du piège `instanceof` sur interface (`TS2693`).
-  * `4.2` : Création d'un User-Defined Type Guard (`isSoigneur(cible: any): cible is Soigneur`).
-  * `4.3` : Utilisation sécurisée et Type Narrowing sans cast `as`.
-  * `4.4` : Refactorisation ISP (découpage d'interface monolithique en micro-contrats).
+5. **Exceptions Domaine Personnalisées (`extends Error`)** :
+   - Construction d'une hiérarchie objet : `AppError` -> `BanqueError` -> `SoldeInsuffisantError`.
+   - Préservation de la chaîne de prototypes avec `Object.setPrototypeOf`.
+   - Attributs métier contextuels riches (`montantManquant`, `soldeActuel`).
 
-* **Labo 5 — Architecture Hybride & Découplage** (4 exercices) :
-  * `5.1` : Le squelette abstrait (`Exportable` + `DocumentBase`).
-  * `5.2` : Concrétisation des formats (`DocumentPDF` et `DocumentMarkdown`).
-  * `5.3` : Collection polymorphe agnostique (`exporterTous(documents: Exportable[])`).
-  * `5.4` : Extensibilité sans régression OCP (`FactureXML` sans toucher à `exporterTous`).
+6. **Filtrage d'Exceptions, `instanceof` & Relance (*Rethrow*)** :
+   - Ordre crucial des clauses `if (err instanceof ...)` : de l'enfant le plus spécifique vers le parent le plus général.
+   - Danger de l'anti-pattern *Catch-and-Swallow* et importance de relancer (`throw err`) les exceptions inconnues.
+
+7. **Stratégies d'Architecture & Enveloppement (*Error Wrapping*)** :
+   - Découplage des couches : Couche d'infrastructure (HTTP / SQL) traduite en erreurs métier du Domaine.
+   - Rétention du diagnostic profond grâce à `{ cause: originalError }`.
+
+8. **Simulateur Distributeur Automatique de Billets (DAB / ATM)** :
+   - Simulation bancaire complète et réactive avec clavier numérique, insertion de carte, retrait et consultation.
+   - Gestion polymorphique d'erreurs réelles : `CarteBloqueeError`, `CodePinInvalideError`, `SoldeInsuffisantError`, `PlafondDepasseError`, `DistributeurVideError`.
 
 ---
 
-## 📁 Arborescence du Projet
+## 🛠 Les 6 Ateliers Pratiques (26 Micro-Exercices)
 
-```
-angular-seance8/
-├── angular.json
-├── package.json
-├── tsconfig.json
-├── tsconfig.app.json
-├── tsconfig.spec.json
-├── .prettierrc
-├── .editorconfig
-├── public/
-│   └── favicon.ico
-├── src/
-│   ├── index.html
-│   ├── main.ts
-│   ├── styles.scss
-│   └── app/
-│       ├── app.ts
-│       ├── app.html
-│       ├── app.scss
-│       ├── app.routes.ts
-│       ├── app.config.ts
-│       ├── core/
-│       │   ├── models/
-│       │   │   └── app.models.ts
-│       │   └── services/
-│       │       ├── theme.service.ts
-│       │       ├── navigation.service.ts
-│       │       ├── monaco-loader.service.ts
-│       │       ├── typescript-transpiler.service.ts
-│       │       ├── exercise.service.ts
-│       │       └── exercise.service.spec.ts
-│       ├── shared/
-│       │   └── components/
-│       │       ├── navbar/navbar.component.ts
-│       │       ├── sidebar/sidebar.component.ts
-│       │       ├── monaco-editor/monaco-editor.component.ts
-│       │       └── lab-runner/lab-runner.component.ts
-│       └── features/
-│           ├── why-abstraction/why-abstraction.component.ts
-│           ├── abstract-class-anatomy/abstract-class-anatomy.component.ts
-│           ├── interface-pure-contract/interface-pure-contract.component.ts
-│           ├── duck-typing-runtime-cost/duck-typing-runtime-cost.component.ts
-│           ├── decision-tree-hybrid/decision-tree-hybrid.component.ts
-│           ├── pitfalls-type-guards/pitfalls-type-guards.component.ts
-│           ├── rpg-arena-simulator/rpg-arena-simulator.component.ts
-│           └── workshops-lab/workshops-lab.component.ts
-└── README.md
-```
+L'onglet **Ateliers Pratiques** regroupe les 26 micro-exercices classés par palier d'apprentissage :
+
+| Laboratoire | Nombre d'exercices | Notions Clés |
+|---|---|---|
+| **Lab 1 : Sentinelles vs Invariants** | 4 exercices | Invariant `solde >= 0`, `throw new Error`, interdiction des codes sentinelles, transition procédural -> POO |
+| **Lab 2 : Stack Unwinding & Propagation** | 4 exercices | Traversée de pile, propagation naturelle sans catch intermédiaire, capture centralisée |
+| **Lab 3 : Nettoyage avec `finally`** | 5 exercices | `try/catch/finally`, fermeture de flux, gestion des erreurs dans le finally, retour prioritaire |
+| **Lab 4 : Typage Strict `unknown` & Narrowing** | 4 exercices | `catch (err: unknown)`, fonction de garde `isError(err)`, extraction sécurisée du message |
+| **Lab 5 : Taxonomie d'Exceptions Métier** | 4 exercices | `abstract class AppError`, constructeurs enrichis, `setPrototypeOf`, `instanceof` |
+| **Lab 6 : Error Wrapping & Architecture ATM** | 5 exercices | `Error.cause`, conversion HTTP 409, relance défensive, contrôleur DAB complet |
+
+Chaque exercice dispose de :
+- Une consigne claire avec conseils pédagogiques et indices progressifs.
+- Un code de départ contenant des points d'ancrage `// TODO`.
+- Une vérification syntaxique en temps réel (expressions régulières ciblées).
+- Des tests unitaires sandboxés évaluant le comportement réel du code exécuté.
+- Une solution commentée avec explication détaillée du rationnel de génie logiciel.
+- Un bouton de réinitialisation vers le code de départ.
+
+---
+
+## 👥 Public Cible & Pédagogie
+
+Ce cours s'adresse aux étudiants en informatique ayant déjà suivi les séances 5 à 9 (Classes, Héritage, Polymorphisme, Interfaces, Injection de Dépendances). Il a été conçu pour éliminer définitivement les pratiques fragiles et ancrer des réflexes de programmation défensive et robuste indispensables en entreprise.

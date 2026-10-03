@@ -5,95 +5,106 @@ import { TabId, ModuleSection } from '../models/app.models';
   providedIn: 'root'
 })
 export class NavigationService {
-  readonly activeTab = signal<TabId>('why-abstraction');
+  readonly activeTab = signal<TabId>('sentinel-vs-exceptions');
   readonly isSidebarCollapsed = signal<boolean>(false);
 
   readonly modules: ModuleSection[] = [
     {
-      id: 'why-abstraction',
+      id: 'sentinel-vs-exceptions',
       index: 1,
-      title: "Pourquoi l'Abstraction ? (Objets fantômes & code bouchon)",
-      shortTitle: "Pourquoi l'Abstraction",
-      icon: 'ghost',
-      badge: 'TS2511',
-      description: "Démonstrateur d'objets fantômes, comparateur de signatures pures et visualiseur du problème du diamant.",
+      title: 'Le Problème : Codes Sentinelles vs Rupture de Flux',
+      shortTitle: 'Codes Sentinelles vs Rupture',
+      icon: 'alert-circle',
+      badge: '-1 vs throw',
+      description: 'Codes de retour magiques, corruption silencieuse de mémoire et labyrinthe de propagation manuelle.',
       labNumber: 1,
-      exerciseCount: 5
+      exerciseCount: 4
     },
     {
-      id: 'abstract-class-anatomy',
+      id: 'stack-unwinding',
       index: 2,
-      title: "L'Anatomie d'une Classe Abstraite (abstract class)",
-      shortTitle: 'Classe Abstraite',
+      title: 'Le Mécanisme & Déroulement de Pile (Stack Unwinding)',
+      shortTitle: 'Déroulement de Pile (Unwinding)',
       icon: 'layers',
-      badge: '3 Piliers',
-      description: "Constructeur et état partagé, méthodes concrètes DRY, promesses contractuelles et modificateurs d'accès.",
+      badge: 'Call Stack & Invariants',
+      description: 'Ascenseur du runtime, dépilement automatique, crash par exception non interceptée et protection des constructeurs.',
       labNumber: 1,
-      exerciseCount: 5
+      exerciseCount: 4
     },
     {
-      id: 'interface-pure-contract',
+      id: 'try-catch-finally',
       index: 3,
-      title: "L'Interface (interface) : Le Contrat Pur",
-      shortTitle: 'Interface Pure',
-      icon: 'plug',
-      badge: 'implements',
-      description: "Métaphore de la prise murale, multi-implémentation sans collision et composition d'interfaces.",
+      title: 'Anatomie de try / catch / finally & La Garantie de Libération',
+      shortTitle: 'try / catch / finally & Libération',
+      icon: 'shield-check',
+      badge: 'Garantie 100%',
+      description: 'Traqueur de flux nominal/erreur/return anticipé, libération de ressources critiques et anti-pattern du return dans finally.',
       labNumber: 2,
       exerciseCount: 4
     },
     {
-      id: 'duck-typing-runtime-cost',
+      id: 'error-object-strict-typing',
       index: 4,
-      title: 'Typage Structurel (Duck Typing) & Zéro Coût Runtime',
-      shortTitle: 'Duck Typing & Coût',
-      icon: 'feather',
-      badge: '0 Octet JS',
-      description: "Banc d'essai de conformité par la forme, tolérance des surplus et split-screen d'effacement de type.",
+      title: 'L\'Objet Error & Typage Strict TypeScript (unknown vs any)',
+      shortTitle: 'L\'Objet Error & Typage Strict',
+      icon: 'file-text',
+      badge: 'unknown vs any',
+      description: 'name, message, stack, cause (ES2022+), catalogue des erreurs natives et narrowing strict par type guards.',
       labNumber: 3,
-      exerciseCount: 4
+      exerciseCount: 5
     },
     {
-      id: 'decision-tree-hybrid',
+      id: 'custom-domain-errors',
       index: 5,
-      title: "L'Arbre de Décision : « Est-un » vs « Capable-de »",
-      shortTitle: 'Arbre de Décision',
-      icon: 'git-branch',
-      badge: 'Hybride Pro',
-      description: "Sélecteur d'architecture interactif en 3 questions et démonstrateur du pattern hybride pro.",
-      labNumber: 5,
-      exerciseCount: 4
-    },
-    {
-      id: 'pitfalls-type-guards',
-      index: 6,
-      title: 'Laboratoire des Pièges & Anti-Patterns',
-      shortTitle: 'Pièges & Anti-Patterns',
-      icon: 'alert-triangle',
-      badge: 'Type Guards',
-      description: "Crash test instanceof sur interface (TS2693), solution User-Defined Type Guard et visualiseur ISP.",
+      title: 'Concevoir des Exceptions Métier Typées en POO (extends Error)',
+      shortTitle: 'Exceptions Métier (extends Error)',
+      icon: 'git-merge',
+      badge: 'Taxonomie POO',
+      description: 'Pourquoi bannir includes(), socle abstract AppError, métadonnées contextuelles et arbre d\'héritage du domaine.',
       labNumber: 4,
       exerciseCount: 4
     },
     {
-      id: 'rpg-arena-simulator',
-      index: 7,
-      title: "Le Simulateur Live : L'Arène des Héros RPG",
-      shortTitle: 'Arène RPG Live',
-      icon: 'swords',
-      badge: 'OCP & Signals',
-      description: "Scène interactive mêlant classe abstraite Personnage, contrat Soigneur et polymorphisme sans switch.",
+      id: 'filtering-polymorphism',
+      index: 6,
+      title: 'Filtrage Chirurgical & Polymorphisme d\'Interception (instanceof)',
+      shortTitle: 'Filtrage & instanceof',
+      icon: 'filter',
+      badge: 'Ordre & Rethrow',
+      description: 'Polymorphisme de capture, aiguillage, ordre critique du plus spécifique au plus général et relance obligatoire de l\'inconnu.',
       labNumber: 5,
       exerciseCount: 4
     },
     {
-      id: 'workshops-lab',
+      id: 'architectural-strategies',
+      index: 7,
+      title: 'Stratégies Architecturales : La Règle des 3 Étages & Error Wrapping',
+      shortTitle: 'Règle des 3 Étages & Wrapping',
+      icon: 'compass',
+      badge: 'Domaine / Service / UI',
+      description: 'Domaine (throw), Service (wrapping avec cause et rethrow), Présentation (try/catch + Signals) et tableau décisionnel.',
+      labNumber: 5,
+      exerciseCount: 4
+    },
+    {
+      id: 'atm-simulator',
       index: 8,
-      title: 'Ateliers Pratiques Monaco Editor (21 Exercices)',
-      shortTitle: 'Labo Monaco (21 Ex)',
+      title: 'Simulateur Réactif d\'ATM Bancaire (Démonstrateur Temps Réel)',
+      shortTitle: 'Distributeur ATM Réactif',
+      icon: 'cpu',
+      badge: 'Signals & Robustesse',
+      description: 'Guichet bancaire avec solde réactif signal(100), débits 40€ / 150€ / -20€, code TypeScript en direct et résilience totale.',
+      labNumber: 6,
+      exerciseCount: 5
+    },
+    {
+      id: 'workshops-lab',
+      index: 9,
+      title: 'Espace Ateliers Pratiques (26 Micro-Exercices d\'Entraînement)',
+      shortTitle: 'Labo Monaco (26 Ex)',
       icon: 'terminal',
-      badge: '21 Ex',
-      description: "Banc d'exercices interactifs avec éditeur Monaco, autocomplétion TypeScript, terminal virtuel et validation automatique."
+      badge: '26 Défis Monaco',
+      description: 'Banc d\'entraînement complet avec Monaco Editor, terminal virtuel intégré et validation par assertions automatiques.'
     }
   ];
 
@@ -102,6 +113,6 @@ export class NavigationService {
   }
 
   toggleSidebar(): void {
-    this.isSidebarCollapsed.update(collapsed => !collapsed);
+    this.isSidebarCollapsed.update(v => !v);
   }
 }

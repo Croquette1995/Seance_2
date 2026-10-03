@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
-import { LabRunnerComponent } from '../../shared/components/lab-runner/lab-runner.component';
 import { ExerciseService } from '../../core/services/exercise.service';
+import { LabRunnerComponent } from '../../shared/components/lab-runner/lab-runner.component';
 
 @Component({
   selector: 'app-workshops-lab',
@@ -9,121 +9,112 @@ import { ExerciseService } from '../../core/services/exercise.service';
   template: `
     <div class="module-container">
       <div class="module-header">
-        <div class="module-tag">ESPACE ATELIERS · MONACO EDITOR</div>
-        <h2>Laboratoire Pratique Global — {{ exerciseService.totalCount() }} Micro-Exercices d'Entraînement</h2>
+        <div class="module-tag-row">
+          <span class="module-tag">Séance 10 · Ateliers Pratiques</span>
+          <span class="badge badge-purple">Monaco Editor</span>
+          <span class="badge badge-success">{{ exercises.completedCount() }} / {{ exercises.totalCount() }} Validés</span>
+        </div>
+        <h2>Espace Ateliers Pratiques (26 Micro-Exercices de Robustesse)</h2>
         <p class="module-desc">
-          Entraînez-vous intensivement sur les {{ exerciseService.totalCount() }} micro-défis progressifs avec coloration syntaxique officielle TypeScript,
-          autocomplétion, console virtuelle interactive et validation par suite d'assertions automatisées.
+          Pratiquez intensivement la gestion des exceptions, le typage strict <code>unknown</code>, la création de classes métier <code>extends Error</code>,
+          la libération garantie dans <code>finally</code> et la résilience réactive avec les Signaux Angular.
         </p>
-      </div>
 
-      <!-- Filtres par Labo -->
-      <div class="card-panel lab-filter-bar">
-        <div class="filter-pills">
+        <!-- Filtre des 6 Labos -->
+        <div class="lab-filters-bar mt-2">
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === null" 
-            (click)="selectedLab.set(null)"
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === undefined"
+            (click)="selectedLab.set(undefined)"
           >
-            Tous ({{ exerciseService.totalCount() }})
+            🌟 Tous les Labos (26 Défis)
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === 1" 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 1"
             (click)="selectedLab.set(1)"
           >
-            Labo 1 · Classes Abstraites (5)
+            Labo 1 : Invariants &amp; throw (4 ex)
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === 2" 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 2"
             (click)="selectedLab.set(2)"
           >
-            Labo 2 · Interfaces &amp; Multi-impl (4)
+            Labo 2 : try / catch / finally (4 ex)
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === 3" 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 3"
             (click)="selectedLab.set(3)"
           >
-            Labo 3 · Duck Typing &amp; DTOs (4)
+            Labo 3 : unknown &amp; Narrowing (5 ex)
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === 4" 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 4"
             (click)="selectedLab.set(4)"
           >
-            Labo 4 · Pièges &amp; Type Guards (4)
+            Labo 4 : Exceptions Métier (4 ex)
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="selectedLab() === 5" 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 5"
             (click)="selectedLab.set(5)"
           >
-            Labo 5 · Architecture Hybride &amp; OCP (4)
+            Labo 5 : Filtrage &amp; Couches (4 ex)
           </button>
-        </div>
-
-        <div class="global-counter">
-          <span class="badge badge-success">{{ exerciseService.completedCount() }} / {{ exerciseService.totalCount() }} Validés ({{ exerciseService.progressPercentage() }}%)</span>
+          <button 
+            class="lab-tab-btn" 
+            [class.active]="selectedLab() === 6"
+            (click)="selectedLab.set(6)"
+          >
+            Labo 6 : Signals &amp; UI (5 ex)
+          </button>
         </div>
       </div>
 
-      <!-- Runner Monaco -->
       <div class="runner-wrapper">
-        <app-lab-runner [labFilter]="selectedLab()"></app-lab-runner>
+        <app-lab-runner [filterLabNumber]="selectedLab()"></app-lab-runner>
       </div>
     </div>
   `,
   styles: [`
-    .lab-filter-bar {
+    .lab-filters-bar {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 16px;
-      gap: 12px;
+      gap: 6px;
       flex-wrap: wrap;
+    }
 
-      .filter-pills {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        flex: 1;
+    .lab-tab-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
 
-        .filter-btn {
-          padding: 6px 12px;
-          background: var(--bg-subtle);
-          border: 1px solid var(--border-color);
-          border-radius: 6px;
-          color: var(--text-muted);
-          font-size: 0.8rem;
-          font-weight: 500;
-          white-space: nowrap;
+      &:hover {
+        background: var(--bg-card-hover);
+        color: var(--text-main);
+      }
 
-          &:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-main);
-          }
-
-          &.active {
-            background: var(--ts-blue);
-            color: #ffffff;
-            border-color: var(--ts-blue);
-            font-weight: 600;
-          }
-        }
+      &.active {
+        background: var(--exception-indigo);
+        color: #ffffff;
+        border-color: #818cf8;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
       }
     }
 
     .runner-wrapper {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 580px;
+      min-height: 0;
     }
   `]
 })
 export class WorkshopsLabComponent {
-  readonly exerciseService = inject(ExerciseService);
-  readonly selectedLab = signal<number | null>(null);
+  readonly exercises = inject(ExerciseService);
+  readonly selectedLab = signal<number | undefined>(undefined);
 }

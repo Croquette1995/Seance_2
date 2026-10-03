@@ -1,11 +1,12 @@
 export type TabId = 
-  | 'why-abstraction'
-  | 'abstract-class-anatomy'
-  | 'interface-pure-contract'
-  | 'duck-typing-runtime-cost'
-  | 'decision-tree-hybrid'
-  | 'pitfalls-type-guards'
-  | 'rpg-arena-simulator'
+  | 'sentinel-vs-exceptions'
+  | 'stack-unwinding'
+  | 'try-catch-finally'
+  | 'error-object-strict-typing'
+  | 'custom-domain-errors'
+  | 'filtering-polymorphism'
+  | 'architectural-strategies'
+  | 'atm-simulator'
   | 'workshops-lab';
 
 export interface ModuleSection {
@@ -20,6 +21,13 @@ export interface ModuleSection {
   exerciseCount?: number;
 }
 
+// Modèles d'évaluation et console virtuelle
+export interface ConsoleLogEntry {
+  type: 'log' | 'info' | 'warn' | 'error' | 'success';
+  timestamp: string;
+  message: string;
+}
+
 export interface ValidationCriterion {
   id: string;
   label: string;
@@ -28,27 +36,42 @@ export interface ValidationCriterion {
   hint: string;
 }
 
-export interface ConsoleLogEntry {
-  type: 'log' | 'error' | 'warn' | 'info';
-  text: string;
-  timestamp: string;
+export interface SyntaxRequirement {
+  type: 'keyword' | 'regex' | 'forbidden';
+  pattern: RegExp | string;
+  label: string;
+  errorMessage: string;
 }
 
-export interface Exercise {
+export interface ExerciseDef {
   id: string;
   labNumber: number;
-  number: string; // e.g. "1.1", "2.3"
+  number: string;
   title: string;
   subtitle: string;
   sectionId: TabId;
   estimatedTime: string;
-  difficulty: 'Débutant' | 'Facile' | 'Intermédiaire' | 'Avancé';
+  difficulty: 'Débutant' | 'Facile' | 'Intermédiaire';
   statement: string;
   hint: string;
   initialCode: string;
   solutionCode: string;
-  currentCode: string;
-  isCompleted: boolean;
-  criteria: ValidationCriterion[];
   solutionExplanation: string[];
+  syntaxRequirements: SyntaxRequirement[];
+  evaluateFn: (sandbox: any, logs: string[]) => { criterionId: string; passed: boolean; message?: string }[];
+  criteria: ValidationCriterion[];
+  isCompleted: boolean;
+}
+
+export interface Exercise extends ExerciseDef {
+  currentCode: string;
+}
+
+export interface ValidationSummary {
+  success: boolean;
+  passedCount: number;
+  totalCount: number;
+  messages: string[];
+  consoleLogs: ConsoleLogEntry[];
+  executionError?: string;
 }

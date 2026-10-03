@@ -19,13 +19,13 @@ import { ExerciseService } from '../../../core/services/exercise.service';
 
         <div class="brand">
           <div class="brand-logo-box">
-            <span>POO</span>
+            <span>S10</span>
           </div>
           <div class="brand-text">
             <div class="brand-title">
-              TypeScript POO Studio <span class="session-tag">Séance 8</span>
+              TypeScript POO Studio <span class="session-tag">Séance 10</span>
             </div>
-            <div class="brand-subtitle">Classes Abstraites &amp; Interfaces (Contrats purs, typage structurel &amp; découplage)</div>
+            <div class="brand-subtitle">Gestion des Exceptions, Typage Strict &amp; Robustesse Logicielle</div>
           </div>
         </div>
       </div>
@@ -34,11 +34,11 @@ import { ExerciseService } from '../../../core/services/exercise.service';
         <!-- Badge Framework & version -->
         <div class="tech-badge">
           <span class="pulse-dot"></span>
-          <span>Angular v22 · TypeScript v5.8</span>
+          <span>Angular v22 · Signals · TS Strict</span>
         </div>
 
         <!-- Jauge de progression des exercices -->
-        <div class="progress-pill" (click)="nav.setTab('workshops-lab')" title="Accéder aux 21 exercices Monaco Editor">
+        <div class="progress-pill" (click)="nav.setTab('workshops-lab')" title="Accéder aux 26 micro-exercices Monaco Editor">
           <div class="progress-info">
             <span class="progress-label">Exercices Validés</span>
             <span class="progress-ratio">{{ exercises.completedCount() }}/{{ exercises.totalCount() }}</span>
@@ -115,18 +115,18 @@ import { ExerciseService } from '../../../core/services/exercise.service';
     }
 
     .brand-logo-box {
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(135deg, #3178c6, #2563eb);
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #ffffff;
       font-weight: 800;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
     }
 
     .brand-title {
@@ -140,9 +140,9 @@ import { ExerciseService } from '../../../core/services/exercise.service';
 
     .session-tag {
       font-size: 0.72rem;
-      background: rgba(49, 120, 198, 0.15);
-      color: var(--ts-blue-light);
-      border: 1px solid rgba(49, 120, 198, 0.35);
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.35);
       padding: 1px 6px;
       border-radius: 4px;
       font-weight: 600;
@@ -170,9 +170,9 @@ import { ExerciseService } from '../../../core/services/exercise.service';
     .pulse-dot {
       width: 7px;
       height: 7px;
-      background: #3b82f6;
+      background: #10b981;
       border-radius: 50%;
-      box-shadow: 0 0 8px #3b82f6;
+      box-shadow: 0 0 8px #10b981;
       animation: pulse 2s infinite;
     }
 
@@ -194,7 +194,7 @@ import { ExerciseService } from '../../../core/services/exercise.service';
       transition: all 0.2s;
 
       &:hover {
-        border-color: var(--ts-blue);
+        border-color: #6366f1;
         background: var(--bg-card-hover);
       }
     }
@@ -208,7 +208,8 @@ import { ExerciseService } from '../../../core/services/exercise.service';
     }
 
     .progress-ratio {
-      color: var(--ts-blue-light);
+      color: #818cf8;
+      font-weight: 700;
     }
 
     .progress-bar-track {
@@ -220,7 +221,7 @@ import { ExerciseService } from '../../../core/services/exercise.service';
 
     .progress-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #3b82f6, #6366f1, #10b981);
+      background: linear-gradient(90deg, #6366f1, #3b82f6, #10b981);
       transition: width 0.3s ease;
     }
 

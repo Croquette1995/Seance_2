@@ -26,7 +26,7 @@ import { MonacoLoaderService } from '../../../core/services/monaco-loader.servic
       @if (isLoading()) {
         <div class="monaco-loading">
           <div class="spinner"></div>
-          <span>Chargement de Monaco Editor...</span>
+          <span>Initialisation de Monaco Editor...</span>
         </div>
       }
       <div #editorContainer class="editor-container"></div>
@@ -67,8 +67,8 @@ import { MonacoLoaderService } from '../../../core/services/monaco-loader.servic
     .spinner {
       width: 28px;
       height: 28px;
-      border: 3px solid rgba(49, 120, 198, 0.2);
-      border-top-color: #3178c6;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+      border-top-color: #6366f1;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }

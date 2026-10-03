@@ -1,28 +1,37 @@
 import { Injectable, signal, effect } from '@angular/core';
 
+export type Theme = 'dark' | 'light';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  private readonly STORAGE_KEY = 'ts_studio_theme_s8';
-  readonly theme = signal<'dark' | 'light'>('dark');
+  private readonly STORAGE_KEY = 'seance10_theme';
+  readonly theme = signal<Theme>('dark');
 
   constructor() {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem(this.STORAGE_KEY) as 'dark' | 'light' | null;
-      if (savedTheme) {
-        this.theme.set(savedTheme);
+    let savedTheme: Theme = 'dark';
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(this.STORAGE_KEY) as Theme;
+      if (stored === 'light' || stored === 'dark') {
+        savedTheme = stored;
       }
     }
+    this.theme.set(savedTheme);
 
     effect(() => {
       const current = this.theme();
       if (typeof document !== 'undefined') {
         document.documentElement.setAttribute('data-theme', current);
-        document.body.classList.toggle('theme-dark', current === 'dark');
-        document.body.classList.toggle('theme-light', current === 'light');
+        if (current === 'dark') {
+          document.body.classList.add('theme-dark');
+          document.body.classList.remove('theme-light');
+        } else {
+          document.body.classList.add('theme-light');
+          document.body.classList.remove('theme-dark');
+        }
       }
-      if (typeof window !== 'undefined') {
+      if (typeof localStorage !== 'undefined') {
         localStorage.setItem(this.STORAGE_KEY, current);
       }
     });

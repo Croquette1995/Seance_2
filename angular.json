@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-seance8-demo": {
+    "angular-seance10-exceptions-robustesse-poo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -48,8 +48,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "15kB",
-                  "maximumError": "30kB"
+                  "maximumWarning": "20kB",
+                  "maximumError": "40kB"
                 }
               ],
               "outputHashing": "all"
@@ -66,16 +66,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-seance8-demo:build:production"
+              "buildTarget": "angular-seance10-exceptions-robustesse-poo:build:production"
             },
             "development": {
-              "buildTarget": "angular-seance8-demo:build:development"
+              "buildTarget": "angular-seance10-exceptions-robustesse-poo:build:development"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test"
         }
       }
     }

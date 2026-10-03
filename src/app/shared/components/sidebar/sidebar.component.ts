@@ -9,7 +9,7 @@ import { TabId } from '../../../core/models/app.models';
   template: `
     <aside class="sidebar" [class.collapsed]="nav.isSidebarCollapsed()">
       <div class="sidebar-header">
-        <div class="header-label">PARCOURS DU COURS</div>
+        <div class="header-label">PARCOURS SÉANCE 10</div>
       </div>
 
       <nav class="module-list">
@@ -22,56 +22,59 @@ import { TabId } from '../../../core/models/app.models';
           >
             <div class="item-icon-wrapper">
               @switch (item.id) {
-                @case ('why-abstraction') {
+                @case ('sentinel-vs-exceptions') {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 18h6"></path>
-                    <path d="M10 22h4"></path>
-                    <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
                   </svg>
                 }
-                @case ('abstract-class-anatomy') {
+                @case ('stack-unwinding') {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                     <polyline points="2 17 12 22 22 17"></polyline>
                     <polyline points="2 12 12 17 22 12"></polyline>
                   </svg>
                 }
-                @case ('interface-pure-contract') {
+                @case ('try-catch-finally') {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2v6"></path>
-                    <path d="M7 2v6"></path>
-                    <path d="M17 2v6"></path>
-                    <rect x="5" y="8" width="14" height="12" rx="3"></rect>
-                    <path d="M12 20v2"></path>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <path d="M9 12l2 2 4-4"></path>
                   </svg>
                 }
-                @case ('duck-typing-runtime-cost') {
+                @case ('error-object-strict-typing') {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                }
+                @case ('custom-domain-errors') {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="18" r="3"></circle>
+                    <circle cx="6" cy="6" r="3"></circle>
+                    <path d="M18 6a9 9 0 0 1-9 9"></path>
+                    <line x1="6" y1="9" x2="6" y2="21"></line>
+                  </svg>
+                }
+                @case ('filtering-polymorphism') {
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                }
+                @case ('architectural-strategies') {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 6v6l4 2"></path>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
                   </svg>
                 }
-                @case ('decision-tree-hybrid') {
+                @case ('atm-simulator') {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="6" y1="3" x2="6" y2="15"></line>
-                    <circle cx="18" cy="6" r="3"></circle>
-                    <circle cx="6" cy="18" r="3"></circle>
-                    <path d="M18 9a9 9 0 0 1-9 9"></path>
-                  </svg>
-                }
-                @case ('pitfalls-type-guards') {
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                }
-                @case ('rpg-arena-simulator') {
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polygon>
-                    <line x1="13" y1="19" x2="19" y2="13"></line>
-                    <line x1="16" y1="16" x2="20" y2="20"></line>
-                    <line x1="19" y1="21" x2="21" y2="19"></line>
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
                   </svg>
                 }
                 @case ('workshops-lab') {
@@ -101,9 +104,9 @@ import { TabId } from '../../../core/models/app.models';
       </nav>
 
       <div class="sidebar-footer">
-        <div class="footer-box">
-          <div class="footer-tag">EAFC Colfontaine</div>
-          <div class="footer-text">POO TypeScript — Séance 8</div>
+        <div class="footer-badge">
+          <span class="dot"></span>
+          <span>POO Avancée · EAFC</span>
         </div>
       </div>
     </aside>
@@ -112,41 +115,43 @@ import { TabId } from '../../../core/models/app.models';
     .sidebar {
       width: 280px;
       min-width: 280px;
+      height: 100%;
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      height: 100%;
-      transition: all 0.22s ease-in-out;
-      user-select: none;
-      z-index: 40;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
 
       &.collapsed {
-        width: 64px;
-        min-width: 64px;
+        width: 68px;
+        min-width: 68px;
 
-        .header-label,
-        .item-content,
-        .sidebar-footer {
-          display: none;
+        .sidebar-header, .item-content, .sidebar-footer {
+          opacity: 0;
+          pointer-events: none;
         }
 
         .nav-item {
           justify-content: center;
           padding: 10px 0;
         }
+
+        .item-icon-wrapper {
+          margin: 0;
+        }
       }
     }
 
     .sidebar-header {
-      padding: 14px 16px 8px 16px;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 20px 8px 20px;
+      transition: opacity 0.2s;
 
       .header-label {
         font-size: 0.68rem;
-        font-weight: 700;
+        font-weight: 800;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
         color: var(--text-dim);
       }
     }
@@ -154,7 +159,7 @@ import { TabId } from '../../../core/models/app.models';
     .module-list {
       flex: 1;
       overflow-y: auto;
-      padding: 10px 8px;
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -164,12 +169,13 @@ import { TabId } from '../../../core/models/app.models';
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 100%;
       padding: 9px 12px;
       border-radius: 8px;
       color: var(--text-muted);
       text-align: left;
-      width: 100%;
       border: 1px solid transparent;
+      background: transparent;
 
       &:hover {
         background: var(--bg-card);
@@ -178,16 +184,17 @@ import { TabId } from '../../../core/models/app.models';
 
       &.active {
         background: var(--bg-card);
-        border-color: rgba(49, 120, 198, 0.4);
-        color: var(--text-main);
+        color: #ffffff;
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: var(--shadow-sm);
 
         .item-icon-wrapper {
-          color: var(--ts-blue-light);
-          background: rgba(49, 120, 198, 0.18);
+          color: #818cf8;
+          background: rgba(99, 102, 241, 0.15);
         }
 
         .item-num {
-          color: var(--ts-blue-light);
+          color: #818cf8;
         }
       }
     }
@@ -200,8 +207,8 @@ import { TabId } from '../../../core/models/app.models';
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--text-muted);
       background: var(--bg-subtle);
-      color: var(--text-dim);
       transition: all 0.2s;
     }
 
@@ -211,65 +218,62 @@ import { TabId } from '../../../core/models/app.models';
       display: flex;
       flex-direction: column;
       gap: 2px;
+      transition: opacity 0.2s;
     }
 
     .item-title-row {
       display: flex;
-      align-items: center;
-      gap: 5px;
+      align-items: baseline;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .item-num {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--text-dim);
       font-family: var(--font-mono);
+      color: var(--text-dim);
     }
 
     .item-title {
       font-size: 0.82rem;
       font-weight: 600;
-      white-space: nowrap;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
     }
 
     .item-badge-pill {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: var(--text-dim);
-      background: var(--bg-subtle);
-      padding: 1px 6px;
-      border-radius: 4px;
-      width: fit-content;
+      font-family: var(--font-mono);
 
       &.special-badge {
-        background: rgba(16, 185, 129, 0.15);
-        color: #10b981;
-        font-weight: 600;
+        color: #34d399;
+        font-weight: 700;
       }
     }
 
     .sidebar-footer {
-      padding: 12px 16px;
-      border-top: 1px solid var(--border-subtle);
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-color);
+      transition: opacity 0.2s;
 
-      .footer-box {
-        background: var(--bg-subtle);
-        padding: 8px 10px;
-        border-radius: 6px;
-        border: 1px solid var(--border-color);
-      }
+      .footer-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.74rem;
+        color: var(--text-dim);
 
-      .footer-tag {
-        font-size: 0.68rem;
-        font-weight: 700;
-        color: var(--ts-blue-light);
-        text-transform: uppercase;
-      }
-
-      .footer-text {
-        font-size: 0.72rem;
-        color: var(--text-muted);
+        .dot {
+          width: 6px;
+          height: 6px;
+          background: #6366f1;
+          border-radius: 50%;
+        }
       }
     }
   `]
@@ -278,7 +282,7 @@ export class SidebarComponent {
   readonly nav = inject(NavigationService);
   readonly exercises = inject(ExerciseService);
 
-  selectTab(tab: TabId): void {
-    this.nav.setTab(tab);
+  selectTab(id: TabId): void {
+    this.nav.setTab(id);
   }
 }
